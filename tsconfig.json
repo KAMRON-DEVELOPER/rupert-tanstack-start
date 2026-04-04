@@ -3,10 +3,9 @@
   "exclude": ["node_modules", ".tanstack"],
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "collections/*": [".source/*"]
+      "collections/*": ["./.source/*"]
     },
 
     // File Layout

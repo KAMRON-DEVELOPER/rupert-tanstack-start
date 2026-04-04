@@ -27,7 +27,7 @@ Install dependencies
 ```bash
 npm i react react-dom nitro @tanstack/react-start @tanstack/react-router @tanstack/react-query @tanstack/react-router-devtools @tanstack/react-query-devtools
 
-npm i -D vite @vitejs/plugin-react typescript @types/react @types/react-dom @types/node vite-tsconfig-paths
+npm i -D vite @vitejs/plugin-react typescript @types/react @types/react-dom @types/node
 ```
 
 Setup TypeScript

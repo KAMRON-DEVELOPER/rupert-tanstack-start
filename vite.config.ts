@@ -1,7 +1,6 @@
 import { resolve } from 'path';
 
 import { defineConfig } from 'vite';
-import tsConfigPaths from 'vite-tsconfig-paths';
 
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 
@@ -10,11 +9,12 @@ import tailwindcss from '@tailwindcss/vite';
 import { nitro } from 'nitro/vite';
 
 export default defineConfig({
-  ssr: {
-    noExternal: true,
-  },
-  plugins: [tsConfigPaths(), tailwindcss(), tanstackStart(), nitro(), viteReact()],
+  // ssr: {
+  //   noExternal: true,
+  // },
+  plugins: [tailwindcss(), tanstackStart(), nitro(), viteReact()],
   resolve: {
+    tsconfigPaths: true,
     alias: {
       '@': resolve(__dirname, './src'),
     },
