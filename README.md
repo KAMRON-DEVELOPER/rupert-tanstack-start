@@ -52,11 +52,14 @@ Run the shadcn init command to set up shadcn/ui in your project.
 npx shadcn@latest init
 # or
 npx shadcn@latest init -t start --base radix
+
+npx shadcn@latest add card sidebar button input textarea separator label slider select switch dialog alert-dialog chart progress tooltip collapsible badge popover calendar dropdown-menu tabs alert accordion avatar
 ```
 
 Additional packages
 
 ```bash
+npm i axios axios-cookiejar-support tough-cookie
 npm install zod
 npm install react-hook-form
 npm i next-themes

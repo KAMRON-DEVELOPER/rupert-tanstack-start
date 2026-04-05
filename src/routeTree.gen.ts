@@ -9,50 +9,175 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as puclicIndexRouteImport } from './routes/(puclic)/index'
+import { Route as puclicTermsRouteImport } from './routes/(puclic)/terms'
+import { Route as puclicPrivacyRouteImport } from './routes/(puclic)/privacy'
+import { Route as puclicLayoutRouteImport } from './routes/(puclic)/_layout'
+import { Route as usersAuthIndexRouteImport } from './routes/(users)/auth.index'
+import { Route as usersAuthVerifyRouteImport } from './routes/(users)/auth.verify'
+import { Route as usersAuthPasswordSetupRouteImport } from './routes/(users)/auth.password-setup'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
+const puclicIndexRoute = puclicIndexRouteImport.update({
+  id: '/(puclic)/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const puclicTermsRoute = puclicTermsRouteImport.update({
+  id: '/(puclic)/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const puclicPrivacyRoute = puclicPrivacyRouteImport.update({
+  id: '/(puclic)/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const puclicLayoutRoute = puclicLayoutRouteImport.update({
+  id: '/(puclic)/_layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const usersAuthIndexRoute = usersAuthIndexRouteImport.update({
+  id: '/(users)/auth/',
+  path: '/auth/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const usersAuthVerifyRoute = usersAuthVerifyRouteImport.update({
+  id: '/(users)/auth/verify',
+  path: '/auth/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const usersAuthPasswordSetupRoute = usersAuthPasswordSetupRouteImport.update({
+  id: '/(users)/auth/password-setup',
+  path: '/auth/password-setup',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/privacy': typeof puclicPrivacyRoute
+  '/terms': typeof puclicTermsRoute
+  '/': typeof puclicIndexRoute
+  '/auth/password-setup': typeof usersAuthPasswordSetupRoute
+  '/auth/verify': typeof usersAuthVerifyRoute
+  '/auth/': typeof usersAuthIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/privacy': typeof puclicPrivacyRoute
+  '/terms': typeof puclicTermsRoute
+  '/': typeof puclicIndexRoute
+  '/auth/password-setup': typeof usersAuthPasswordSetupRoute
+  '/auth/verify': typeof usersAuthVerifyRoute
+  '/auth': typeof usersAuthIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/(puclic)/_layout': typeof puclicLayoutRoute
+  '/(puclic)/privacy': typeof puclicPrivacyRoute
+  '/(puclic)/terms': typeof puclicTermsRoute
+  '/(puclic)/': typeof puclicIndexRoute
+  '/(users)/auth/password-setup': typeof usersAuthPasswordSetupRoute
+  '/(users)/auth/verify': typeof usersAuthVerifyRoute
+  '/(users)/auth/': typeof usersAuthIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/privacy'
+    | '/terms'
+    | '/'
+    | '/auth/password-setup'
+    | '/auth/verify'
+    | '/auth/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/privacy'
+    | '/terms'
+    | '/'
+    | '/auth/password-setup'
+    | '/auth/verify'
+    | '/auth'
+  id:
+    | '__root__'
+    | '/(puclic)/_layout'
+    | '/(puclic)/privacy'
+    | '/(puclic)/terms'
+    | '/(puclic)/'
+    | '/(users)/auth/password-setup'
+    | '/(users)/auth/verify'
+    | '/(users)/auth/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  puclicLayoutRoute: typeof puclicLayoutRoute
+  puclicPrivacyRoute: typeof puclicPrivacyRoute
+  puclicTermsRoute: typeof puclicTermsRoute
+  puclicIndexRoute: typeof puclicIndexRoute
+  usersAuthPasswordSetupRoute: typeof usersAuthPasswordSetupRoute
+  usersAuthVerifyRoute: typeof usersAuthVerifyRoute
+  usersAuthIndexRoute: typeof usersAuthIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/(puclic)/': {
+      id: '/(puclic)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof puclicIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(puclic)/terms': {
+      id: '/(puclic)/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof puclicTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(puclic)/privacy': {
+      id: '/(puclic)/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof puclicPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(puclic)/_layout': {
+      id: '/(puclic)/_layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof puclicLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(users)/auth/': {
+      id: '/(users)/auth/'
+      path: '/auth'
+      fullPath: '/auth/'
+      preLoaderRoute: typeof usersAuthIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(users)/auth/verify': {
+      id: '/(users)/auth/verify'
+      path: '/auth/verify'
+      fullPath: '/auth/verify'
+      preLoaderRoute: typeof usersAuthVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(users)/auth/password-setup': {
+      id: '/(users)/auth/password-setup'
+      path: '/auth/password-setup'
+      fullPath: '/auth/password-setup'
+      preLoaderRoute: typeof usersAuthPasswordSetupRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  puclicLayoutRoute: puclicLayoutRoute,
+  puclicPrivacyRoute: puclicPrivacyRoute,
+  puclicTermsRoute: puclicTermsRoute,
+  puclicIndexRoute: puclicIndexRoute,
+  usersAuthPasswordSetupRoute: usersAuthPasswordSetupRoute,
+  usersAuthVerifyRoute: usersAuthVerifyRoute,
+  usersAuthIndexRoute: usersAuthIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
