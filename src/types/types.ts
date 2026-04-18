@@ -8,10 +8,6 @@ export interface ListResponse<T> {
   total: number;
 }
 
-export interface RedirectResponse {
-  to: string;
-}
-
 export interface MessageResponse {
   message: string;
 }
@@ -20,9 +16,12 @@ export interface ErrorResponse {
   error: string;
 }
 
-export interface JwtPayload {
-  sub: string;
-  type: string;
-  iat: number;
-  exp: number;
+export type ProficiencyLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert';
+
+export interface Tag {
+  name: string;
+}
+
+export interface Skill {
+  name: string;
 }

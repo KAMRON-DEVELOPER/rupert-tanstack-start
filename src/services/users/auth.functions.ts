@@ -1,22 +1,17 @@
 import { createServerFn } from '@tanstack/react-start';
-import { isAxiosError } from 'axios';
-import type { Tokens, User } from '@/types/user/user';
 import { MessageResponse } from '@/types/types';
-import { Stats } from '@/types/user/stats';
 import { createServerApi } from '@/services/api.server';
+import { AuthProbe, User } from '@/types/user';
+import { Stats } from '@/types/stats';
 
 export const authProbeFn = createServerFn().handler(async (): Promise<boolean> => {
   const api = createServerApi();
 
   try {
-    await api<User>('users/profile');
-    return true;
+    const res = await api<AuthProbe>('users/auth/probe');
+    return res.isAuthenticated;
   } catch (err) {
     console.error(`🚨 Failed authProbeFn`, err);
-    if (isAxiosError(err) && err?.response?.status === 401) {
-      return false;
-    }
-
     throw err;
   }
 });
@@ -47,9 +42,4 @@ export const deleteProfileFn = createServerFn({ method: 'POST' }).handler(async 
 export const logoutFn = createServerFn({ method: 'POST' }).handler(async () => {
   const api = createServerApi();
   return api<MessageResponse>('users/auth/logout', { method: 'POST' });
-});
-
-export const refreshFn = createServerFn({ method: 'POST' }).handler(async () => {
-  const api = createServerApi();
-  return await api<Tokens>('users/auth/refresh', { method: 'POST' });
 });

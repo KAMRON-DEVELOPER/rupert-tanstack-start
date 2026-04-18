@@ -29,7 +29,7 @@ export const AuthPage = () => {
       { username, email, password },
       {
         onSuccess: (res) => {
-          if ('user' in res && 'tokens' in res) {
+          if ('email' in res) {
             toast.success('You authenticated successfully!');
 
             setTimeout(() => {

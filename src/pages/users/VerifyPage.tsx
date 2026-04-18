@@ -21,11 +21,11 @@ const VerifyPage = () => {
     mutation.mutate(
       { token },
       {
-        onSuccess: ({ to }) => {
+        onSuccess: () => {
           toast.success('Email verified successfully');
 
           setTimeout(() => {
-            navigate({ to, replace: true });
+            navigate({ to: '/', replace: true });
           }, 500);
         },
         onError: (err) => {

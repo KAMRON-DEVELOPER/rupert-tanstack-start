@@ -1,9 +1,5 @@
-import { ErrorResponse, RedirectResponse } from './types';
+import { ErrorResponse } from '@/types/types';
 
 export function isErrorResponse(data: unknown): data is ErrorResponse {
   return typeof data === 'object' && data !== null && 'error' in data && typeof (data as ErrorResponse).error === 'string';
-}
-
-export function isRedirectResponse(data: unknown): data is RedirectResponse {
-  return typeof data === 'object' && data !== null && 'to' in data && typeof (data as RedirectResponse).to === 'string';
 }

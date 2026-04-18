@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient, queryOptions } from '@tanstack/react-query';
 
 import { CreateApi } from '@/services/api';
-import { Stats } from '@/types/user/stats';
-import type { User, AuthResponse } from '@/types/user/user';
-import type { MessageResponse, RedirectResponse } from '@/types/types';
+import { Stats } from '@/types/stats';
+import type { User } from '@/types/user';
+import type { MessageResponse } from '@/types/types';
 import { deleteProfileFn, getProfileFn, logoutFn, updateProfileFn } from './auth.functions';
 
 export const useGetProfileQueryOptions = () =>
@@ -23,7 +23,7 @@ export const useEmailAuthMutation = (api: CreateApi) => {
 
   return useMutation({
     mutationFn: (data: { username?: string | null; email: string; password: string }) =>
-      api<AuthResponse | MessageResponse>('users/auth/email', { method: 'POST', data }),
+      api<User | MessageResponse>('users/auth/email', { method: 'POST', data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auth'] });
     },
@@ -39,7 +39,7 @@ export const usePasswordSetupMutation = (api: CreateApi) => {
 
 export const useVerifyMutation = (api: CreateApi) => {
   return useMutation({
-    mutationFn: (params: { token: string }) => api<RedirectResponse>('users/auth/verify', { method: 'POST', params }),
+    mutationFn: (params: { token: string }) => api('users/auth/verify', { method: 'POST', params }),
   });
 };
 

@@ -15,7 +15,7 @@ import { authProbeFn } from '@/services/users/auth.functions';
 export type RouterContext = {
   queryClient: QueryClient;
   api: CreateApi;
-  isAuthenticated?: boolean;
+  isAuthenticated: boolean;
 };
 
 export const Route = createRootRouteWithContext<RouterContext>()({
@@ -83,6 +83,14 @@ function RootComponent() {
   );
 }
 
+function NotFoundComponent() {
+  return <p>Not Found</p>;
+}
+
+function ErrorComponent() {
+  return <p className='text-center'>Something went wrong!</p>;
+}
+
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html suppressHydrationWarning>
@@ -95,12 +103,4 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       </body>
     </html>
   );
-}
-
-function NotFoundComponent() {
-  return <p>Not Found</p>;
-}
-
-function ErrorComponent() {
-  return <p className='text-center'>Something went wrong!</p>;
 }
