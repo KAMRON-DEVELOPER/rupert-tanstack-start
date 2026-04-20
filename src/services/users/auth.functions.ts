@@ -2,7 +2,6 @@ import { createServerFn } from '@tanstack/react-start';
 import { MessageResponse } from '@/types/types';
 import { createServerApi } from '@/services/api.server';
 import { AuthProbe, User } from '@/types/user';
-import { Stats } from '@/types/stats';
 
 export const authProbeFn = createServerFn().handler(async (): Promise<boolean> => {
   const api = createServerApi();
@@ -19,11 +18,6 @@ export const authProbeFn = createServerFn().handler(async (): Promise<boolean> =
 export const getProfileFn = createServerFn().handler(async () => {
   const api = createServerApi();
   return api<User>('users/profile');
-});
-
-export const getStatsFn = createServerFn().handler(async () => {
-  const api = createServerApi();
-  return api<Stats>('users/stats');
 });
 
 export const updateProfileFn = createServerFn({ method: 'POST' })

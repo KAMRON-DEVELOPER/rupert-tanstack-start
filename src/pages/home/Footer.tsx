@@ -13,10 +13,10 @@ const Footer = () => {
             <Link
               to='/'
               className='text-xl font-semibold tracking-tighter text-foreground mb-4 block'>
-              Poddle
+              Rupert
             </Link>
             <p className='text-sm text-muted-foreground max-w-xs leading-relaxed'>
-              A modern Platform-as-a-Service that makes deploying and scaling your containers effortless.
+              A developer platform for sharing projects, finding jobs, publishing posts, and connecting with the community.
             </p>
           </div>
 
@@ -54,11 +54,11 @@ const Footer = () => {
             <ul className='space-y-3 text-sm text-muted-foreground'>
               <li>
                 <a
-                  href='https://t.me/poddle_uz'
+                  href='https://t.me/rupert_uz'
                   target='_blank'
                   rel='noopener noreferrer'
                   className='flex items-center gap-2 hover:text-primary transition-colors'>
-                  <SiTelegram className='w-4 h-4' /> Community (@poddle_uz)
+                  <SiTelegram className='w-4 h-4' /> Community (@rupert_uz)
                 </a>
               </li>
               <li>

@@ -5,11 +5,19 @@ import Navbar from './Navbar';
 
 const HomePage = () => {
   return (
-    <div className='flex flex-col font-sans antialiased'>
-      <Navbar />
-      <Hero />
-      <Stats />
-      <Footer />
+    <div className='relativex'>
+      <img
+        src='/background.jpg'
+        alt='background'
+        className='absolute h-screen w-full object-center'
+      />
+
+      <div className='relative flex flex-col'>
+        <Navbar />
+        <Hero />
+        <Stats />
+        <Footer />
+      </div>
     </div>
   );
 };

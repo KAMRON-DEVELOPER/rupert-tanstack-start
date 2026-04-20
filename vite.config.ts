@@ -12,8 +12,10 @@ export default defineConfig({
   // ssr: {
   //   noExternal: true,
   // },
-  plugins: [tailwindcss(), tanstackStart(), nitro(), viteReact()],
+  publicDir: 'public',
+  plugins: [tailwindcss(), tanstackStart({}), nitro(), viteReact()],
   resolve: {
+    // This enables built-in support for path aliases defined in tsconfig.json
     tsconfigPaths: true,
     alias: {
       '@': resolve(__dirname, './src'),

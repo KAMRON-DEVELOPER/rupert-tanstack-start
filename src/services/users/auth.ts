@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient, queryOptions } from '@tanstack/react-query';
 
 import { CreateApi } from '@/services/api';
-import { Stats } from '@/types/stats';
 import type { User } from '@/types/user';
 import type { MessageResponse } from '@/types/types';
 import { deleteProfileFn, getProfileFn, logoutFn, updateProfileFn } from './auth.functions';
@@ -10,12 +9,6 @@ export const useGetProfileQueryOptions = () =>
   queryOptions({
     queryKey: ['profile'],
     queryFn: () => getProfileFn(),
-  });
-
-export const useGetStatsQueryOptions = (api: CreateApi) =>
-  queryOptions({
-    queryKey: ['stats'],
-    queryFn: () => api<Stats>('users/stats'),
   });
 
 export const useEmailAuthMutation = (api: CreateApi) => {

@@ -1,12 +1,23 @@
-import { useGetStatsQueryOptions } from '@/services/users/auth';
+import { useGetStatsQueryOptions } from '@/services/stats/stats';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useRouteContext } from '@tanstack/react-router';
 
 const Stats = () => {
-  const { api } = useRouteContext({ from: '__root__' });
-  useSuspenseQuery(useGetStatsQueryOptions(api));
+  const {
+    data: {
+      users: { total },
+      vacancies: { total: vacanciesTotal },
+      companies: { total: companiesTotal },
+    },
+  } = useSuspenseQuery(useGetStatsQueryOptions());
 
-  return <section className='py-8 border-y'></section>;
+  return (
+    <section className='py-8 border-y'>
+      <h1 className='text-2xl'>Statistics</h1>
+      <div>total users: {total}</div>
+      <div>total vacancies: {vacanciesTotal}</div>
+      <div>total companies: {companiesTotal}</div>
+    </section>
+  );
 };
 
 export default Stats;

@@ -3,55 +3,34 @@ import { useTheme } from 'next-themes';
 import { Languages, LogIn, MenuIcon, Monitor, Moon, Sun } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import PoddleSvg from '@/assets/icons/PoddleSvg';
+import RupertSvg from '@/assets/icons/RupertSvg';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuGroup } from '@/components/ui/dropdown-menu';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useState } from 'react';
 import FlagUz from '@/components/svgs/FlagUz';
 import FlagUk from '@/components/svgs/FlagUk';
 import FlagRu from '@/components/svgs/FlagRu';
-import { Separator } from '@/components/ui/separator';
 
 const Navbar = () => {
-  const isMobile = useIsMobile();
+  // const isMobile = useIsMobile();
 
   return (
     <nav className='fixed w-full bg-background z-50 border-b border-primary/15'>
-      <div className='px-4 md:px-8 h-12 md:h-16 flex items-center justify-between'>
-        <Link
-          to='/'
-          className='flex items-center cursor-pointer gap-2'>
-          <PoddleSvg className='size-7' />
-          <span className='text-md md:text-lg font-bold'>Poddle</span>
-        </Link>
+      <div className='flex items-center justify-between px-4 md:px-8 h-12 md:h-16 text-md md:text-lg font-bold'>
+        {/* Left */}
+        <div className='flex items-center gap-4'>
+          <Link
+            to='/'
+            className='flex items-center gap-4'>
+            <RupertSvg className='size-8' />
+            Rupert
+          </Link>
+          <Link to='/community'>Community</Link>
+          <Link to='/jobs'>Jobs</Link>
+        </div>
 
+        {/* Right */}
         <div className='flex items-center gap-2'>
-          <div className='hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground'>
-            <a
-              href='#features'
-              className='hover:text-foreground'>
-              Features
-            </a>
-            <a
-              href='#pricing'
-              className='hover:text-foreground'>
-              Pricing
-            </a>
-          </div>
-          {!isMobile && (
-            <Separator
-              orientation='vertical'
-              className='ml-2'
-            />
-          )}
-          <NavbarLanguageSwitcherMenu />
-          <NavbarThemeSwitcherMenu />
-          {!isMobile && (
-            <Separator
-              orientation='vertical'
-              className='mr-2'
-            />
-          )}
           <NavbarCTA />
           <NavbarMenu />
         </div>
@@ -62,7 +41,7 @@ const Navbar = () => {
 
 export default Navbar;
 
-const NavbarLanguageSwitcherMenu = () => {
+export const NavbarLanguageSwitcherMenu = () => {
   type Langs = 'uz' | 'en' | 'ru';
   const [lang] = useState<Langs>('uz');
   const isMobile = useIsMobile();
@@ -99,7 +78,7 @@ const NavbarLanguageSwitcherMenu = () => {
   );
 };
 
-const NavbarThemeSwitcherMenu = () => {
+export const NavbarThemeSwitcherMenu = () => {
   const { theme, setTheme } = useTheme();
   const isMobile = useIsMobile();
 
