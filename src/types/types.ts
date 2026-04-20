@@ -1,3 +1,5 @@
+import { IsoDateTime, UUID } from './primitives';
+
 export interface Pagination {
   limit: number;
   offset: number;
@@ -16,12 +18,16 @@ export interface ErrorResponse {
   error: string;
 }
 
-export type ProficiencyLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert';
-
 export interface Tag {
   name: string;
 }
 
 export interface Skill {
   name: string;
+}
+
+export interface Id {
+  id: UUID;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
 }

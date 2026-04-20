@@ -1,7 +1,7 @@
 import Navbar from '@/pages/home/Navbar';
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/(puclic)')({
+export const Route = createFileRoute('/(public)')({
   component: RouteComponent,
 });
 

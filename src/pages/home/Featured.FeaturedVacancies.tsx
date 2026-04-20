@@ -1,8 +1,8 @@
-const FeaturedVocancies = () => {
+const FeaturedVacancies = () => {
   return (
     <div className='space-y-2'>
       <div className='flex justify-between text-md'>
-        <h2>Vocancies</h2>
+        <h2>Vacancies</h2>
         <h2>See more</h2>
       </div>
       <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
@@ -16,4 +16,4 @@ const FeaturedVocancies = () => {
   );
 };
 
-export default FeaturedVocancies;
+export default FeaturedVacancies;

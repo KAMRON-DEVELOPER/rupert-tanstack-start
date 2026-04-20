@@ -1,7 +1,7 @@
 import FeaturedArticles from './Featured.FeaturedArticles';
 import FeaturedCompanies from './Featured.FeaturedCompanies';
 import FeaturedUsers from './Featured.FeaturedUsers';
-import FeaturedVocancies from './Featured.FeaturedVocancies';
+import FeaturedVacancies from './Featured.FeaturedVacancies';
 
 const Featured = () => {
   return (
@@ -9,7 +9,7 @@ const Featured = () => {
       <h1 className='text-xl font-semibold'>Featured</h1>
 
       <FeaturedCompanies />
-      <FeaturedVocancies />
+      <FeaturedVacancies />
       <FeaturedUsers />
       <FeaturedArticles />
     </section>

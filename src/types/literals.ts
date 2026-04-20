@@ -1,62 +1,81 @@
-export type Provider = 'google' | 'github';
+export const ProviderList = ['google', 'github'];
+export type Provider = (typeof ProviderList)[number];
 
-export type FollowStatus = 'pending' | 'accepted' | 'declined';
+export const FollowStatusList = ['pending', 'accepted', 'declined'];
+export type FollowStatus = (typeof FollowStatusList)[number];
 
-export type FollowPolicy = 'auto_accept' | 'require_approval';
+export const FollowPolicyList = ['auto_accept', 'require_approval'];
+export type FollowPolicy = (typeof FollowPolicyList)[number];
 
-export type UserRole = 'user' | 'admin';
+export const UserRoleList = ['user', 'admin'];
+export type UserRole = (typeof UserRoleList)[number];
 
-export type UserStatus = 'active' | 'suspended' | 'pending_verification' | 'deleted';
+export const UserStatusList = ['active', 'suspended', 'pending_verification', 'deleted'];
+export type UserStatus = (typeof UserStatusList)[number];
 
-export type JobSearchStatus = 'actively_looking' | 'open_to_offers' | 'interviewing' | 'not_looking';
+export const JobSearchStatusList = ['actively_looking', 'open_to_offers', 'interviewing', 'not_looking'];
+export type JobSearchStatus = (typeof JobSearchStatusList)[number];
 
-export type Specialization =
-  | 'frontend'
-  | 'backend'
-  | 'fullstack'
-  | 'ios'
-  | 'android'
-  | 'cross_platform_mobile'
-  | 'desktop'
-  | 'embedded'
-  | 'systems'
-  | 'firmware'
-  | 'devops'
-  | 'platform'
-  | 'sre'
-  | 'cloud'
-  | 'data_engineering'
-  | 'data_science'
-  | 'machine_learning'
-  | 'ai_engineering'
-  | 'data_analytics'
-  | 'security'
-  | 'application_security'
-  | 'blockchain'
-  | 'game'
-  | 'qa'
-  | 'ui_ux'
-  | 'developer_relations'
-  | 'technical_writing';
+export const SpecializationList = [
+  'frontend',
+  'backend',
+  'fullstack',
+  'ios',
+  'android',
+  'cross_platform_mobile',
+  'desktop',
+  'embedded',
+  'systems',
+  'firmware',
+  'devops',
+  'platform',
+  'sre',
+  'cloud',
+  'data_engineering',
+  'data_science',
+  'machine_learning',
+  'ai_engineering',
+  'data_analytics',
+  'security',
+  'application_security',
+  'blockchain',
+  'game',
+  'qa',
+  'ui_ux',
+  'developer_relations',
+  'technical_writing',
+];
+export type Specialization = (typeof SpecializationList)[number];
 
-export type ProficiencyLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert';
+export const ProficiencyLevelList = ['beginner', 'intermediate', 'advanced', 'expert'];
+export type ProficiencyLevel = (typeof ProficiencyLevelList)[number];
 
-export type CompanyType = 'startup' | 'product_company' | 'agency' | 'outsourcing' | 'outstaffing' | 'enterprise' | 'government';
+export const CompanyTypeList = ['startup', 'product_company', 'agency', 'outsourcing', 'outstaffing', 'enterprise', 'government'];
+export type CompanyType = (typeof CompanyTypeList)[number];
 
-export type CompanyStatus = 'pending' | 'approved' | 'rejected' | 'suspended';
+export const CompanyStatusList = ['pending', 'approved', 'rejected', 'suspended'];
+export type CompanyStatus = (typeof CompanyStatusList)[number];
 
-export type CompanyMemberRole = 'member' | 'recruiter' | 'owner';
+export const CompanyMemberRoleList = ['member', 'recruiter', 'owner'];
+export type CompanyMemberRole = (typeof CompanyMemberRoleList)[number];
 
-export type PaymentFrequency = 'hourly' | 'daily' | 'once_a_week' | 'twice_a_month' | 'once_a_month' | 'per_project';
+export const PaymentFrequencyList = ['hourly', 'daily', 'once_a_week', 'twice_a_month', 'once_a_month', 'per_project'];
+export type PaymentFrequency = (typeof PaymentFrequencyList)[number];
 
-export type WorkFormat = 'onsite' | 'remote' | 'hybrid';
+export const WorkFormatList = ['onsite', 'remote', 'hybrid'];
+export type WorkFormat = (typeof WorkFormatList)[number];
 
-export type EmploymentType = 'full_time' | 'part_time' | 'contract' | 'internship';
+export const EmploymentTypeList = ['full_time', 'part_time', 'contract', 'internship'];
+export type EmploymentType = (typeof EmploymentTypeList)[number];
 
-export type SubmissionType = 'profile' | 'resume';
+export const SubmissionTypeList = ['profile', 'resume'];
+export type SubmissionType = (typeof SubmissionTypeList)[number];
 
-export type VacancyStatus = 'draft' | 'open' | 'archived' | 'closed';
+export const VacancyStatusList = ['draft', 'open', 'archived', 'closed'];
+export type VacancyStatus = (typeof VacancyStatusList)[number];
 
-export type ApplicationStatus = 'pending' | 'viewed' | 'shortlisted' | 'interview' | 'offer' | 'rejected' | 'hired';
+export const ApplicationStatusList = ['pending', 'viewed', 'shortlisted', 'interview', 'offer', 'rejected', 'hired'] as const;
+export type ApplicationStatus = (typeof ApplicationStatusList)[number];
 
-export type SalaryCurrency = 'UZS' | 'KZT' | 'KGS' | 'TJS' | 'TMT' | 'USD' | 'EUR' | 'TRY';
+export const SalaryCurrencyList = ['UZS', 'KZT', 'KGS', 'TJS', 'TMT', 'USD', 'EUR', 'TRY'] as const;
+export type SalaryCurrency = (typeof SalaryCurrencyList)[number];

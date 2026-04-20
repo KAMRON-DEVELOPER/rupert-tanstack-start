@@ -10,54 +10,47 @@ import {
   WorkFormat,
 } from '@/types/literals';
 import { UUID } from '@/types/primitives';
-import { Skill } from '@/types/types';
+import { Id, Skill } from '@/types/types';
 import { ResumeCard, UserCard } from '@/types/user';
 
 export interface VacancySkillLink {
   skill: Skill;
   proficiency: ProficiencyLevel;
-  years_of_experience_min?: number;
-  is_required: boolean;
+  yearsOfExperienceMin?: number;
+  isRequired: boolean;
 }
 
-export interface VacancyCard {
+export interface VacancyCard extends Id {
   company: CompanyCard;
-
   title: string;
-
   specialization: Specialization;
-  salary_min?: number;
-  salary_max?: number;
-  salary_currency?: SalaryCurrency;
-  payment_frequency?: PaymentFrequency;
-
+  salaryMin?: number;
+  salaryMax?: number;
+  salaryCurrency?: SalaryCurrency;
+  paymentFrequency?: PaymentFrequency;
   country: string;
   city: string;
-
   status: VacancyStatus;
-
-  years_of_experience_min?: number;
-  work_format: WorkFormat;
-  employment_type: EmploymentType;
-  work_hours_per_week?: number;
-
-  is_saved: boolean;
-  has_applied: boolean;
+  yearsOfExperienceMin?: number;
+  workFormat: WorkFormat;
+  employmentType: EmploymentType;
+  workHoursPerWeek?: number;
+  isSaved: boolean;
+  hasApplied: boolean;
 }
 
-export interface ApplicationOut {
-  vacancy_id: UUID;
-  applicant_id: UUID;
+export interface ApplicationCard extends Id {
+  vacancyId: UUID;
+  applicantId: UUID;
   status: ApplicationStatus;
-  cover_letter?: string;
-
+  coverLetter?: string;
   vacancy: VacancyCard;
   resume?: ResumeCard;
 }
 
-export interface ApplicationDetailOut {
+export interface ApplicationDetail {
   applicant: UserCard;
-  recruiter_note?: string;
+  recruiterNote?: string;
 }
 
 export interface SavedVacancy {

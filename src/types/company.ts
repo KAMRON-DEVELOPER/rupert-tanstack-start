@@ -1,11 +1,12 @@
 import { CompanyMemberRole, CompanyStatus, CompanyType } from '@/types/literals';
 import { UUID } from '@/types/primitives';
 import { UserCard } from '@/types/user';
+import { Id } from '@/types/types';
 
-export interface CompanyCard {
+export interface CompanyCard extends Id {
   name: string;
   tagline?: string;
-  logo_url?: string;
+  logoUrl?: string;
   type: CompanyType;
   country: string;
   city: string;
@@ -14,16 +15,16 @@ export interface CompanyCard {
 
 export interface Company {
   description?: string;
-  website_url?: string;
-  contact_email?: string;
-  contact_phone?: string;
+  websiteUrl?: string;
+  contactEmail?: string;
+  contactPhone?: string;
 
-  member_count?: number;
-  open_vacancy_count?: number;
+  memberCount?: number;
+  openVacancyCount?: number;
 }
 
 export interface CompanyMember {
   user: UserCard;
-  company_id: UUID;
+  companyId: UUID;
   role: CompanyMemberRole;
 }
