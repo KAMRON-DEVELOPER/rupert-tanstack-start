@@ -5,35 +5,39 @@ import { Languages, LogIn, MenuIcon, Monitor, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RupertSvg from '@/assets/icons/RupertSvg';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuGroup } from '@/components/ui/dropdown-menu';
-import { useIsMobile } from '@/hooks/use-mobile';
+import useIsMobile from '@/hooks/useIsMobile';
 import { useState } from 'react';
 import FlagUz from '@/components/svgs/FlagUz';
 import FlagUk from '@/components/svgs/FlagUk';
 import FlagRu from '@/components/svgs/FlagRu';
+import clsx from 'clsx';
+import useScrollDirection from '@/hooks/useScrollDirection';
 
 const Navbar = () => {
-  // const isMobile = useIsMobile();
+  const dir = useScrollDirection();
 
   return (
-    <nav className='fixed w-full bg-background z-50 border-b border-primary/15'>
-      <div className='flex items-center justify-between px-4 md:px-8 h-12 md:h-16 text-md md:text-lg font-bold'>
-        {/* Left */}
-        <div className='flex items-center gap-4'>
-          <Link
-            to='/'
-            className='flex items-center gap-4'>
-            <RupertSvg className='size-8' />
-            Rupert
-          </Link>
-          <Link to='/community'>Community</Link>
-          <Link to='/jobs'>Jobs</Link>
-        </div>
+    <nav
+      className={clsx(
+        'fixed flex items-center justify-between w-full h-12 md:h-16 px-4 md:px-8 bg-background text-md font-semibold transition-transform duration-300 z-1',
+        dir === 'up' ? 'translate-y-0' : '-translate-y-full',
+      )}>
+      {/* Left */}
+      <div className='flex items-center gap-4'>
+        <Link to='/'>
+          <RupertSvg className='size-8' />
+        </Link>
+        <Link to='/'>Home</Link>
+        <Link to='/community'>Community</Link>
+        <Link to='/jobs'>Jobs</Link>
+      </div>
 
-        {/* Right */}
-        <div className='flex items-center gap-2'>
-          <NavbarCTA />
-          <NavbarMenu />
-        </div>
+      {/* Right */}
+      <div className='flex items-center gap-2'>
+        <NavbarLanguageSwitcherMenu />
+        <NavbarThemeSwitcherMenu />
+        <NavbarCTA />
+        <NavbarMenu />
       </div>
     </nav>
   );
@@ -158,7 +162,7 @@ const NavbarCTA = () => {
     <Button
       asChild
       size='lg'
-      className='text-sm font-semibold transition hover:opacity-90 px-4 rounded-full'>
+      className='px-4 text-sm transition hover:bg-accent rounded-full'>
       <Link to={to}>{label}</Link>
     </Button>
   );

@@ -1,0 +1,5 @@
+const FeedsContent = () => {
+  return <div className='col-span-3 border-x'></div>;
+};
+
+export default FeedsContent;
