@@ -9,6 +9,8 @@ export interface CompanyCardSchema extends Id {
   logoUrl?: string;
   type: CompanyType;
   status: CompanyStatus;
+  country: string;
+  city: string;
   openVacanciesCount?: number;
 }
 

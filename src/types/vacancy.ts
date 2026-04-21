@@ -6,6 +6,7 @@ import {
   ProficiencyLevel,
   SalaryCurrency,
   Specialization,
+  SubmissionType,
   VacancyStatus,
   WorkFormat,
 } from '@/types/literals';
@@ -23,20 +24,27 @@ export interface VacancySkillLinkSchema {
 export interface VacancyCardSchema extends Id {
   company: CompanyCardSchema;
   title: string;
+  submissionType: SubmissionType;
   specialization: Specialization;
   salaryMin?: number;
   salaryMax?: number;
   salaryCurrency?: SalaryCurrency;
-  paymentFrequency?: PaymentFrequency;
-  country: string;
-  city: string;
-  status: VacancyStatus;
   yearsOfExperienceMin?: number;
   workFormat: WorkFormat;
   employmentType: EmploymentType;
-  workHoursPerWeek?: number;
+  status: VacancyStatus;
+  country: string;
+  city: string;
   isSaved: boolean;
   hasApplied: boolean;
+}
+
+export interface VacancySchema extends VacancyCardSchema {
+  description: string;
+  externalApplyUrl?: string;
+  workHoursPerWeek?: number;
+  paymentFrequency?: PaymentFrequency;
+  skill_links: VacancySkillLinkSchema[];
 }
 
 export interface ApplicationCardSchema extends Id {

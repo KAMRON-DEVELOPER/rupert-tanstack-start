@@ -21,7 +21,9 @@ export const VacancySearchSchema = z.object({
   yearsOfExperienceMin: z.number().positive().optional(),
   workFormat: z.enum(WorkFormatList).optional(),
   employmentType: z.enum(EmploymentTypeList).optional(),
-  status: z.enum(VacancyStatusList).optional(),
+  status: z.enum(VacancyStatusList).catch('open').optional(),
+  country: z.string().optional(),
+  city: z.string().optional(),
   skillIds: z.array(z.uuidv4()).optional(),
 });
 
