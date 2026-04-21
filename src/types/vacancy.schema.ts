@@ -1,5 +1,13 @@
 import z from 'zod';
-import { ApplicationStatusList, EmploymentTypeList, SalaryCurrencyList, SpecializationList, SubmissionTypeList, WorkFormatList } from '@/types/literals';
+import {
+  ApplicationStatusList,
+  EmploymentTypeList,
+  SalaryCurrencyList,
+  SpecializationList,
+  SubmissionTypeList,
+  VacancyStatusList,
+  WorkFormatList,
+} from '@/types/literals';
 import { paginationSchema } from '@/types/types.schemas';
 
 export const VacancySearchSchema = z.object({
@@ -13,6 +21,7 @@ export const VacancySearchSchema = z.object({
   yearsOfExperienceMin: z.number().positive().optional(),
   workFormat: z.enum(WorkFormatList).optional(),
   employmentType: z.enum(EmploymentTypeList).optional(),
+  status: z.enum(VacancyStatusList).optional(),
   skillIds: z.array(z.uuidv4()).optional(),
 });
 

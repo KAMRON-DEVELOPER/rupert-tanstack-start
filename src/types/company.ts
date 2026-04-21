@@ -8,19 +8,16 @@ export interface CompanyCardSchema extends Id {
   tagline?: string;
   logoUrl?: string;
   type: CompanyType;
-  country: string;
-  city: string;
   status: CompanyStatus;
+  openVacanciesCount?: number;
 }
 
-export interface CompanySchema {
+export interface CompanySchema extends CompanyCardSchema {
   description?: string;
   websiteUrl?: string;
   contactEmail?: string;
   contactPhone?: string;
-
   memberCount?: number;
-  openVacancyCount?: number;
 }
 
 export interface CompanyMemberSchema {
