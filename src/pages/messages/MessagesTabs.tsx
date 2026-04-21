@@ -1,4 +1,4 @@
-import BottomPillTabs, { BottomPillTabItem } from '@/components/navigation/BottomPillTabs';
+import BottomPillTabs from '@/components/navigation/BottomPillTabs';
 import { linkOptions } from '@tanstack/react-router';
 
 const tabs = linkOptions([
@@ -10,7 +10,7 @@ const tabs = linkOptions([
     to: '/messages/groups',
     label: 'Groups',
   },
-]) as BottomPillTabItem[];
+]);
 
 const MessagesTabs = () => <BottomPillTabs tabs={tabs} />;
 

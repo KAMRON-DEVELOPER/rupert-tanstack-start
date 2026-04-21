@@ -1,4 +1,4 @@
-import BottomPillTabs, { BottomPillTabItem } from '@/components/navigation/BottomPillTabs';
+import BottomPillTabs from '@/components/navigation/BottomPillTabs';
 import { linkOptions } from '@tanstack/react-router';
 
 const tabs = linkOptions([
@@ -10,7 +10,7 @@ const tabs = linkOptions([
     to: '/work/companies',
     label: 'Companies',
   },
-]) as BottomPillTabItem[];
+]);
 
 const WorkTabs = () => <BottomPillTabs tabs={tabs} />;
 

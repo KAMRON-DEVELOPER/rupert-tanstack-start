@@ -8,7 +8,7 @@ export type BottomPillTabItem = LinkProps & {
 };
 
 interface BottomPillTabsProps {
-  tabs: BottomPillTabItem[];
+  tabs: ReadonlyArray<BottomPillTabItem>;
 }
 
 const BottomPillTabs = ({ tabs }: BottomPillTabsProps) => {
