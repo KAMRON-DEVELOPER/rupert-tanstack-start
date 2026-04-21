@@ -1,5 +1,5 @@
-const FeedsContent = () => {
+const FeedList = () => {
   return <div className='col-span-3 border-x'></div>;
 };
 
-export default FeedsContent;
+export default FeedList;
