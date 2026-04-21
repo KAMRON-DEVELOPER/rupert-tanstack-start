@@ -24,7 +24,7 @@ const Navbar = () => {
           <RupertSvg className='size-8' />
         </Link>
         <Link to='/'>Home</Link>
-        <Link to='/community'>Community</Link>
+        <Link to='/posts'>Posts</Link>
         <Link to='/jobs'>Jobs</Link>
       </div>
 

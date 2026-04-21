@@ -20,7 +20,7 @@ export interface VacancySkillLink {
   isRequired: boolean;
 }
 
-export interface VacancyCard extends Id {
+export interface VacancyCardType extends Id {
   company: CompanyCard;
   title: string;
   specialization: Specialization;
@@ -39,12 +39,12 @@ export interface VacancyCard extends Id {
   hasApplied: boolean;
 }
 
-export interface ApplicationCard extends Id {
+export interface ApplicationCardType extends Id {
   vacancyId: UUID;
   applicantId: UUID;
   status: ApplicationStatus;
   coverLetter?: string;
-  vacancy: VacancyCard;
+  vacancy: VacancyCardType;
   resume?: ResumeCard;
 }
 
@@ -53,6 +53,6 @@ export interface ApplicationDetail {
   recruiterNote?: string;
 }
 
-export interface SavedVacancy {
-  vacancy: VacancyCard;
+export interface SavedVacancyType {
+  vacancy: VacancyCardType;
 }

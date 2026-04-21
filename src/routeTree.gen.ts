@@ -14,10 +14,10 @@ import { Route as publicIndexRouteImport } from './routes/(public)/index'
 import { Route as publicTermsRouteImport } from './routes/(public)/terms'
 import { Route as publicPrivacyRouteImport } from './routes/(public)/privacy'
 import { Route as usersAuthIndexRouteImport } from './routes/(users)/auth.index'
+import { Route as publicPostsIndexRouteImport } from './routes/(public)/posts.index'
+import { Route as publicJobsIndexRouteImport } from './routes/(public)/jobs.index'
 import { Route as usersAuthVerifyRouteImport } from './routes/(users)/auth.verify'
 import { Route as usersAuthPasswordSetupRouteImport } from './routes/(users)/auth.password-setup'
-import { Route as publicjobsJobsIndexRouteImport } from './routes/(public)/(jobs)/jobs.index'
-import { Route as publiccommunityCommunityIndexRouteImport } from './routes/(public)/(community)/community.index'
 
 const publicRouteRoute = publicRouteRouteImport.update({
   id: '/(public)',
@@ -43,6 +43,16 @@ const usersAuthIndexRoute = usersAuthIndexRouteImport.update({
   path: '/auth/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const publicPostsIndexRoute = publicPostsIndexRouteImport.update({
+  id: '/posts/',
+  path: '/posts/',
+  getParentRoute: () => publicRouteRoute,
+} as any)
+const publicJobsIndexRoute = publicJobsIndexRouteImport.update({
+  id: '/jobs/',
+  path: '/jobs/',
+  getParentRoute: () => publicRouteRoute,
+} as any)
 const usersAuthVerifyRoute = usersAuthVerifyRouteImport.update({
   id: '/(users)/auth/verify',
   path: '/auth/verify',
@@ -53,17 +63,6 @@ const usersAuthPasswordSetupRoute = usersAuthPasswordSetupRouteImport.update({
   path: '/auth/password-setup',
   getParentRoute: () => rootRouteImport,
 } as any)
-const publicjobsJobsIndexRoute = publicjobsJobsIndexRouteImport.update({
-  id: '/(jobs)/jobs/',
-  path: '/jobs/',
-  getParentRoute: () => publicRouteRoute,
-} as any)
-const publiccommunityCommunityIndexRoute =
-  publiccommunityCommunityIndexRouteImport.update({
-    id: '/(community)/community/',
-    path: '/community/',
-    getParentRoute: () => publicRouteRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/privacy': typeof publicPrivacyRoute
@@ -71,9 +70,9 @@ export interface FileRoutesByFullPath {
   '/': typeof publicIndexRoute
   '/auth/password-setup': typeof usersAuthPasswordSetupRoute
   '/auth/verify': typeof usersAuthVerifyRoute
+  '/jobs/': typeof publicJobsIndexRoute
+  '/posts/': typeof publicPostsIndexRoute
   '/auth/': typeof usersAuthIndexRoute
-  '/community/': typeof publiccommunityCommunityIndexRoute
-  '/jobs/': typeof publicjobsJobsIndexRoute
 }
 export interface FileRoutesByTo {
   '/privacy': typeof publicPrivacyRoute
@@ -81,9 +80,9 @@ export interface FileRoutesByTo {
   '/': typeof publicIndexRoute
   '/auth/password-setup': typeof usersAuthPasswordSetupRoute
   '/auth/verify': typeof usersAuthVerifyRoute
+  '/jobs': typeof publicJobsIndexRoute
+  '/posts': typeof publicPostsIndexRoute
   '/auth': typeof usersAuthIndexRoute
-  '/community': typeof publiccommunityCommunityIndexRoute
-  '/jobs': typeof publicjobsJobsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -93,9 +92,9 @@ export interface FileRoutesById {
   '/(public)/': typeof publicIndexRoute
   '/(users)/auth/password-setup': typeof usersAuthPasswordSetupRoute
   '/(users)/auth/verify': typeof usersAuthVerifyRoute
+  '/(public)/jobs/': typeof publicJobsIndexRoute
+  '/(public)/posts/': typeof publicPostsIndexRoute
   '/(users)/auth/': typeof usersAuthIndexRoute
-  '/(public)/(community)/community/': typeof publiccommunityCommunityIndexRoute
-  '/(public)/(jobs)/jobs/': typeof publicjobsJobsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -105,9 +104,9 @@ export interface FileRouteTypes {
     | '/'
     | '/auth/password-setup'
     | '/auth/verify'
-    | '/auth/'
-    | '/community/'
     | '/jobs/'
+    | '/posts/'
+    | '/auth/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/privacy'
@@ -115,9 +114,9 @@ export interface FileRouteTypes {
     | '/'
     | '/auth/password-setup'
     | '/auth/verify'
-    | '/auth'
-    | '/community'
     | '/jobs'
+    | '/posts'
+    | '/auth'
   id:
     | '__root__'
     | '/(public)'
@@ -126,9 +125,9 @@ export interface FileRouteTypes {
     | '/(public)/'
     | '/(users)/auth/password-setup'
     | '/(users)/auth/verify'
+    | '/(public)/jobs/'
+    | '/(public)/posts/'
     | '/(users)/auth/'
-    | '/(public)/(community)/community/'
-    | '/(public)/(jobs)/jobs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -175,6 +174,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof usersAuthIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(public)/posts/': {
+      id: '/(public)/posts/'
+      path: '/posts'
+      fullPath: '/posts/'
+      preLoaderRoute: typeof publicPostsIndexRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
+    '/(public)/jobs/': {
+      id: '/(public)/jobs/'
+      path: '/jobs'
+      fullPath: '/jobs/'
+      preLoaderRoute: typeof publicJobsIndexRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
     '/(users)/auth/verify': {
       id: '/(users)/auth/verify'
       path: '/auth/verify'
@@ -189,20 +202,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof usersAuthPasswordSetupRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(public)/(jobs)/jobs/': {
-      id: '/(public)/(jobs)/jobs/'
-      path: '/jobs'
-      fullPath: '/jobs/'
-      preLoaderRoute: typeof publicjobsJobsIndexRouteImport
-      parentRoute: typeof publicRouteRoute
-    }
-    '/(public)/(community)/community/': {
-      id: '/(public)/(community)/community/'
-      path: '/community'
-      fullPath: '/community/'
-      preLoaderRoute: typeof publiccommunityCommunityIndexRouteImport
-      parentRoute: typeof publicRouteRoute
-    }
   }
 }
 
@@ -210,16 +209,16 @@ interface publicRouteRouteChildren {
   publicPrivacyRoute: typeof publicPrivacyRoute
   publicTermsRoute: typeof publicTermsRoute
   publicIndexRoute: typeof publicIndexRoute
-  publiccommunityCommunityIndexRoute: typeof publiccommunityCommunityIndexRoute
-  publicjobsJobsIndexRoute: typeof publicjobsJobsIndexRoute
+  publicJobsIndexRoute: typeof publicJobsIndexRoute
+  publicPostsIndexRoute: typeof publicPostsIndexRoute
 }
 
 const publicRouteRouteChildren: publicRouteRouteChildren = {
   publicPrivacyRoute: publicPrivacyRoute,
   publicTermsRoute: publicTermsRoute,
   publicIndexRoute: publicIndexRoute,
-  publiccommunityCommunityIndexRoute: publiccommunityCommunityIndexRoute,
-  publicjobsJobsIndexRoute: publicjobsJobsIndexRoute,
+  publicJobsIndexRoute: publicJobsIndexRoute,
+  publicPostsIndexRoute: publicPostsIndexRoute,
 }
 
 const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(

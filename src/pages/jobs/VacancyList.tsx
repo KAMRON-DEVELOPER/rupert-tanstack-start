@@ -1,10 +1,10 @@
 import { getRouteApi } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useGetVacanciesQueryOptions } from '@/services/vacancies/vacancies';
-import JobCard from './JobsContent.JobCard';
+import VacancyCard from './VacancyCard';
 
-const JobsContent = () => {
-  const deps = getRouteApi('/(public)/(jobs)/jobs/').useLoaderDeps();
+const VacancyList = () => {
+  const deps = getRouteApi('/(public)/jobs/').useLoaderDeps();
   const {
     data: { data: vacancies, total },
   } = useSuspenseQuery(useGetVacanciesQueryOptions(deps));
@@ -15,11 +15,11 @@ const JobsContent = () => {
 
       <div>
         {vacancies.map((v) => (
-          <JobCard v={v} />
+          <VacancyCard v={v} />
         ))}
       </div>
     </div>
   );
 };
 
-export default JobsContent;
+export default VacancyList;

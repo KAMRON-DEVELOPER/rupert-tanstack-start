@@ -1,7 +1,7 @@
 import { VacancySearch } from '@/types/vacancy.schema';
 import { useNavigate } from '@tanstack/react-router';
 
-const JobsLeftSidebar = () => {
+const VacancyFiltersSidebar = () => {
   const navigate = useNavigate({ from: '/jobs/' });
 
   const updateFilter = (newFilter: VacancySearch) => {
@@ -17,4 +17,4 @@ const JobsLeftSidebar = () => {
   );
 };
 
-export default JobsLeftSidebar;
+export default VacancyFiltersSidebar;
