@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 
 const PasswordSetupPage = () => {
   const navigate = useNavigate();
-  const route = getRouteApi('/(public)/(apps)/(users)/auth/password-setup');
+  const route = getRouteApi('/(apps)/(users)/auth/password-setup');
   const api = route.useRouteContext().api;
   const mutation = usePasswordSetupMutation(api);
   const { token } = route.useSearch();

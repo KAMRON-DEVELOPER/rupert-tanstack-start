@@ -1,10 +1,10 @@
 import VacancyList from './VacancyList';
-import LeftSidebar from './LeftSidebar';
+import VacancyLeftSidebar from './VacancyLeftSidebar';
 
 const VacanciesPage = () => {
   return (
     <div className='grid md:grid-cols-3 min-h-screen'>
-      <LeftSidebar />
+      <VacancyLeftSidebar />
       <VacancyList />
     </div>
   );

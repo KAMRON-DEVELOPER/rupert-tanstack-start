@@ -2,7 +2,7 @@ import PasswordSetupPage from '@/pages/users/PasswordSetupPage';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import z from 'zod';
 
-export const Route = createFileRoute('/(public)/(apps)/(users)/auth/password-setup')({
+export const Route = createFileRoute('/(apps)/(users)/auth/password-setup')({
   validateSearch: z.object({
     token: z.string().optional(),
   }),

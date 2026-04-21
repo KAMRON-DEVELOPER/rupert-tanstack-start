@@ -4,7 +4,7 @@ import { useGetVacanciesQueryOptions } from '@/services/vacancies/vacancies';
 import VacancyCard from './VacancyCard';
 
 const VacancyList = () => {
-  const deps = getRouteApi('/(public)/(apps)/(work)/work/vacancies/').useLoaderDeps();
+  const deps = getRouteApi('/(apps)/(work)/work/vacancies/').useLoaderDeps();
   const {
     data: { data: vacancies, total },
   } = useSuspenseQuery(useGetVacanciesQueryOptions(deps));
