@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 
 const VerifyPage = () => {
   const navigate = useNavigate();
-  const route = getRouteApi('/(users)/auth/verify');
+  const route = getRouteApi('/(public)/(apps)/(users)/auth/verify');
   const api = route.useRouteContext().api;
   const mutation = useVerifyMutation(api);
   const { token } = route.useSearch();

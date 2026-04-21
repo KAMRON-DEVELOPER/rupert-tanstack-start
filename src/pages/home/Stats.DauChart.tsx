@@ -1,6 +1,6 @@
 import { Bar, BarChart, XAxis } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
-import { DailyActiveUsersBucket } from '@/types/stats';
+import { DailyActiveUsersBucketSchema } from '@/types/stats';
 
 const chartConfig = {
   count: {
@@ -9,7 +9,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const StatsDauChart = ({ data }: { data: DailyActiveUsersBucket[] }) => {
+const StatsDauChart = ({ data }: { data: DailyActiveUsersBucketSchema[] }) => {
   const totalDAU = data.reduce((acc, d) => acc + d.count, 0);
 
   return (

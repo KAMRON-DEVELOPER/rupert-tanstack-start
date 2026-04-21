@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, queryOptions } from '@tanstack/react-query';
 
 import { CreateApi } from '@/services/api';
-import type { User } from '@/types/user';
+import type { UserSchema } from '@/types/user';
 import type { MessageResponse } from '@/types/types';
 import { deleteProfileFn, getProfileFn, logoutFn, updateProfileFn } from './auth.functions';
 
@@ -16,7 +16,7 @@ export const useEmailAuthMutation = (api: CreateApi) => {
 
   return useMutation({
     mutationFn: (data: { username?: string | null; email: string; password: string }) =>
-      api<User | MessageResponse>('users/auth/email', { method: 'POST', data }),
+      api<UserSchema | MessageResponse>('users/auth/email', { method: 'POST', data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auth'] });
     },
@@ -40,7 +40,7 @@ export const useUpdateProfileMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: User) => updateProfileFn({ data }),
+    mutationFn: (data: UserSchema) => updateProfileFn({ data }),
     onSuccess: () => {
       queryClient.clear();
     },

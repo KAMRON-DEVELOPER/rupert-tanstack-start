@@ -1,9 +1,9 @@
 import { CompanyMemberRole, CompanyStatus, CompanyType } from '@/types/literals';
 import { UUID } from '@/types/primitives';
-import { UserCard } from '@/types/user';
+import { UserCardSchema } from '@/types/user';
 import { Id } from '@/types/types';
 
-export interface CompanyCard extends Id {
+export interface CompanyCardSchema extends Id {
   name: string;
   tagline?: string;
   logoUrl?: string;
@@ -13,7 +13,7 @@ export interface CompanyCard extends Id {
   status: CompanyStatus;
 }
 
-export interface Company {
+export interface CompanySchema {
   description?: string;
   websiteUrl?: string;
   contactEmail?: string;
@@ -23,8 +23,8 @@ export interface Company {
   openVacancyCount?: number;
 }
 
-export interface CompanyMember {
-  user: UserCard;
+export interface CompanyMemberSchema {
+  user: UserCardSchema;
   companyId: UUID;
   role: CompanyMemberRole;
 }

@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useRouteContext } from '@tanstack/react-router';
 
 import RupertSvg from '@/assets/icons/RupertSvg';
 
@@ -11,6 +11,7 @@ import NavbarMenu from './Navbar.NavbarMenu';
 
 const Navbar = () => {
   const dir = useScrollDirection();
+  const isAuthenticated = useRouteContext({ from: '__root__' }).isAuthenticated;
 
   return (
     <nav
@@ -23,9 +24,10 @@ const Navbar = () => {
         <Link to='/'>
           <RupertSvg className='size-8' />
         </Link>
-        <Link to='/'>Home</Link>
+        <Link to={isAuthenticated ? '/feeds' : '/'}>{isAuthenticated ? 'Home' : 'Feed'}</Link>
         <Link to='/posts'>Posts</Link>
-        <Link to='/jobs'>Jobs</Link>
+        <Link to='/work'>Work</Link>
+        <Link to='/messages'>Messages</Link>
       </div>
 
       {/* Right */}

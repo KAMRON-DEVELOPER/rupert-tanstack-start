@@ -5,56 +5,56 @@ export interface BucketBase {
   percentage: number;
 }
 
-export interface JobSearchStatusBucket extends BucketBase {
+export interface JobSearchStatusBucketSchema extends BucketBase {
   key: JobSearchStatus;
 }
 
-export interface SpecializationBucket extends BucketBase {
+export interface SpecializationBucketSchema extends BucketBase {
   key: Specialization;
 }
 
-export interface VacancyStatusBucket extends BucketBase {
+export interface VacancyStatusBucketSchema extends BucketBase {
   key: VacancyStatus;
 }
 
-export interface CompanyTypeBucket extends BucketBase {
+export interface CompanyTypeBucketSchema extends BucketBase {
   key: CompanyType;
 }
 
-export interface DailyActiveUsersBucket {
+export interface DailyActiveUsersBucketSchema {
   count: number;
   date: string; // ISO date, e.g. "2026-04-18"
 }
 
-export interface UsersStats {
+export interface UsersStatsSchema {
   total: number;
 
   lookingForJobCount: number;
   lookingForJobPercentage: number;
 
-  dauChart: DailyActiveUsersBucket[];
+  dauChart: DailyActiveUsersBucketSchema[];
 
-  byJobSearchStatus: JobSearchStatusBucket[];
-  bySpecialization: SpecializationBucket[];
+  byJobSearchStatus: JobSearchStatusBucketSchema[];
+  bySpecialization: SpecializationBucketSchema[];
 }
 
-export interface VacanciesStats {
+export interface VacanciesStatsSchema {
   total: number;
 
   open: number;
 
-  byStatus: VacancyStatusBucket[];
-  bySpecialization: SpecializationBucket[];
+  byStatus: VacancyStatusBucketSchema[];
+  bySpecialization: SpecializationBucketSchema[];
 }
 
-export interface CompaniesStats {
+export interface CompaniesStatsSchema {
   total: number;
 
-  byType: CompanyTypeBucket[];
+  byType: CompanyTypeBucketSchema[];
 }
 
-export interface Stats {
-  users: UsersStats;
-  vacancies: VacanciesStats;
-  companies: CompaniesStats;
+export interface StatsSchema {
+  users: UsersStatsSchema;
+  vacancies: VacanciesStatsSchema;
+  companies: CompaniesStatsSchema;
 }

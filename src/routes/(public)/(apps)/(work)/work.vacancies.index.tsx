@@ -1,9 +1,9 @@
-import VacanciesPage from '@/pages/jobs/VacanciesPage';
+import VacanciesPage from '@/pages/work/vacancies/VacanciesPage';
 import { useGetVacanciesQueryOptions } from '@/services/vacancies/vacancies';
-import { createFileRoute } from '@tanstack/react-router';
 import { vacancySearch } from '@/types/vacancy.schema';
+import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/(public)/jobs/')({
+export const Route = createFileRoute('/(public)/(apps)/(work)/work/vacancies/')({
   validateSearch: vacancySearch,
   loaderDeps: ({ search }) => search,
   loader: async ({ context: { queryClient }, deps }) => {

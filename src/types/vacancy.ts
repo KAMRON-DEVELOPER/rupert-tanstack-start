@@ -1,4 +1,4 @@
-import { CompanyCard } from '@/types/company';
+import { CompanyCardSchema } from '@/types/company';
 import {
   ApplicationStatus,
   EmploymentType,
@@ -11,17 +11,17 @@ import {
 } from '@/types/literals';
 import { UUID } from '@/types/primitives';
 import { Id, Skill } from '@/types/types';
-import { ResumeCard, UserCard } from '@/types/user';
+import { ResumeCardSchema, UserCardSchema } from '@/types/user';
 
-export interface VacancySkillLink {
+export interface VacancySkillLinkSchema {
   skill: Skill;
   proficiency: ProficiencyLevel;
   yearsOfExperienceMin?: number;
   isRequired: boolean;
 }
 
-export interface VacancyCardType extends Id {
-  company: CompanyCard;
+export interface VacancyCardSchema extends Id {
+  company: CompanyCardSchema;
   title: string;
   specialization: Specialization;
   salaryMin?: number;
@@ -39,20 +39,20 @@ export interface VacancyCardType extends Id {
   hasApplied: boolean;
 }
 
-export interface ApplicationCardType extends Id {
+export interface ApplicationCardSchema extends Id {
   vacancyId: UUID;
   applicantId: UUID;
   status: ApplicationStatus;
   coverLetter?: string;
-  vacancy: VacancyCardType;
-  resume?: ResumeCard;
+  vacancy: VacancyCardSchema;
+  resume?: ResumeCardSchema;
 }
 
-export interface ApplicationDetail {
-  applicant: UserCard;
+export interface ApplicationDetailSchema {
+  applicant: UserCardSchema;
   recruiterNote?: string;
 }
 
-export interface SavedVacancyType {
-  vacancy: VacancyCardType;
+export interface SavedVacancyScema {
+  vacancy: VacancyCardSchema;
 }

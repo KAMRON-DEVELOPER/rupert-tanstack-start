@@ -1,6 +1,6 @@
-import { VacancyCardType } from '@/types/vacancy';
+import { VacancyCardSchema } from '@/types/vacancy';
 
-const VacancyCard = ({ v }: { v: VacancyCardType }) => {
+const VacancyCard = ({ v }: { v: VacancyCardSchema }) => {
   return (
     <div>
       <h1>title: {v.title}</h1>

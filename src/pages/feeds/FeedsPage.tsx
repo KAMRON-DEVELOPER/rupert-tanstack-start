@@ -1,13 +1,13 @@
 import FeedList from './FeedList';
-import FeedsLeftSidebar from './FeedsLeftSidebar';
-import FeedsRightSidebar from './FeedsRightSidebar';
+import FeedLeftSidebar from './FeedLeftSidebar';
+import FeedRightSidebar from './FeedRightSidebar';
 
 const FeedsPage = () => {
   return (
     <div className='grid md:grid-cols-5 min-h-screen'>
-      <FeedsLeftSidebar />
+      <FeedLeftSidebar />
       <FeedList />
-      <FeedsRightSidebar />
+      <FeedRightSidebar />
     </div>
   );
 };

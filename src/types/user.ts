@@ -12,11 +12,11 @@ import {
   WorkFormat,
 } from '@/types/literals';
 
-export interface AuthProbe {
+export interface AuthProbeSchema {
   isAuthenticated: boolean;
 }
 
-export interface OAuthUser {
+export interface OAuthUserSchema {
   id: UUID;
   userId: UUID;
   provider: string;
@@ -27,14 +27,14 @@ export interface OAuthUser {
   updatedAt: IsoDateTime;
 }
 
-export interface ResumeSkillLink {
+export interface ResumeSkillLinkSchema {
   resumeId: UUID;
   skill: Skill;
   proficiency: ProficiencyLevel;
   lastUsedAt?: Date;
 }
 
-export interface Resume {
+export interface ResumeSchema {
   userId: UUID;
   title: string;
   summary?: string;
@@ -46,10 +46,10 @@ export interface Resume {
   salaryCurrency?: SalaryCurrency;
   workFormat?: WorkFormat;
   employmentType?: EmploymentType;
-  skills: ResumeSkillLink[];
+  skills: ResumeSkillLinkSchema[];
 }
 
-export interface ResumeCard {
+export interface ResumeCardSchema {
   userId: UUID;
   title: string;
   specialization: Specialization;
@@ -62,13 +62,13 @@ export interface ResumeCard {
   employmentType?: EmploymentType;
 }
 
-export interface UserSkillLink {
+export interface UserSkillLinkSchema {
   skill: Skill;
   proficiency: ProficiencyLevel;
   lastUsedAt?: Date;
 }
 
-export interface WorkExperience {
+export interface WorkExperienceSchema {
   userId: UUID;
   companyName: string;
   location?: string;
@@ -79,7 +79,7 @@ export interface WorkExperience {
   isCurrent: boolean;
 }
 
-export interface UserCard {
+export interface UserCardSchema {
   firstName: string;
   lastName?: string;
   headline?: string;
@@ -92,7 +92,7 @@ export interface UserCard {
   followingsCount: number;
 }
 
-export interface User {
+export interface UserSchema {
   // Auth & Identity
   email: string;
   emailVerified: boolean;
@@ -119,15 +119,15 @@ export interface User {
   followPolicy: FollowPolicy;
   jobSearchStatus: JobSearchStatus;
   // Relationships
-  resumes: Resume[];
-  skills: UserSkillLink[];
-  workExperiences: WorkExperience[];
+  resumes: ResumeSchema[];
+  skills: UserSkillLinkSchema[];
+  workExperiences: WorkExperienceSchema[];
   // Computed
   followersCount: number;
   followingsCount: number;
 }
 
-export interface SessionOut {
+export interface SessionSchema {
   userId: UUID;
   userAgent?: string;
   ipAddr?: string;
