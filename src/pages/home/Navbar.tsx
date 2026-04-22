@@ -28,8 +28,8 @@ const Navbar = () => {
         </Link>
         <Link to='/feeds'>Feed</Link>
         <Link to='/posts'>Posts</Link>
-        <Link to='/work'>Work</Link>
-        <Link to='/messages'>Messages</Link>
+        <Link to='/work/vacancies'>Work</Link>
+        <Link to='/messages/chats'>Messages</Link>
       </div>
 
       {/* Right */}
