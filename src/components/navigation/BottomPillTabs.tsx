@@ -16,7 +16,7 @@ const BottomPillTabs = ({ tabs }: BottomPillTabsProps) => {
 
   return (
     <div className={clsx('fixed left-1/2 bottom-4 -translate-x-1/2 transition-all duration-300', dir === 'down' ? 'translate-y-24' : 'translate-y-0')}>
-      <nav className='flex items-center justify-between p-1 bg-muted backdrop-blur-lg rounded-full border'>
+      <nav className='flex items-center justify-between p-1 bg-muted/50 backdrop-blur-sm border rounded-full'>
         {tabs.map(({ label, exact, ...linkProps }, i) => {
           return (
             <Link

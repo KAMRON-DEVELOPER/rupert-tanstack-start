@@ -13,7 +13,7 @@ const CompanyList = () => {
     <div className='col-span-2 space-y-2 border-x'>
       <p>Total companies: {total}</p>
 
-      <div>
+      <div className='space-y-2'>
         {vacancies.map((c) => (
           <CompanyCard
             key={c.id}
