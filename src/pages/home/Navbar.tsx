@@ -13,33 +13,53 @@ const Navbar = () => {
   const dir = useScrollDirection();
 
   return (
-    <nav
-      className={clsx(
-        'fixed flex items-center justify-between w-full h-12 md:h-16 px-4 md:px-8 bg-background text-md font-semibold transition-transform duration-300 z-1',
-        dir === 'up' ? 'translate-y-0' : '-translate-y-full',
-      )}>
-      {/* Left */}
-      <div className='flex items-center gap-4'>
+    <div className={clsx('fixed transition-all duration-300 w-full border-b', dir === 'up' ? 'translate-y-0' : '-translate-y-full')}>
+      <nav className='flex items-center justify-between h-12 md:h-16 px-4 md:px-8 bg-background text-md font-semibold z-1'>
+        {/* Left */}
         <Link
           to='/'
           className='flex items-center gap-2'>
-          <RupertSvg className='size-8' />
+          <RupertSvg className='size-8 fill-primary' />
           Rupert
         </Link>
-        <Link to='/feeds'>Feed</Link>
-        <Link to='/posts'>Posts</Link>
-        <Link to='/work/vacancies'>Work</Link>
-        <Link to='/messages/chats'>Messages</Link>
-      </div>
 
-      {/* Right */}
-      <div className='flex items-center gap-2'>
-        <NavbarLanguageSwitcherMenu />
-        <NavbarThemeSwitcherMenu />
-        <NavbarCTA />
-        <NavbarMenu />
-      </div>
-    </nav>
+        <div className='flex items-center gap-4 text-muted-foreground'>
+          <Link
+            to='/feeds'
+            disabled={true}
+            className='text-muted-foreground hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground'>
+            Feed
+          </Link>
+          <Link
+            to='/posts'
+            disabled={true}
+            className='text-muted-foreground hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground'>
+            Posts
+          </Link>
+          <Link
+            to='/work'
+            activeOptions={{ exact: false }}
+            className='text-muted-foreground hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground'>
+            Work
+          </Link>
+          <Link
+            to='/messages'
+            activeOptions={{ exact: false }}
+            disabled={true}
+            className='text-muted-foreground hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground'>
+            Messages
+          </Link>
+        </div>
+
+        {/* Right */}
+        <div className='flex items-center gap-2'>
+          <NavbarLanguageSwitcherMenu />
+          <NavbarThemeSwitcherMenu />
+          <NavbarCTA />
+          <NavbarMenu />
+        </div>
+      </nav>
+    </div>
   );
 };
 

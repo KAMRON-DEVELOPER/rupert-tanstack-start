@@ -11,7 +11,7 @@ const VacancyLeftSidebar = () => {
   };
 
   return (
-    <div className='p-8'>
+    <div className='col-span-1 p-8 border'>
       <div onClick={() => updateFilter({ specialization: 'backend' })}>Filter `backend`</div>
     </div>
   );

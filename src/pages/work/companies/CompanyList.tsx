@@ -1,21 +1,24 @@
 import { getRouteApi } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useGetVacanciesQueryOptions } from '@/services/vacancies/vacancies';
-import VacancyCard from '../vacancies/VacancyCard';
+import { useGetCompaniesQueryOptions } from '@/services/companies/companies';
+import CompanyCard from './CompanyCard';
 
 const CompanyList = () => {
   const deps = getRouteApi('/(apps)/(work)/work/companies/').useLoaderDeps();
   const {
     data: { data: vacancies, total },
-  } = useSuspenseQuery(useGetVacanciesQueryOptions(deps));
+  } = useSuspenseQuery(useGetCompaniesQueryOptions(deps));
 
   return (
     <div className='col-span-2 space-y-2 border-x'>
-      <p>Total vacancies: {total}</p>
+      <p>Total companies: {total}</p>
 
       <div>
-        {vacancies.map((v) => (
-          <VacancyCard v={v} />
+        {vacancies.map((c) => (
+          <CompanyCard
+            key={c.id}
+            v={c}
+          />
         ))}
       </div>
     </div>

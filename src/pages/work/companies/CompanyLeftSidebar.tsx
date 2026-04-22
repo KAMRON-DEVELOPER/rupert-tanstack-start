@@ -11,7 +11,7 @@ const CompanyLeftSidebar = () => {
   };
 
   return (
-    <div className='p-8'>
+    <div className='col-span-1 p-8 border'>
       <div onClick={() => updateFilter({ type: 'startup' })}>Filter `startup`</div>
     </div>
   );

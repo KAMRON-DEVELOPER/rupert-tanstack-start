@@ -1,12 +1,14 @@
 import CompanyLeftSidebar from './CompanyLeftSidebar';
 import CompanyList from './CompanyList';
+import CompanyRightSidebar from './CompanyRightSidebar';
 
 const CompaniesPage = () => {
   return (
-    <div className='grid md:grid-cols-3 min-h-screen'>
+    <>
       <CompanyLeftSidebar />
       <CompanyList />
-    </div>
+      <CompanyRightSidebar />
+    </>
   );
 };
 

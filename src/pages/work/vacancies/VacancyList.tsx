@@ -15,7 +15,10 @@ const VacancyList = () => {
 
       <div>
         {vacancies.map((v) => (
-          <VacancyCard v={v} />
+          <VacancyCard
+            key={v.id}
+            v={v}
+          />
         ))}
       </div>
     </div>
