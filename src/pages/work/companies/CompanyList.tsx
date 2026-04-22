@@ -17,7 +17,7 @@ const CompanyList = () => {
         {vacancies.map((c) => (
           <CompanyCard
             key={c.id}
-            v={c}
+            c={c}
           />
         ))}
       </div>
