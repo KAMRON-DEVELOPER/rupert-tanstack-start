@@ -56,7 +56,7 @@ export interface ApplicationCardSchema extends Id {
   resume?: ResumeCardSchema;
 }
 
-export interface ApplicationDetailSchema {
+export interface ApplicationSchema {
   applicant: UserCardSchema;
   recruiterNote?: string;
 }

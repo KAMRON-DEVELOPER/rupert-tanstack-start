@@ -25,6 +25,8 @@ import { Route as appsworkWorkVacanciesIndexRouteImport } from './routes/(apps)/
 import { Route as appsworkWorkCompaniesIndexRouteImport } from './routes/(apps)/(work)/work.companies.index'
 import { Route as appsmessagesMessagesGroupsIndexRouteImport } from './routes/(apps)/(messages)/messages.groups.index'
 import { Route as appsmessagesMessagesChatsIndexRouteImport } from './routes/(apps)/(messages)/messages.chats.index'
+import { Route as appsworkWorkVacanciesIdRouteImport } from './routes/(apps)/(work)/work.vacancies.$id'
+import { Route as appsworkWorkCompaniesIdRouteImport } from './routes/(apps)/(work)/work.companies.$id'
 
 const publicRouteRoute = publicRouteRouteImport.update({
   id: '/(public)',
@@ -107,6 +109,16 @@ const appsmessagesMessagesChatsIndexRoute =
     path: '/messages/chats/',
     getParentRoute: () => appsmessagesRouteRoute,
   } as any)
+const appsworkWorkVacanciesIdRoute = appsworkWorkVacanciesIdRouteImport.update({
+  id: '/work/vacancies/$id',
+  path: '/work/vacancies/$id',
+  getParentRoute: () => appsworkRouteRoute,
+} as any)
+const appsworkWorkCompaniesIdRoute = appsworkWorkCompaniesIdRouteImport.update({
+  id: '/work/companies/$id',
+  path: '/work/companies/$id',
+  getParentRoute: () => appsworkRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/privacy': typeof publicPrivacyRoute
@@ -117,6 +129,8 @@ export interface FileRoutesByFullPath {
   '/auth/password-setup': typeof appsusersAuthPasswordSetupRoute
   '/auth/verify': typeof appsusersAuthVerifyRoute
   '/auth/': typeof appsusersAuthIndexRoute
+  '/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
+  '/work/vacancies/$id': typeof appsworkWorkVacanciesIdRoute
   '/messages/chats/': typeof appsmessagesMessagesChatsIndexRoute
   '/messages/groups/': typeof appsmessagesMessagesGroupsIndexRoute
   '/work/companies/': typeof appsworkWorkCompaniesIndexRoute
@@ -131,6 +145,8 @@ export interface FileRoutesByTo {
   '/auth/password-setup': typeof appsusersAuthPasswordSetupRoute
   '/auth/verify': typeof appsusersAuthVerifyRoute
   '/auth': typeof appsusersAuthIndexRoute
+  '/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
+  '/work/vacancies/$id': typeof appsworkWorkVacanciesIdRoute
   '/messages/chats': typeof appsmessagesMessagesChatsIndexRoute
   '/messages/groups': typeof appsmessagesMessagesGroupsIndexRoute
   '/work/companies': typeof appsworkWorkCompaniesIndexRoute
@@ -150,6 +166,8 @@ export interface FileRoutesById {
   '/(apps)/(users)/auth/password-setup': typeof appsusersAuthPasswordSetupRoute
   '/(apps)/(users)/auth/verify': typeof appsusersAuthVerifyRoute
   '/(apps)/(users)/auth/': typeof appsusersAuthIndexRoute
+  '/(apps)/(work)/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
+  '/(apps)/(work)/work/vacancies/$id': typeof appsworkWorkVacanciesIdRoute
   '/(apps)/(messages)/messages/chats/': typeof appsmessagesMessagesChatsIndexRoute
   '/(apps)/(messages)/messages/groups/': typeof appsmessagesMessagesGroupsIndexRoute
   '/(apps)/(work)/work/companies/': typeof appsworkWorkCompaniesIndexRoute
@@ -166,6 +184,8 @@ export interface FileRouteTypes {
     | '/auth/password-setup'
     | '/auth/verify'
     | '/auth/'
+    | '/work/companies/$id'
+    | '/work/vacancies/$id'
     | '/messages/chats/'
     | '/messages/groups/'
     | '/work/companies/'
@@ -180,6 +200,8 @@ export interface FileRouteTypes {
     | '/auth/password-setup'
     | '/auth/verify'
     | '/auth'
+    | '/work/companies/$id'
+    | '/work/vacancies/$id'
     | '/messages/chats'
     | '/messages/groups'
     | '/work/companies'
@@ -198,6 +220,8 @@ export interface FileRouteTypes {
     | '/(apps)/(users)/auth/password-setup'
     | '/(apps)/(users)/auth/verify'
     | '/(apps)/(users)/auth/'
+    | '/(apps)/(work)/work/companies/$id'
+    | '/(apps)/(work)/work/vacancies/$id'
     | '/(apps)/(messages)/messages/chats/'
     | '/(apps)/(messages)/messages/groups/'
     | '/(apps)/(work)/work/companies/'
@@ -323,6 +347,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appsmessagesMessagesChatsIndexRouteImport
       parentRoute: typeof appsmessagesRouteRoute
     }
+    '/(apps)/(work)/work/vacancies/$id': {
+      id: '/(apps)/(work)/work/vacancies/$id'
+      path: '/work/vacancies/$id'
+      fullPath: '/work/vacancies/$id'
+      preLoaderRoute: typeof appsworkWorkVacanciesIdRouteImport
+      parentRoute: typeof appsworkRouteRoute
+    }
+    '/(apps)/(work)/work/companies/$id': {
+      id: '/(apps)/(work)/work/companies/$id'
+      path: '/work/companies/$id'
+      fullPath: '/work/companies/$id'
+      preLoaderRoute: typeof appsworkWorkCompaniesIdRouteImport
+      parentRoute: typeof appsworkRouteRoute
+    }
   }
 }
 
@@ -340,11 +378,15 @@ const appsmessagesRouteRouteWithChildren =
   appsmessagesRouteRoute._addFileChildren(appsmessagesRouteRouteChildren)
 
 interface appsworkRouteRouteChildren {
+  appsworkWorkCompaniesIdRoute: typeof appsworkWorkCompaniesIdRoute
+  appsworkWorkVacanciesIdRoute: typeof appsworkWorkVacanciesIdRoute
   appsworkWorkCompaniesIndexRoute: typeof appsworkWorkCompaniesIndexRoute
   appsworkWorkVacanciesIndexRoute: typeof appsworkWorkVacanciesIndexRoute
 }
 
 const appsworkRouteRouteChildren: appsworkRouteRouteChildren = {
+  appsworkWorkCompaniesIdRoute: appsworkWorkCompaniesIdRoute,
+  appsworkWorkVacanciesIdRoute: appsworkWorkVacanciesIdRoute,
   appsworkWorkCompaniesIndexRoute: appsworkWorkCompaniesIndexRoute,
   appsworkWorkVacanciesIndexRoute: appsworkWorkVacanciesIndexRoute,
 }
