@@ -82,7 +82,7 @@ const PasswordSetupPage = () => {
           <Button
             type='submit'
             disabled={isLoading}
-            className='w-full h-10 font-semibold text-background transition-all bg-primary hover:bg-primary/90'>
+            className='w-full h-10 font-semibold text-primary-foreground transition-all bg-primary hover:bg-primary/90'>
             {isLoading ? (
               <span className='flex items-center justify-center'>
                 <div className='w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin mr-2' />

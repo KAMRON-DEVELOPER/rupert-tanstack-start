@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 
 const TermsOfService = () => {
   return (
-    <div className='bg-background text-foreground font-sans antialiased min-h-screen'>
+    <div className='bg-primary-foreground text-foreground font-sans antialiased min-h-screen'>
       <div className='w-full pt-32 pb-24 max-w-3xl mx-auto px-6 min-h-[80vh]'>
         <Link
           to='/'
