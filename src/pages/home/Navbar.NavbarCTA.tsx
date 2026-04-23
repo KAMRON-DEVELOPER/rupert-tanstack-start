@@ -8,13 +8,12 @@ const NavbarCTA = () => {
   const isAuthenticated = useRouteContext({ from: '__root__' }).isAuthenticated;
   const isMobile = useIsMobile();
 
-  const to = isAuthenticated ? '/' : '/auth';
-  const label = isAuthenticated ? 'Go to Console' : 'Get Started';
+  const label = isAuthenticated ? 'Profile' : 'Get Started';
 
   if (isMobile) {
     return (
       <Link
-        to={to}
+        to={isAuthenticated ? '/profile' : '/auth'}
         aria-label={label}>
         <div className='btn-sm'>
           <LogIn size={4} />
@@ -24,7 +23,7 @@ const NavbarCTA = () => {
   }
 
   return (
-    <Link to={to}>
+    <Link to={isAuthenticated ? '/profile' : '/auth'}>
       <div className='btn-sm'>{label}</div>
     </Link>
   );

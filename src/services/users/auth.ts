@@ -15,7 +15,7 @@ export const useEmailAuthMutation = (api: CreateApi) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: { username?: string | null; email: string; password: string }) =>
+    mutationFn: (data: { email: string; password: string; firstName?: string | null; lastName?: string | null }) =>
       api<UserSchema | MessageResponse>('users/auth/email', { method: 'POST', data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auth'] });

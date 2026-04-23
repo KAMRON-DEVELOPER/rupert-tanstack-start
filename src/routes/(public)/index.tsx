@@ -6,14 +6,13 @@ export const Route = createFileRoute('/(public)/')({
   beforeLoad: ({ context: { isAuthenticated } }) => {
     if (isAuthenticated) {
       throw redirect({
-        to: '/feeds',
+        to: '/work/vacancies',
         replace: true,
       });
     }
   },
-  loader: async ({ context }) => {
-    let query = context.queryClient;
-    await Promise.all([query.ensureQueryData(useGetStatsQueryOptions())]);
+  loader: async ({ context: { queryClient } }) => {
+    await Promise.all([queryClient.ensureQueryData(useGetStatsQueryOptions())]);
   },
   component: HomePage,
 });

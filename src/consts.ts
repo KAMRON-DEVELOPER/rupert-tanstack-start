@@ -14,7 +14,5 @@
  */
 
 const IS_PROD = import.meta.env.PROD;
-const USE_ABSOLUTE_API_URL_IN_BROWSER = import.meta.env.VITE_USE_ABSOLUTE_API_URL_IN_BROWSER === 'true';
-const API_URL = IS_PROD ? import.meta.env.VITE_API_URL || `https://rupert.uz/api/v1/` : `http://localhost:8080/api/v1/`;
-export const BASE_URL = import.meta.env.SSR ? API_URL : USE_ABSOLUTE_API_URL_IN_BROWSER ? API_URL : '/api/v1/';
-export const COOKIE_URL = IS_PROD ? 'https://rupert.uz' : 'http://localhost:5173';
+export const BASE_URL = IS_PROD ? import.meta.env.VITE_API_URL || 'https://rupert.uz/api/v1/' : 'http://localhost:8080/api/v1/';
+export const COOKIE_URL = IS_PROD ? 'https://rupert.uz' : 'http://localhost:8080';

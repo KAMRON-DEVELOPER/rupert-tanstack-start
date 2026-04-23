@@ -17,16 +17,17 @@ export const AuthPage = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState<string | null>(null);
+  const [firstName, setFirstName] = useState<string | null>(null);
+  const [lastName, setLastName] = useState<string | null>(null);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showUsernameField, setShowUsernameField] = useState(false);
+  const [showNamesField, setShowNamesField] = useState(false);
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     await mutation.mutateAsync(
-      { username, email, password },
+      { email, password, firstName, lastName },
       {
         onSuccess: (res) => {
           if ('email' in res) {
@@ -37,7 +38,7 @@ export const AuthPage = () => {
             }, 500);
           } else {
             if (res.message === 'new_user') {
-              setShowUsernameField(true);
+              setShowNamesField(true);
             } else {
               toast.error(res.message);
             }
@@ -60,8 +61,8 @@ export const AuthPage = () => {
     <div className='min-h-screen flex items-center justify-center'>
       <div className='w-[90%] sm:w-[70%] md:w-[40%] lg:w-[25%] space-y-4'>
         <div className='text-center'>
-          <h1 className='text-2xl font-semibold'>Welcome to Poddle</h1>
-          <p className='text-sm'>{showUsernameField ? 'Complete your profile' : 'Sign in or create account'}</p>
+          <h1 className='text-2xl font-semibold'>Welcome to Rupert</h1>
+          <p className='text-sm'>{showNamesField ? 'Complete your profile' : 'Sign in or create account'}</p>
         </div>
 
         <form
@@ -79,18 +80,31 @@ export const AuthPage = () => {
             className='h-10'
           />
 
-          {showUsernameField && (
-            <Input
-              id='username'
-              name='username'
-              type='text'
-              placeholder='Username'
-              defaultValue={username ?? ''}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              autoComplete='username'
-              className='h-10'
-            />
+          {showNamesField && (
+            <>
+              <Input
+                id='fname'
+                name='fname'
+                type='text'
+                placeholder='First name'
+                defaultValue={firstName ?? ''}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+                autoComplete='given-name'
+                className='h-10'
+              />
+              <Input
+                id='lname'
+                name='lname'
+                type='text'
+                placeholder='Last name'
+                defaultValue={lastName ?? ''}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+                autoComplete='family-name'
+                className='h-10'
+              />
+            </>
           )}
 
           <div className='relative'>
@@ -102,7 +116,7 @@ export const AuthPage = () => {
               defaultValue={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              autoComplete={showUsernameField ? 'new-password' : 'current-password'}
+              autoComplete={showNamesField ? 'new-password' : 'current-password'}
               className='h-10 pr-10'
             />
             <button
@@ -122,7 +136,7 @@ export const AuthPage = () => {
                 <div className='w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin mr-2' />
                 Processing...
               </span>
-            ) : showUsernameField ? (
+            ) : showNamesField ? (
               'Create Account'
             ) : (
               'Continue'

@@ -16,6 +16,7 @@ import { Route as publicTermsRouteImport } from './routes/(public)/terms'
 import { Route as publicPrivacyRouteImport } from './routes/(public)/privacy'
 import { Route as appsworkRouteRouteImport } from './routes/(apps)/(work)/route'
 import { Route as appsmessagesRouteRouteImport } from './routes/(apps)/(messages)/route'
+import { Route as usersProfileIndexRouteImport } from './routes/(users)/profile.index'
 import { Route as usersAuthIndexRouteImport } from './routes/(users)/auth.index'
 import { Route as appsPostsIndexRouteImport } from './routes/(apps)/posts.index'
 import { Route as appsFeedsIndexRouteImport } from './routes/(apps)/feeds.index'
@@ -60,6 +61,11 @@ const appsworkRouteRoute = appsworkRouteRouteImport.update({
 const appsmessagesRouteRoute = appsmessagesRouteRouteImport.update({
   id: '/(messages)',
   getParentRoute: () => appsRouteRoute,
+} as any)
+const usersProfileIndexRoute = usersProfileIndexRouteImport.update({
+  id: '/(users)/profile/',
+  path: '/profile/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const usersAuthIndexRoute = usersAuthIndexRouteImport.update({
   id: '/(users)/auth/',
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/feeds/': typeof appsFeedsIndexRoute
   '/posts/': typeof appsPostsIndexRoute
   '/auth/': typeof usersAuthIndexRoute
+  '/profile/': typeof usersProfileIndexRoute
   '/messages/': typeof appsmessagesMessagesIndexRoute
   '/work/': typeof appsworkWorkIndexRoute
   '/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
@@ -159,6 +166,7 @@ export interface FileRoutesByTo {
   '/feeds': typeof appsFeedsIndexRoute
   '/posts': typeof appsPostsIndexRoute
   '/auth': typeof usersAuthIndexRoute
+  '/profile': typeof usersProfileIndexRoute
   '/messages': typeof appsmessagesMessagesIndexRoute
   '/work': typeof appsworkWorkIndexRoute
   '/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/(apps)/feeds/': typeof appsFeedsIndexRoute
   '/(apps)/posts/': typeof appsPostsIndexRoute
   '/(users)/auth/': typeof usersAuthIndexRoute
+  '/(users)/profile/': typeof usersProfileIndexRoute
   '/(apps)/(messages)/messages/': typeof appsmessagesMessagesIndexRoute
   '/(apps)/(work)/work/': typeof appsworkWorkIndexRoute
   '/(apps)/(work)/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
@@ -202,6 +211,7 @@ export interface FileRouteTypes {
     | '/feeds/'
     | '/posts/'
     | '/auth/'
+    | '/profile/'
     | '/messages/'
     | '/work/'
     | '/work/companies/$id'
@@ -220,6 +230,7 @@ export interface FileRouteTypes {
     | '/feeds'
     | '/posts'
     | '/auth'
+    | '/profile'
     | '/messages'
     | '/work'
     | '/work/companies/$id'
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | '/(apps)/feeds/'
     | '/(apps)/posts/'
     | '/(users)/auth/'
+    | '/(users)/profile/'
     | '/(apps)/(messages)/messages/'
     | '/(apps)/(work)/work/'
     | '/(apps)/(work)/work/companies/$id'
@@ -258,6 +270,7 @@ export interface RootRouteChildren {
   usersAuthPasswordSetupRoute: typeof usersAuthPasswordSetupRoute
   usersAuthVerifyRoute: typeof usersAuthVerifyRoute
   usersAuthIndexRoute: typeof usersAuthIndexRoute
+  usersProfileIndexRoute: typeof usersProfileIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -310,6 +323,13 @@ declare module '@tanstack/react-router' {
       fullPath: ''
       preLoaderRoute: typeof appsmessagesRouteRouteImport
       parentRoute: typeof appsRouteRoute
+    }
+    '/(users)/profile/': {
+      id: '/(users)/profile/'
+      path: '/profile'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof usersProfileIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/(users)/auth/': {
       id: '/(users)/auth/'
@@ -480,6 +500,7 @@ const rootRouteChildren: RootRouteChildren = {
   usersAuthPasswordSetupRoute: usersAuthPasswordSetupRoute,
   usersAuthVerifyRoute: usersAuthVerifyRoute,
   usersAuthIndexRoute: usersAuthIndexRoute,
+  usersProfileIndexRoute: usersProfileIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
