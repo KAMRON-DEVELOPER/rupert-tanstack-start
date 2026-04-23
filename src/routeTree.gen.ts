@@ -16,8 +16,8 @@ import { Route as publicTermsRouteImport } from './routes/(public)/terms'
 import { Route as publicPrivacyRouteImport } from './routes/(public)/privacy'
 import { Route as appsworkRouteRouteImport } from './routes/(apps)/(work)/route'
 import { Route as appsmessagesRouteRouteImport } from './routes/(apps)/(messages)/route'
-import { Route as usersProfileIndexRouteImport } from './routes/(users)/profile.index'
 import { Route as usersAuthIndexRouteImport } from './routes/(users)/auth.index'
+import { Route as publicProfileIndexRouteImport } from './routes/(public)/profile.index'
 import { Route as appsPostsIndexRouteImport } from './routes/(apps)/posts.index'
 import { Route as appsFeedsIndexRouteImport } from './routes/(apps)/feeds.index'
 import { Route as usersAuthVerifyRouteImport } from './routes/(users)/auth.verify'
@@ -62,15 +62,15 @@ const appsmessagesRouteRoute = appsmessagesRouteRouteImport.update({
   id: '/(messages)',
   getParentRoute: () => appsRouteRoute,
 } as any)
-const usersProfileIndexRoute = usersProfileIndexRouteImport.update({
-  id: '/(users)/profile/',
-  path: '/profile/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const usersAuthIndexRoute = usersAuthIndexRouteImport.update({
   id: '/(users)/auth/',
   path: '/auth/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const publicProfileIndexRoute = publicProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => publicRouteRoute,
 } as any)
 const appsPostsIndexRoute = appsPostsIndexRouteImport.update({
   id: '/posts/',
@@ -146,8 +146,8 @@ export interface FileRoutesByFullPath {
   '/auth/verify': typeof usersAuthVerifyRoute
   '/feeds/': typeof appsFeedsIndexRoute
   '/posts/': typeof appsPostsIndexRoute
+  '/profile/': typeof publicProfileIndexRoute
   '/auth/': typeof usersAuthIndexRoute
-  '/profile/': typeof usersProfileIndexRoute
   '/messages/': typeof appsmessagesMessagesIndexRoute
   '/work/': typeof appsworkWorkIndexRoute
   '/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
@@ -165,8 +165,8 @@ export interface FileRoutesByTo {
   '/auth/verify': typeof usersAuthVerifyRoute
   '/feeds': typeof appsFeedsIndexRoute
   '/posts': typeof appsPostsIndexRoute
+  '/profile': typeof publicProfileIndexRoute
   '/auth': typeof usersAuthIndexRoute
-  '/profile': typeof usersProfileIndexRoute
   '/messages': typeof appsmessagesMessagesIndexRoute
   '/work': typeof appsworkWorkIndexRoute
   '/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
@@ -189,8 +189,8 @@ export interface FileRoutesById {
   '/(users)/auth/verify': typeof usersAuthVerifyRoute
   '/(apps)/feeds/': typeof appsFeedsIndexRoute
   '/(apps)/posts/': typeof appsPostsIndexRoute
+  '/(public)/profile/': typeof publicProfileIndexRoute
   '/(users)/auth/': typeof usersAuthIndexRoute
-  '/(users)/profile/': typeof usersProfileIndexRoute
   '/(apps)/(messages)/messages/': typeof appsmessagesMessagesIndexRoute
   '/(apps)/(work)/work/': typeof appsworkWorkIndexRoute
   '/(apps)/(work)/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
@@ -210,8 +210,8 @@ export interface FileRouteTypes {
     | '/auth/verify'
     | '/feeds/'
     | '/posts/'
-    | '/auth/'
     | '/profile/'
+    | '/auth/'
     | '/messages/'
     | '/work/'
     | '/work/companies/$id'
@@ -229,8 +229,8 @@ export interface FileRouteTypes {
     | '/auth/verify'
     | '/feeds'
     | '/posts'
-    | '/auth'
     | '/profile'
+    | '/auth'
     | '/messages'
     | '/work'
     | '/work/companies/$id'
@@ -252,8 +252,8 @@ export interface FileRouteTypes {
     | '/(users)/auth/verify'
     | '/(apps)/feeds/'
     | '/(apps)/posts/'
+    | '/(public)/profile/'
     | '/(users)/auth/'
-    | '/(users)/profile/'
     | '/(apps)/(messages)/messages/'
     | '/(apps)/(work)/work/'
     | '/(apps)/(work)/work/companies/$id'
@@ -270,7 +270,6 @@ export interface RootRouteChildren {
   usersAuthPasswordSetupRoute: typeof usersAuthPasswordSetupRoute
   usersAuthVerifyRoute: typeof usersAuthVerifyRoute
   usersAuthIndexRoute: typeof usersAuthIndexRoute
-  usersProfileIndexRoute: typeof usersProfileIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -324,19 +323,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appsmessagesRouteRouteImport
       parentRoute: typeof appsRouteRoute
     }
-    '/(users)/profile/': {
-      id: '/(users)/profile/'
-      path: '/profile'
-      fullPath: '/profile/'
-      preLoaderRoute: typeof usersProfileIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(users)/auth/': {
       id: '/(users)/auth/'
       path: '/auth'
       fullPath: '/auth/'
       preLoaderRoute: typeof usersAuthIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(public)/profile/': {
+      id: '/(public)/profile/'
+      path: '/profile'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof publicProfileIndexRouteImport
+      parentRoute: typeof publicRouteRoute
     }
     '/(apps)/posts/': {
       id: '/(apps)/posts/'
@@ -482,12 +481,14 @@ interface publicRouteRouteChildren {
   publicPrivacyRoute: typeof publicPrivacyRoute
   publicTermsRoute: typeof publicTermsRoute
   publicIndexRoute: typeof publicIndexRoute
+  publicProfileIndexRoute: typeof publicProfileIndexRoute
 }
 
 const publicRouteRouteChildren: publicRouteRouteChildren = {
   publicPrivacyRoute: publicPrivacyRoute,
   publicTermsRoute: publicTermsRoute,
   publicIndexRoute: publicIndexRoute,
+  publicProfileIndexRoute: publicProfileIndexRoute,
 }
 
 const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
@@ -500,7 +501,6 @@ const rootRouteChildren: RootRouteChildren = {
   usersAuthPasswordSetupRoute: usersAuthPasswordSetupRoute,
   usersAuthVerifyRoute: usersAuthVerifyRoute,
   usersAuthIndexRoute: usersAuthIndexRoute,
-  usersProfileIndexRoute: usersProfileIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

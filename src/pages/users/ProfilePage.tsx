@@ -1,7 +1,7 @@
 import { getRouteApi } from '@tanstack/react-router';
 
 const ProfilePage = () => {
-  const user = getRouteApi('/(users)/profile/').useLoaderData();
+  const user = getRouteApi('/(public)/profile/').useLoaderData();
   return (
     <div>
       <h1>
