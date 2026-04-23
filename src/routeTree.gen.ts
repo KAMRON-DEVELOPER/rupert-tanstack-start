@@ -16,13 +16,13 @@ import { Route as publicTermsRouteImport } from './routes/(public)/terms'
 import { Route as publicPrivacyRouteImport } from './routes/(public)/privacy'
 import { Route as appsworkRouteRouteImport } from './routes/(apps)/(work)/route'
 import { Route as appsmessagesRouteRouteImport } from './routes/(apps)/(messages)/route'
+import { Route as usersAuthIndexRouteImport } from './routes/(users)/auth.index'
 import { Route as appsPostsIndexRouteImport } from './routes/(apps)/posts.index'
 import { Route as appsFeedsIndexRouteImport } from './routes/(apps)/feeds.index'
+import { Route as usersAuthVerifyRouteImport } from './routes/(users)/auth.verify'
+import { Route as usersAuthPasswordSetupRouteImport } from './routes/(users)/auth.password-setup'
 import { Route as appsworkWorkIndexRouteImport } from './routes/(apps)/(work)/work.index'
-import { Route as appsusersAuthIndexRouteImport } from './routes/(apps)/(users)/auth.index'
 import { Route as appsmessagesMessagesIndexRouteImport } from './routes/(apps)/(messages)/messages.index'
-import { Route as appsusersAuthVerifyRouteImport } from './routes/(apps)/(users)/auth.verify'
-import { Route as appsusersAuthPasswordSetupRouteImport } from './routes/(apps)/(users)/auth.password-setup'
 import { Route as appsworkWorkVacanciesIndexRouteImport } from './routes/(apps)/(work)/work.vacancies.index'
 import { Route as appsworkWorkCompaniesIndexRouteImport } from './routes/(apps)/(work)/work.companies.index'
 import { Route as appsmessagesMessagesGroupsIndexRouteImport } from './routes/(apps)/(messages)/messages.groups.index'
@@ -61,6 +61,11 @@ const appsmessagesRouteRoute = appsmessagesRouteRouteImport.update({
   id: '/(messages)',
   getParentRoute: () => appsRouteRoute,
 } as any)
+const usersAuthIndexRoute = usersAuthIndexRouteImport.update({
+  id: '/(users)/auth/',
+  path: '/auth/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const appsPostsIndexRoute = appsPostsIndexRouteImport.update({
   id: '/posts/',
   path: '/posts/',
@@ -71,32 +76,26 @@ const appsFeedsIndexRoute = appsFeedsIndexRouteImport.update({
   path: '/feeds/',
   getParentRoute: () => appsRouteRoute,
 } as any)
+const usersAuthVerifyRoute = usersAuthVerifyRouteImport.update({
+  id: '/(users)/auth/verify',
+  path: '/auth/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const usersAuthPasswordSetupRoute = usersAuthPasswordSetupRouteImport.update({
+  id: '/(users)/auth/password-setup',
+  path: '/auth/password-setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const appsworkWorkIndexRoute = appsworkWorkIndexRouteImport.update({
   id: '/work/',
   path: '/work/',
   getParentRoute: () => appsworkRouteRoute,
-} as any)
-const appsusersAuthIndexRoute = appsusersAuthIndexRouteImport.update({
-  id: '/(users)/auth/',
-  path: '/auth/',
-  getParentRoute: () => appsRouteRoute,
 } as any)
 const appsmessagesMessagesIndexRoute =
   appsmessagesMessagesIndexRouteImport.update({
     id: '/messages/',
     path: '/messages/',
     getParentRoute: () => appsmessagesRouteRoute,
-  } as any)
-const appsusersAuthVerifyRoute = appsusersAuthVerifyRouteImport.update({
-  id: '/(users)/auth/verify',
-  path: '/auth/verify',
-  getParentRoute: () => appsRouteRoute,
-} as any)
-const appsusersAuthPasswordSetupRoute =
-  appsusersAuthPasswordSetupRouteImport.update({
-    id: '/(users)/auth/password-setup',
-    path: '/auth/password-setup',
-    getParentRoute: () => appsRouteRoute,
   } as any)
 const appsworkWorkVacanciesIndexRoute =
   appsworkWorkVacanciesIndexRouteImport.update({
@@ -137,12 +136,12 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof publicPrivacyRoute
   '/terms': typeof publicTermsRoute
   '/': typeof publicIndexRoute
+  '/auth/password-setup': typeof usersAuthPasswordSetupRoute
+  '/auth/verify': typeof usersAuthVerifyRoute
   '/feeds/': typeof appsFeedsIndexRoute
   '/posts/': typeof appsPostsIndexRoute
-  '/auth/password-setup': typeof appsusersAuthPasswordSetupRoute
-  '/auth/verify': typeof appsusersAuthVerifyRoute
+  '/auth/': typeof usersAuthIndexRoute
   '/messages/': typeof appsmessagesMessagesIndexRoute
-  '/auth/': typeof appsusersAuthIndexRoute
   '/work/': typeof appsworkWorkIndexRoute
   '/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
   '/work/vacancies/$id': typeof appsworkWorkVacanciesIdRoute
@@ -155,12 +154,12 @@ export interface FileRoutesByTo {
   '/privacy': typeof publicPrivacyRoute
   '/terms': typeof publicTermsRoute
   '/': typeof publicIndexRoute
+  '/auth/password-setup': typeof usersAuthPasswordSetupRoute
+  '/auth/verify': typeof usersAuthVerifyRoute
   '/feeds': typeof appsFeedsIndexRoute
   '/posts': typeof appsPostsIndexRoute
-  '/auth/password-setup': typeof appsusersAuthPasswordSetupRoute
-  '/auth/verify': typeof appsusersAuthVerifyRoute
+  '/auth': typeof usersAuthIndexRoute
   '/messages': typeof appsmessagesMessagesIndexRoute
-  '/auth': typeof appsusersAuthIndexRoute
   '/work': typeof appsworkWorkIndexRoute
   '/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
   '/work/vacancies/$id': typeof appsworkWorkVacanciesIdRoute
@@ -178,12 +177,12 @@ export interface FileRoutesById {
   '/(public)/privacy': typeof publicPrivacyRoute
   '/(public)/terms': typeof publicTermsRoute
   '/(public)/': typeof publicIndexRoute
+  '/(users)/auth/password-setup': typeof usersAuthPasswordSetupRoute
+  '/(users)/auth/verify': typeof usersAuthVerifyRoute
   '/(apps)/feeds/': typeof appsFeedsIndexRoute
   '/(apps)/posts/': typeof appsPostsIndexRoute
-  '/(apps)/(users)/auth/password-setup': typeof appsusersAuthPasswordSetupRoute
-  '/(apps)/(users)/auth/verify': typeof appsusersAuthVerifyRoute
+  '/(users)/auth/': typeof usersAuthIndexRoute
   '/(apps)/(messages)/messages/': typeof appsmessagesMessagesIndexRoute
-  '/(apps)/(users)/auth/': typeof appsusersAuthIndexRoute
   '/(apps)/(work)/work/': typeof appsworkWorkIndexRoute
   '/(apps)/(work)/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
   '/(apps)/(work)/work/vacancies/$id': typeof appsworkWorkVacanciesIdRoute
@@ -198,12 +197,12 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/terms'
     | '/'
-    | '/feeds/'
-    | '/posts/'
     | '/auth/password-setup'
     | '/auth/verify'
-    | '/messages/'
+    | '/feeds/'
+    | '/posts/'
     | '/auth/'
+    | '/messages/'
     | '/work/'
     | '/work/companies/$id'
     | '/work/vacancies/$id'
@@ -216,12 +215,12 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/terms'
     | '/'
-    | '/feeds'
-    | '/posts'
     | '/auth/password-setup'
     | '/auth/verify'
-    | '/messages'
+    | '/feeds'
+    | '/posts'
     | '/auth'
+    | '/messages'
     | '/work'
     | '/work/companies/$id'
     | '/work/vacancies/$id'
@@ -238,12 +237,12 @@ export interface FileRouteTypes {
     | '/(public)/privacy'
     | '/(public)/terms'
     | '/(public)/'
+    | '/(users)/auth/password-setup'
+    | '/(users)/auth/verify'
     | '/(apps)/feeds/'
     | '/(apps)/posts/'
-    | '/(apps)/(users)/auth/password-setup'
-    | '/(apps)/(users)/auth/verify'
+    | '/(users)/auth/'
     | '/(apps)/(messages)/messages/'
-    | '/(apps)/(users)/auth/'
     | '/(apps)/(work)/work/'
     | '/(apps)/(work)/work/companies/$id'
     | '/(apps)/(work)/work/vacancies/$id'
@@ -256,6 +255,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   appsRouteRoute: typeof appsRouteRouteWithChildren
   publicRouteRoute: typeof publicRouteRouteWithChildren
+  usersAuthPasswordSetupRoute: typeof usersAuthPasswordSetupRoute
+  usersAuthVerifyRoute: typeof usersAuthVerifyRoute
+  usersAuthIndexRoute: typeof usersAuthIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -309,6 +311,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appsmessagesRouteRouteImport
       parentRoute: typeof appsRouteRoute
     }
+    '/(users)/auth/': {
+      id: '/(users)/auth/'
+      path: '/auth'
+      fullPath: '/auth/'
+      preLoaderRoute: typeof usersAuthIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(apps)/posts/': {
       id: '/(apps)/posts/'
       path: '/posts'
@@ -323,6 +332,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appsFeedsIndexRouteImport
       parentRoute: typeof appsRouteRoute
     }
+    '/(users)/auth/verify': {
+      id: '/(users)/auth/verify'
+      path: '/auth/verify'
+      fullPath: '/auth/verify'
+      preLoaderRoute: typeof usersAuthVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(users)/auth/password-setup': {
+      id: '/(users)/auth/password-setup'
+      path: '/auth/password-setup'
+      fullPath: '/auth/password-setup'
+      preLoaderRoute: typeof usersAuthPasswordSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(apps)/(work)/work/': {
       id: '/(apps)/(work)/work/'
       path: '/work'
@@ -330,33 +353,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appsworkWorkIndexRouteImport
       parentRoute: typeof appsworkRouteRoute
     }
-    '/(apps)/(users)/auth/': {
-      id: '/(apps)/(users)/auth/'
-      path: '/auth'
-      fullPath: '/auth/'
-      preLoaderRoute: typeof appsusersAuthIndexRouteImport
-      parentRoute: typeof appsRouteRoute
-    }
     '/(apps)/(messages)/messages/': {
       id: '/(apps)/(messages)/messages/'
       path: '/messages'
       fullPath: '/messages/'
       preLoaderRoute: typeof appsmessagesMessagesIndexRouteImport
       parentRoute: typeof appsmessagesRouteRoute
-    }
-    '/(apps)/(users)/auth/verify': {
-      id: '/(apps)/(users)/auth/verify'
-      path: '/auth/verify'
-      fullPath: '/auth/verify'
-      preLoaderRoute: typeof appsusersAuthVerifyRouteImport
-      parentRoute: typeof appsRouteRoute
-    }
-    '/(apps)/(users)/auth/password-setup': {
-      id: '/(apps)/(users)/auth/password-setup'
-      path: '/auth/password-setup'
-      fullPath: '/auth/password-setup'
-      preLoaderRoute: typeof appsusersAuthPasswordSetupRouteImport
-      parentRoute: typeof appsRouteRoute
     }
     '/(apps)/(work)/work/vacancies/': {
       id: '/(apps)/(work)/work/vacancies/'
@@ -443,9 +445,6 @@ interface appsRouteRouteChildren {
   appsworkRouteRoute: typeof appsworkRouteRouteWithChildren
   appsFeedsIndexRoute: typeof appsFeedsIndexRoute
   appsPostsIndexRoute: typeof appsPostsIndexRoute
-  appsusersAuthPasswordSetupRoute: typeof appsusersAuthPasswordSetupRoute
-  appsusersAuthVerifyRoute: typeof appsusersAuthVerifyRoute
-  appsusersAuthIndexRoute: typeof appsusersAuthIndexRoute
 }
 
 const appsRouteRouteChildren: appsRouteRouteChildren = {
@@ -453,9 +452,6 @@ const appsRouteRouteChildren: appsRouteRouteChildren = {
   appsworkRouteRoute: appsworkRouteRouteWithChildren,
   appsFeedsIndexRoute: appsFeedsIndexRoute,
   appsPostsIndexRoute: appsPostsIndexRoute,
-  appsusersAuthPasswordSetupRoute: appsusersAuthPasswordSetupRoute,
-  appsusersAuthVerifyRoute: appsusersAuthVerifyRoute,
-  appsusersAuthIndexRoute: appsusersAuthIndexRoute,
 }
 
 const appsRouteRouteWithChildren = appsRouteRoute._addFileChildren(
@@ -481,6 +477,9 @@ const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   appsRouteRoute: appsRouteRouteWithChildren,
   publicRouteRoute: publicRouteRouteWithChildren,
+  usersAuthPasswordSetupRoute: usersAuthPasswordSetupRoute,
+  usersAuthVerifyRoute: usersAuthVerifyRoute,
+  usersAuthIndexRoute: usersAuthIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
