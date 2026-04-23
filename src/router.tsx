@@ -44,12 +44,7 @@ export function getRouter() {
       queries: {
         staleTime: 60_000,
         refetchOnWindowFocus: false,
-        retry: (failureCount, err) => {
-          if (isAxiosError(err) && err?.response?.status === 401) {
-            return false;
-          }
-          return failureCount <= 1;
-        },
+        retry: 0,
       },
       mutations: {
         retry: 0,
