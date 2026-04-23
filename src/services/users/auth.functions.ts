@@ -17,19 +17,19 @@ export const authProbeFn = createServerFn().handler(async (): Promise<boolean> =
 
 export const getProfileFn = createServerFn().handler(async () => {
   const api = createServerApi();
-  return api<UserSchema>('users');
+  return api<UserSchema>('users/');
 });
 
 export const updateProfileFn = createServerFn({ method: 'POST' })
   .inputValidator((data: UserSchema) => data)
   .handler(async ({ data }) => {
     const api = createServerApi();
-    return api<UserSchema>('users', { method: 'PATCH', data });
+    return api<UserSchema>('users/', { method: 'PATCH', data });
   });
 
 export const deleteProfileFn = createServerFn({ method: 'POST' }).handler(async () => {
   const api = createServerApi();
-  await api('users', { method: 'DELETE' });
+  await api('users/', { method: 'DELETE' });
   return null;
 });
 
