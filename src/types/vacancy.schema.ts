@@ -1,4 +1,4 @@
-import z from 'zod';
+import z from 'zod'
 import {
   ApplicationStatusList,
   EmploymentTypeList,
@@ -6,9 +6,9 @@ import {
   SpecializationList,
   SubmissionTypeList,
   VacancyStatusList,
-  WorkFormatList,
-} from '@/types/literals';
-import { paginationSchema } from '@/types/types.schemas';
+  WorkFormatList
+} from '@/types/literals'
+import { paginationSchema } from '@/types/types.schemas'
 
 export const VacancySearchSchema = z.object({
   companyId: z.uuidv4().optional(),
@@ -24,19 +24,21 @@ export const VacancySearchSchema = z.object({
   status: z.enum(VacancyStatusList).catch('open').optional(),
   country: z.string().optional(),
   city: z.string().optional(),
-  skillIds: z.array(z.uuidv4()).optional(),
-});
+  skillIds: z.array(z.uuidv4()).optional()
+})
 
-export const vacancySearch = VacancySearchSchema.extend(paginationSchema.shape);
+export const vacancySearch = VacancySearchSchema.extend(paginationSchema.shape)
 
-export type VacancySearch = z.infer<typeof vacancySearch>;
+export type VacancySearch = z.infer<typeof vacancySearch>
 
 export const ApplicationSearchSchema = z.object({
   vacancyId: z.uuidv4(),
   applicant_id: z.uuidv4(),
-  status: z.enum(ApplicationStatusList),
-});
+  status: z.enum(ApplicationStatusList)
+})
 
-export const applicationSearch = ApplicationSearchSchema.extend(paginationSchema.shape);
+export const applicationSearch = ApplicationSearchSchema.extend(
+  paginationSchema.shape
+)
 
-export type ApplicationSearch = z.infer<typeof applicationSearch>;
+export type ApplicationSearch = z.infer<typeof applicationSearch>

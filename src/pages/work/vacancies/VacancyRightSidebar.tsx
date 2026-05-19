@@ -1,5 +1,5 @@
 const VacancyRightSidebar = () => {
-  return <div className='col-span-1 p-8 border'></div>;
-};
+  return <div className="col-span-1 border p-8"></div>
+}
 
-export default VacancyRightSidebar;
+export default VacancyRightSidebar

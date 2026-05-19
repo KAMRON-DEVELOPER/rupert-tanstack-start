@@ -1,5 +1,5 @@
 const GroupDetails = () => {
-  return <div>GroupDetails</div>;
-};
+  return <div>GroupDetails</div>
+}
 
-export default GroupDetails;
+export default GroupDetails

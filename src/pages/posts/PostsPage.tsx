@@ -1,15 +1,15 @@
-import PostList from './PostList';
-import PostLeftSidebar from './PostLeftSidebar';
-import PostRightSidebar from './PostRightSidebar';
+import PostList from './PostList'
+import PostLeftSidebar from './PostLeftSidebar'
+import PostRightSidebar from './PostRightSidebar'
 
 const PostsPage = () => {
   return (
-    <div className='grid md:grid-cols-5 min-h-screen'>
+    <div className="grid min-h-screen md:grid-cols-5">
       <PostLeftSidebar />
       <PostList />
       <PostRightSidebar />
     </div>
-  );
-};
+  )
+}
 
-export default PostsPage;
+export default PostsPage

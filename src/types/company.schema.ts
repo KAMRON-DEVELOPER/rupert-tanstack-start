@@ -1,6 +1,6 @@
-import z from 'zod';
-import { paginationSchema } from './types.schemas';
-import { CompanyStatusList, CompanyTypeList } from './literals';
+import z from 'zod'
+import { paginationSchema } from './types.schemas'
+import { CompanyStatusList, CompanyTypeList } from './literals'
 
 export const CompanySearchSchema = z.object({
   name: z.string().optional(),
@@ -9,9 +9,9 @@ export const CompanySearchSchema = z.object({
   country: z.string().optional(),
   city: z.string().optional(),
   hasOpenVacancies: z.boolean().optional(),
-  skillIds: z.array(z.uuidv4()).optional(),
-});
+  skillIds: z.array(z.uuidv4()).optional()
+})
 
-export const companySearch = CompanySearchSchema.extend(paginationSchema.shape);
+export const companySearch = CompanySearchSchema.extend(paginationSchema.shape)
 
-export type CompanySearch = z.infer<typeof companySearch>;
+export type CompanySearch = z.infer<typeof companySearch>

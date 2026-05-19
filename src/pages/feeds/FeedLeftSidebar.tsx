@@ -1,5 +1,5 @@
 const FeedLeftSidebar = () => {
-  return <div className='p-8'></div>;
-};
+  return <div className="p-8"></div>
+}
 
-export default FeedLeftSidebar;
+export default FeedLeftSidebar

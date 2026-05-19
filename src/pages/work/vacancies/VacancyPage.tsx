@@ -1,11 +1,11 @@
-import { Separator } from '@/components/ui/separator';
-import { useGetVacancyQueryOptions } from '@/services/vacancies/vacancies';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { useParams } from '@tanstack/react-router';
+import { Separator } from '@/components/ui/separator'
+import { useGetVacancyQueryOptions } from '@/services/vacancies/vacancies'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { useParams } from '@tanstack/react-router'
 
 const VacancyPage = () => {
-  const params = useParams({ from: '/(apps)/(work)/work/vacancies/$id' });
-  const { data } = useSuspenseQuery(useGetVacancyQueryOptions(params));
+  const params = useParams({ from: '/(apps)/(work)/work/vacancies/$id' })
+  const { data } = useSuspenseQuery(useGetVacancyQueryOptions(params))
   return (
     <div>
       <h1>title: {data.title}</h1>
@@ -24,7 +24,7 @@ const VacancyPage = () => {
         price: {data.salaryMin}/{data.salaryMax} {data.salaryCurrency}
       </h1>
     </div>
-  );
-};
+  )
+}
 
-export default VacancyPage;
+export default VacancyPage

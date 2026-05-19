@@ -1,5 +1,5 @@
 const FeedRightSidebar = () => {
-  return <div></div>;
-};
+  return <div></div>
+}
 
-export default FeedRightSidebar;
+export default FeedRightSidebar

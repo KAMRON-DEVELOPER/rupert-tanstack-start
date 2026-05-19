@@ -5,42 +5,48 @@
 
 @font-face {
   font-family: 'JetBrainsMonoNerdFont';
-  src: url('/fonts/JetBrainsMono/JetBrainsMonoNerdFont-Light.ttf') format('truetype');
+  src: url('/fonts/JetBrainsMono/JetBrainsMonoNerdFont-Light.ttf')
+    format('truetype');
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'JetBrainsMonoNerdFont';
-  src: url('/fonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf') format('truetype');
+  src: url('/fonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf')
+    format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'JetBrainsMonoNerdFont';
-  src: url('/fonts/JetBrainsMono/JetBrainsMonoNerdFont-Italic.ttf') format('truetype');
+  src: url('/fonts/JetBrainsMono/JetBrainsMonoNerdFont-Italic.ttf')
+    format('truetype');
   font-weight: 400;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'JetBrainsMonoNerdFont';
-  src: url('/fonts/JetBrainsMono/JetBrainsMonoNerdFont-Bold.ttf') format('truetype');
+  src: url('/fonts/JetBrainsMono/JetBrainsMonoNerdFont-Bold.ttf')
+    format('truetype');
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'JetBrainsMonoNerdFont';
-  src: url('/fonts/JetBrainsMono/JetBrainsMonoNerdFont-BoldItalic.ttf') format('truetype');
+  src: url('/fonts/JetBrainsMono/JetBrainsMonoNerdFont-BoldItalic.ttf')
+    format('truetype');
   font-weight: 700;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'JetBrainsMonoNerdFont';
-  src: url('/fonts/JetBrainsMono/JetBrainsMonoNerdFont-ExtraBold.ttf') format('truetype');
+  src: url('/fonts/JetBrainsMono/JetBrainsMonoNerdFont-ExtraBold.ttf')
+    format('truetype');
   font-weight: 800;
   font-style: normal;
 }
@@ -79,7 +85,9 @@
   --font-heading: var(--font-sans);
   --font-sans: 'Geist Variable', sans-serif;
   --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
   --font-jetbrains: 'JetBrainsMonoNerdFont', ui-monospace, monospace;
   --font-meslo: 'MesloLGSNerd', ui-monospace, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -272,13 +280,13 @@
 }
 
 @utility btn-sm {
-  @apply px-4 py-2 bg-foreground hover:bg-foreground/95 text-center text-sm text-background font-medium rounded-full;
+  @apply bg-foreground hover:bg-foreground/95 text-background rounded-full px-4 py-2 text-center text-sm font-medium;
 }
 
 @utility btn-md {
-  @apply px-5 py-2.5 bg-foreground hover:bg-foreground/95 text-center text-base text-background font-medium rounded-full;
+  @apply bg-foreground hover:bg-foreground/95 text-background rounded-full px-5 py-2.5 text-center text-base font-medium;
 }
 
 @utility btn-lg {
-  @apply px-6 py-3 bg-foreground hover:bg-foreground/95 text-center text-lg text-background font-semibold rounded-full;
+  @apply bg-foreground hover:bg-foreground/95 text-background rounded-full px-6 py-3 text-center text-lg font-semibold;
 }

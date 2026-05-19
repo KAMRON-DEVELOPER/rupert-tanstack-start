@@ -1,6 +1,6 @@
-import CompanyLeftSidebar from './CompanyLeftSidebar';
-import CompanyList from './CompanyList';
-import CompanyRightSidebar from './CompanyRightSidebar';
+import CompanyLeftSidebar from './CompanyLeftSidebar'
+import CompanyList from './CompanyList'
+import CompanyRightSidebar from './CompanyRightSidebar'
 
 const CompaniesPage = () => {
   return (
@@ -9,7 +9,7 @@ const CompaniesPage = () => {
       <CompanyList />
       <CompanyRightSidebar />
     </>
-  );
-};
+  )
+}
 
-export default CompaniesPage;
+export default CompaniesPage

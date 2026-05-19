@@ -1,20 +1,20 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
-import z from 'zod';
-import VerifyPage from '@/pages/users/VerifyPage';
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import z from 'zod'
+import VerifyPage from '@/pages/users/VerifyPage'
 
 export const Route = createFileRoute('/(users)/auth/verify')({
   validateSearch: z.object({
-    token: z.string().optional(),
+    token: z.string().optional()
   }),
   beforeLoad: async ({ search }) => {
     if (!search.token) {
-      console.warn('Verification token not found');
+      console.warn('Verification token not found')
 
       throw redirect({
         to: '/',
-        replace: true,
-      });
+        replace: true
+      })
     }
   },
-  component: VerifyPage,
-});
+  component: VerifyPage
+})

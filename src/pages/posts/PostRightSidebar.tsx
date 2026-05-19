@@ -1,5 +1,5 @@
 const PostRightSidebar = () => {
-  return <div></div>;
-};
+  return <div></div>
+}
 
-export default PostRightSidebar;
+export default PostRightSidebar

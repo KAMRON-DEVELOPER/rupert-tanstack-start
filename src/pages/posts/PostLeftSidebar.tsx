@@ -1,5 +1,5 @@
 const PostLeftSidebar = () => {
-  return <div className='p-8'></div>;
-};
+  return <div className="p-8"></div>
+}
 
-export default PostLeftSidebar;
+export default PostLeftSidebar

@@ -8,5 +8,9 @@
   },
   "search.exclude": {
     "**/routeTree.gen.ts": true
-  }
+  },
+  "editor.rulers": [
+    { "column": 80, "color": "#ffffff15" },
+    { "column": 100, "color": "#ffffff15" }
+  ]
 }

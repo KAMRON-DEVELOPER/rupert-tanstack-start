@@ -1,5 +1,5 @@
 const CompanyRightSidebar = () => {
-  return <div className='col-span-1 p-8 border'></div>;
-};
+  return <div className="col-span-1 border p-8"></div>
+}
 
-export default CompanyRightSidebar;
+export default CompanyRightSidebar

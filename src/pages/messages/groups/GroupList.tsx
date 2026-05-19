@@ -1,5 +1,5 @@
 const GroupList = () => {
-  return <div>GroupList</div>;
-};
+  return <div>GroupList</div>
+}
 
-export default GroupList;
+export default GroupList

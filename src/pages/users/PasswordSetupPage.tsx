@@ -1,91 +1,91 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { usePasswordSetupMutation } from '@/services/users/auth';
-import { isErrorResponse } from '@/types/helper';
-import { getRouteApi, useNavigate } from '@tanstack/react-router';
-import { isAxiosError } from 'axios';
-import { Eye, EyeOff } from 'lucide-react';
-import { useState, SubmitEvent } from 'react';
-import { toast } from 'sonner';
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { usePasswordSetupMutation } from '@/services/users/auth'
+import { isErrorResponse } from '@/types/helper'
+import { getRouteApi, useNavigate } from '@tanstack/react-router'
+import { isAxiosError } from 'axios'
+import { Eye, EyeOff } from 'lucide-react'
+import { useState, SubmitEvent } from 'react'
+import { toast } from 'sonner'
 
 const PasswordSetupPage = () => {
-  const navigate = useNavigate();
-  const route = getRouteApi('/(users)/auth/password-setup');
-  const api = route.useRouteContext().api;
-  const mutation = usePasswordSetupMutation(api);
-  const { token } = route.useSearch();
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate()
+  const route = getRouteApi('/(users)/auth/password-setup')
+  const api = route.useRouteContext().api
+  const mutation = usePasswordSetupMutation(api)
+  const { token } = route.useSearch()
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!token) {
-      toast.error('Invalid password setup link');
-      return;
+      toast.error('Invalid password setup link')
+      return
     }
 
     await mutation.mutateAsync(
       { password, token },
       {
         onSuccess: (res) => {
-          toast.success(res.message);
+          toast.success(res.message)
 
           setTimeout(() => {
-            navigate({ to: '/auth', replace: true });
-          }, 500);
+            navigate({ to: '/auth', replace: true })
+          }, 500)
         },
         onError: (err) => {
           if (isAxiosError(err) && isErrorResponse(err.response?.data)) {
-            toast.error(err.response?.data.error);
+            toast.error(err.response?.data.error)
           } else {
-            toast.error('Password setup failed');
+            toast.error('Password setup failed')
           }
-        },
-      },
-    );
-  };
+        }
+      }
+    )
+  }
 
-  let isLoading = mutation.isPending;
+  let isLoading = mutation.isPending
 
   return (
-    <div className='min-h-screen flex items-center justify-center'>
-      <div className='w-[90%] sm:w-[70%] md:w-[40%] lg:w-[25%] space-y-4'>
-        <div className='text-center'>
-          <h1 className='text-2xl font-semibold'>Password Setup</h1>
-          <p className='text-sm'>Set new password</p>
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="w-[90%] space-y-4 sm:w-[70%] md:w-[40%] lg:w-[25%]">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold">Password Setup</h1>
+          <p className="text-sm">Set new password</p>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className='space-y-3.5'>
-          <div className='relative'>
+        <form onSubmit={handleSubmit} className="space-y-3.5">
+          <div className="relative">
             <Input
-              id='password'
-              name='password'
+              id="password"
+              name="password"
               type={showPassword ? 'text' : 'password'}
-              placeholder='Password'
+              placeholder="Password"
               defaultValue={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              autoComplete='new-password'
-              className='h-10 pr-10'
+              autoComplete="new-password"
+              className="h-10 pr-10"
             />
             <button
-              type='button'
+              type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className='absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors'>
-              {showPassword ? <EyeOff className='w-4 h-4' /> : <Eye className='w-4 h-4' />}
+              className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transition-colors"
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
 
           <Button
-            type='submit'
+            type="submit"
             disabled={isLoading}
-            className='w-full h-10 font-semibold text-primary-foreground transition-all bg-primary hover:bg-primary/90'>
+            className="text-primary-foreground bg-primary hover:bg-primary/90 h-10 w-full font-semibold transition-all"
+          >
             {isLoading ? (
-              <span className='flex items-center justify-center'>
-                <div className='w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin mr-2' />
+              <span className="flex items-center justify-center">
+                <div className="border-primary-foreground/30 border-t-primary-foreground mr-2 h-4 w-4 animate-spin rounded-full border-2" />
                 Processing...
               </span>
             ) : (
@@ -95,7 +95,7 @@ const PasswordSetupPage = () => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PasswordSetupPage;
+export default PasswordSetupPage

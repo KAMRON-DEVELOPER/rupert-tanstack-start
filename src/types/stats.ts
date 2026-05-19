@@ -1,60 +1,65 @@
-import { CompanyType, JobSearchStatus, Specialization, VacancyStatus } from '@/types/literals';
+import {
+  CompanyType,
+  JobSearchStatus,
+  Specialization,
+  VacancyStatus
+} from '@/types/literals'
 
 export interface BucketBase {
-  count: number;
-  percentage: number;
+  count: number
+  percentage: number
 }
 
 export interface JobSearchStatusBucketSchema extends BucketBase {
-  key: JobSearchStatus;
+  key: JobSearchStatus
 }
 
 export interface SpecializationBucketSchema extends BucketBase {
-  key: Specialization;
+  key: Specialization
 }
 
 export interface VacancyStatusBucketSchema extends BucketBase {
-  key: VacancyStatus;
+  key: VacancyStatus
 }
 
 export interface CompanyTypeBucketSchema extends BucketBase {
-  key: CompanyType;
+  key: CompanyType
 }
 
 export interface DailyActiveUsersBucketSchema {
-  count: number;
-  date: string; // ISO date, e.g. "2026-04-18"
+  count: number
+  date: string // ISO date, e.g. "2026-04-18"
 }
 
 export interface UsersStatsSchema {
-  total: number;
+  total: number
 
-  lookingForJobCount: number;
-  lookingForJobPercentage: number;
+  lookingForJobCount: number
+  lookingForJobPercentage: number
 
-  dauChart: DailyActiveUsersBucketSchema[];
+  dauChart: DailyActiveUsersBucketSchema[]
 
-  byJobSearchStatus: JobSearchStatusBucketSchema[];
-  bySpecialization: SpecializationBucketSchema[];
+  byJobSearchStatus: JobSearchStatusBucketSchema[]
+  bySpecialization: SpecializationBucketSchema[]
 }
 
 export interface VacanciesStatsSchema {
-  total: number;
+  total: number
 
-  open: number;
+  open: number
 
-  byStatus: VacancyStatusBucketSchema[];
-  bySpecialization: SpecializationBucketSchema[];
+  byStatus: VacancyStatusBucketSchema[]
+  bySpecialization: SpecializationBucketSchema[]
 }
 
 export interface CompaniesStatsSchema {
-  total: number;
+  total: number
 
-  byType: CompanyTypeBucketSchema[];
+  byType: CompanyTypeBucketSchema[]
 }
 
 export interface StatsSchema {
-  users: UsersStatsSchema;
-  vacancies: VacanciesStatsSchema;
-  companies: CompaniesStatsSchema;
+  users: UsersStatsSchema
+  vacancies: VacanciesStatsSchema
+  companies: CompaniesStatsSchema
 }

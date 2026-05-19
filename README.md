@@ -16,9 +16,9 @@ Update configuration files
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "start": "node .output/server/index.mjs",
+    "start": "node .output/server/index.mjs"
   },
-  "type": "module",
+  "type": "module"
 }
 ```
 
@@ -34,7 +34,7 @@ Setup TypeScript
 
 ```bash
 npx tsc --init
-````
+```
 
 For Tailwind follow [Install Tailwind CSS with TanStack Start](https://tailwindcss.com/docs/installation/framework-guides/tanstack-start)
 

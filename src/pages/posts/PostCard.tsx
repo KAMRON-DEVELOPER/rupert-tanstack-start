@@ -1,5 +1,5 @@
 const PostCard = () => {
-  return <div>PostCard</div>;
-};
+  return <div>PostCard</div>
+}
 
-export default PostCard;
+export default PostCard

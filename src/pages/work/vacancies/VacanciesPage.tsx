@@ -1,6 +1,6 @@
-import VacancyList from './VacancyList';
-import VacancyLeftSidebar from './VacancyLeftSidebar';
-import VacancyRightSidebar from './VacancyRightSidebar';
+import VacancyList from './VacancyList'
+import VacancyLeftSidebar from './VacancyLeftSidebar'
+import VacancyRightSidebar from './VacancyRightSidebar'
 
 const VacanciesPage = () => {
   return (
@@ -9,7 +9,7 @@ const VacanciesPage = () => {
       <VacancyList />
       <VacancyRightSidebar />
     </>
-  );
-};
+  )
+}
 
-export default VacanciesPage;
+export default VacanciesPage

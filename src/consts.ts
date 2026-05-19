@@ -13,6 +13,10 @@
  * Server bundle → SSR is replaced with `true` → code becomes the absolute URL
  */
 
-const IS_PROD = import.meta.env.PROD;
-export const BASE_URL = IS_PROD ? import.meta.env.VITE_API_URL || 'https://rupert.uz/api/v1/' : 'http://localhost:8080/api/v1/';
-export const COOKIE_URL = IS_PROD ? 'https://rupert.uz' : 'http://localhost:8080';
+const IS_PROD = import.meta.env.PROD
+export const BASE_URL = IS_PROD
+  ? import.meta.env.VITE_API_URL || 'https://rupert.uz/api/v1/'
+  : 'http://localhost:8000/api/v1/'
+export const COOKIE_URL = IS_PROD
+  ? 'https://rupert.uz'
+  : 'http://localhost:8000'
