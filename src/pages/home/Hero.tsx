@@ -5,7 +5,7 @@ const Hero = () => {
         <img src="/background.jpg" alt="background" className="h-full w-full object-cover" />
       </div>
 
-      <div className="font-jetbrains relative h-full text-center text-lg">
+      <div className="font-jetbrains dark:text-background relative h-full text-center text-lg">
         <div className="h-[25%]" />
         <h1 className="text-center text-6xl">Rupert</h1>
         <p className="text-xl tracking-tighter italic">Built by a dev, for devs.</p>

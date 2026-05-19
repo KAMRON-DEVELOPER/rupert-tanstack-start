@@ -30,21 +30,21 @@ const Navbar = () => {
           <Link
             to="/feeds"
             disabled={true}
-            className="text-muted-foreground hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground"
+            className="hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground"
           >
             Feed
           </Link>
           <Link
             to="/posts"
             disabled={true}
-            className="text-muted-foreground hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground"
+            className="hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground"
           >
             Posts
           </Link>
           <Link
             to="/work"
             activeOptions={{ exact: false }}
-            className="text-muted-foreground hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground"
+            className="hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground"
           >
             Work
           </Link>
@@ -52,7 +52,7 @@ const Navbar = () => {
             to="/messages"
             activeOptions={{ exact: false }}
             disabled={true}
-            className="text-muted-foreground hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground"
+            className="hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground"
           >
             Messages
           </Link>
