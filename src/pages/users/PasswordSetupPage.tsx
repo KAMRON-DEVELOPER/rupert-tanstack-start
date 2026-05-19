@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { usePasswordSetupMutation } from '@/services/users/auth'
-import { isErrorResponse } from '@/types/helper'
+import { getErrorMessage } from '@/types/helper'
 import { getRouteApi, useNavigate } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { Eye, EyeOff } from 'lucide-react'
@@ -28,16 +28,16 @@ const PasswordSetupPage = () => {
     await mutation.mutateAsync(
       { password, token },
       {
-        onSuccess: (res) => {
-          toast.success(res.message)
+        onSuccess: () => {
+          toast.success('Password set successfully')
 
           setTimeout(() => {
             navigate({ to: '/auth', replace: true })
           }, 500)
         },
         onError: (err) => {
-          if (isAxiosError(err) && isErrorResponse(err.response?.data)) {
-            toast.error(err.response?.data.error)
+          if (isAxiosError(err)) {
+            toast.error(getErrorMessage(err.response?.data, 'Password setup failed'))
           } else {
             toast.error('Password setup failed')
           }

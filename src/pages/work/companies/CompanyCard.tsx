@@ -1,4 +1,4 @@
-import { CompanyCardSchema } from '@/types/company'
+import type { CompanyCardSchema } from '@/types/company'
 import { Link } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -7,7 +7,7 @@ import { Building2, MapPin, Briefcase } from 'lucide-react'
 
 const CompanyCard = ({ c }: { c: CompanyCardSchema }) => {
   return (
-    <Card className="transition-shadow duration-200 hover:shadow-md">
+    <Card>
       <CardHeader className="flex flex-row items-center gap-4 space-y-0">
         <Avatar className="h-12 w-12 border">
           <AvatarImage src={`https://avatar.vercel.sh/${c.name}.png`} alt={c.name} />
@@ -18,11 +18,7 @@ const CompanyCard = ({ c }: { c: CompanyCardSchema }) => {
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <h3 className="text-lg leading-none font-semibold">
-              <Link
-                to="/work/companies/$id"
-                params={{ id: c.id }}
-                className="hover:text-primary transition-colors"
-              >
+              <Link to="/work/companies/$id" params={{ id: c.id }} className="hover:text-primary">
                 {c.name}
               </Link>
             </h3>

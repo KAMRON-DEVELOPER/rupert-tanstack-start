@@ -8,27 +8,30 @@ import {
 } from '@/types/vacancy'
 import { ListResponse } from '@/types/types'
 import { ApplicationSearch, VacancySearch } from '@/types/vacancy.schema'
+import { toApiParams } from '@/services/api-params'
 
 export const getVacanciesFn = createServerFn()
   .inputValidator((data: VacancySearch) => data)
   .handler(async ({ data: params }) => {
     const api = createServerApi()
-    return api<ListResponse<VacancyCardSchema>>('/vacancies', { params })
+    return api<ListResponse<VacancyCardSchema>>('vacancies/', {
+      params: toApiParams(params)
+    })
   })
 
 export const getVacancyFn = createServerFn()
   .inputValidator((data: { id: string }) => data)
   .handler(async ({ data: { id } }) => {
     const api = createServerApi()
-    return api<VacancySchema>(`/vacancies/${id}`)
+    return api<VacancySchema>(`vacancies/${id}`)
   })
 
 export const getApplicationsFn = createServerFn()
   .inputValidator((data: ApplicationSearch) => data)
   .handler(async ({ data: params }) => {
     const api = createServerApi()
-    return api<ListResponse<ApplicationCardSchema>>('/vacancies/applications', {
-      params
+    return api<ListResponse<ApplicationCardSchema>>('vacancies/applications', {
+      params: toApiParams(params)
     })
   })
 
@@ -36,5 +39,5 @@ export const getApplicationFn = createServerFn()
   .inputValidator((data: { id: string }) => data)
   .handler(async ({ data: { id } }) => {
     const api = createServerApi()
-    return api<ApplicationSchema>(`/vacancies/applications/${id}`)
+    return api<ApplicationSchema>(`vacancies/applications/${id}`)
   })

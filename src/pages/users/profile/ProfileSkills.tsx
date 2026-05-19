@@ -19,11 +19,17 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { ProficiencyLevel, ProficiencyLevelList } from '@/types/literals'
-import { UserSchema, UserSkillLinkSchema } from '@/types/user'
+import { UserSchema } from '@/types/user'
 import { Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
-import { useUpdateProfileMutation } from '@/services/users/auth'
+import {
+  useAddUserSkillMutation,
+  useDeleteUserSkillMutation,
+  useGetUserSkillsQueryOptions,
+  useUpdateUserSkillMutation
+} from '@/services/users/users'
 import { toast } from 'sonner'
+import { useQuery } from '@tanstack/react-query'
 
 interface ProfileSkillsProps {
   user: UserSchema
@@ -31,38 +37,49 @@ interface ProfileSkillsProps {
 
 const ProfileSkills = ({ user }: ProfileSkillsProps) => {
   const [isAddOpen, setIsAddOpen] = useState(false)
-  const [newSkill, setNewSkill] = useState('')
+  const [skillId, setSkillId] = useState('')
   const [proficiency, setProficiency] = useState<ProficiencyLevel>('intermediate')
-  const updateMutation = useUpdateProfileMutation()
+  const addSkillMutation = useAddUserSkillMutation()
+  const deleteSkillMutation = useDeleteUserSkillMutation()
+  const updateSkillMutation = useUpdateUserSkillMutation()
+  const { data: userSkills } = useQuery(useGetUserSkillsQueryOptions())
+  const skills = userSkills ?? user.skills
 
   const handleAddSkill = async () => {
-    if (!newSkill) return
-
-    const updatedSkills: UserSkillLinkSchema[] = [
-      ...user.skills,
-      {
-        skill: { name: newSkill },
-        proficiency
-      }
-    ]
+    if (!skillId) return
 
     try {
-      await updateMutation.mutateAsync({ ...user, skills: updatedSkills })
+      await addSkillMutation.mutateAsync({
+        skillId,
+        proficiency,
+        lastUsedAt: null
+      })
       toast.success('Skill added')
-      setNewSkill('')
+      setSkillId('')
       setIsAddOpen(false)
-    } catch (error) {
+    } catch {
       toast.error('Failed to add skill')
     }
   }
 
-  const handleDeleteSkill = async (skillName: string) => {
-    const updatedSkills = user.skills.filter((s) => s.skill.name !== skillName)
+  const handleDeleteSkill = async (skillLinkId: string) => {
     try {
-      await updateMutation.mutateAsync({ ...user, skills: updatedSkills })
+      await deleteSkillMutation.mutateAsync(skillLinkId)
       toast.success('Skill removed')
-    } catch (error) {
+    } catch {
       toast.error('Failed to remove skill')
+    }
+  }
+
+  const handleUpdateSkill = async (skillLinkId: string, nextProficiency: ProficiencyLevel) => {
+    try {
+      await updateSkillMutation.mutateAsync({
+        skillLinkId,
+        data: { proficiency: nextProficiency }
+      })
+      toast.success('Skill updated')
+    } catch {
+      toast.error('Failed to update skill')
     }
   }
 
@@ -77,21 +94,35 @@ const ProfileSkills = ({ user }: ProfileSkillsProps) => {
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2">
-          {user.skills.length === 0 ? (
+          {skills.length === 0 ? (
             <p className="text-muted-foreground text-sm">No skills added yet.</p>
           ) : (
-            user.skills.map((skillLink) => (
+            skills.map((skillLink) => (
               <Badge
-                key={skillLink.skill.name}
+                key={skillLink.id}
                 variant="secondary"
                 className="group flex items-center gap-2 px-3 py-1"
               >
                 <span>{skillLink.skill.name}</span>
-                <span className="text-[10px] font-bold uppercase opacity-60">
-                  {skillLink.proficiency}
-                </span>
+                <Select
+                  value={skillLink.proficiency}
+                  onValueChange={(value) =>
+                    handleUpdateSkill(skillLink.id, value as ProficiencyLevel)
+                  }
+                >
+                  <SelectTrigger className="h-6 w-30 border-0 px-1 text-[10px] uppercase shadow-none">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ProficiencyLevelList.map((level) => (
+                      <SelectItem key={level} value={level}>
+                        {level}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <button
-                  onClick={() => handleDeleteSkill(skillLink.skill.name)}
+                  onClick={() => handleDeleteSkill(skillLink.id)}
                   className="hover:text-destructive ml-1 opacity-0 transition-opacity group-hover:opacity-100"
                 >
                   <Trash2 className="size-3" />
@@ -112,12 +143,12 @@ const ProfileSkills = ({ user }: ProfileSkillsProps) => {
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="skill">Skill name</Label>
+              <Label htmlFor="skillId">Skill ID</Label>
               <Input
-                id="skill"
-                value={newSkill}
-                onChange={(e) => setNewSkill(e.target.value)}
-                placeholder="e.g. React, TypeScript, Rust"
+                id="skillId"
+                value={skillId}
+                onChange={(e) => setSkillId(e.target.value)}
+                placeholder="Existing skill UUID"
               />
             </div>
             <div className="space-y-2">
@@ -140,8 +171,8 @@ const ProfileSkills = ({ user }: ProfileSkillsProps) => {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={handleAddSkill} disabled={updateMutation.isPending}>
-              {updateMutation.isPending ? 'Adding...' : 'Add Skill'}
+            <Button onClick={handleAddSkill} disabled={addSkillMutation.isPending}>
+              {addSkillMutation.isPending ? 'Adding...' : 'Add Skill'}
             </Button>
           </DialogFooter>
         </DialogContent>

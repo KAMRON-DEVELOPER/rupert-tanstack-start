@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useUpdateProfileMutation } from '@/services/users/auth'
-import { UserSchema } from '@/types/user'
+import { UserSchema, UserUpdateRequest } from '@/types/user'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -33,10 +33,26 @@ const ProfileEditDialog = ({ user, open, onOpenChange }: ProfileEditDialogProps)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await updateMutation.mutateAsync(formData)
+      const payload: UserUpdateRequest = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        headline: formData.headline,
+        birthdate: formData.birthdate,
+        bio: formData.bio,
+        specialization: formData.specialization,
+        phoneNumber: formData.phoneNumber,
+        githubUrl: formData.githubUrl,
+        telegramUsername: formData.telegramUsername,
+        followPolicy: formData.followPolicy,
+        jobSearchStatus: formData.jobSearchStatus,
+        country: formData.country,
+        city: formData.city
+      }
+
+      await updateMutation.mutateAsync(payload)
       toast.success('Profile updated successfully')
       onOpenChange(false)
-    } catch (error) {
+    } catch {
       toast.error('Failed to update profile')
     }
   }

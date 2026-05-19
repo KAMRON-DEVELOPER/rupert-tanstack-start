@@ -1,4 +1,4 @@
-import { VacancyCardSchema } from '@/types/vacancy'
+import type { VacancyCardSchema } from '@/types/vacancy'
 import { Link } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -7,7 +7,7 @@ import { Building2, MapPin, Clock, Banknote } from 'lucide-react'
 
 const VacancyCard = ({ v }: { v: VacancyCardSchema }) => {
   return (
-    <Card className="transition-shadow duration-200 hover:shadow-md">
+    <Card>
       <CardHeader className="flex flex-row items-center gap-4 space-y-0">
         <Avatar className="h-10 w-10 rounded-md border">
           <AvatarImage
@@ -20,11 +20,7 @@ const VacancyCard = ({ v }: { v: VacancyCardSchema }) => {
         </Avatar>
         <div className="flex flex-col gap-0.5">
           <h3 className="text-base leading-none font-semibold">
-            <Link
-              to="/work/vacancies/$id"
-              params={{ id: v.id }}
-              className="hover:text-primary transition-colors"
-            >
+            <Link to="/work/vacancies/$id" params={{ id: v.id }} className="hover:text-primary">
               {v.title}
             </Link>
           </h3>

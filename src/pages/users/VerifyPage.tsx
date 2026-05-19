@@ -1,5 +1,5 @@
 import { useVerifyMutation } from '@/services/users/auth'
-import { isErrorResponse } from '@/types/helper'
+import { getErrorMessage } from '@/types/helper'
 import { getRouteApi, useNavigate } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { useEffect } from 'react'
@@ -29,8 +29,8 @@ const VerifyPage = () => {
           }, 500)
         },
         onError: (err) => {
-          if (isAxiosError(err) && isErrorResponse(err.response?.data)) {
-            toast.error(err.response?.data.error)
+          if (isAxiosError(err)) {
+            toast.error(getErrorMessage(err.response?.data, 'Email verification failed'))
           } else {
             toast.error('Email verification failed')
           }

@@ -9,7 +9,12 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { SpecializationList, WorkFormatList } from '@/types/literals'
+import {
+  SpecializationList,
+  WorkFormatList,
+  type Specialization,
+  type WorkFormat
+} from '@/types/literals'
 import { Search, Briefcase, Globe, MapPin, FilterX, Clock, Banknote } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -67,7 +72,9 @@ const VacancyLeftSidebar = () => {
           <Select
             value={search.specialization || 'all'}
             onValueChange={(val) =>
-              updateFilter({ specialization: val === 'all' ? undefined : (val as any) })
+              updateFilter({
+                specialization: val === 'all' ? undefined : (val as Specialization)
+              })
             }
           >
             <SelectTrigger className="w-full">
@@ -90,7 +97,9 @@ const VacancyLeftSidebar = () => {
             <Select
               value={search.workFormat || 'all'}
               onValueChange={(val) =>
-                updateFilter({ workFormat: val === 'all' ? undefined : (val as any) })
+                updateFilter({
+                  workFormat: val === 'all' ? undefined : (val as WorkFormat)
+                })
               }
             >
               <SelectTrigger>

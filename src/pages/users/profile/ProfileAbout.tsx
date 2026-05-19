@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface ProfileAboutProps {
-  bio?: string
+  bio: string | null
 }
 
 const ProfileAbout = ({ bio }: ProfileAboutProps) => {

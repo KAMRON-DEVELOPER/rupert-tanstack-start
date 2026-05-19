@@ -9,6 +9,10 @@ const tabs = linkOptions([
   {
     to: '/work/companies',
     label: 'Companies'
+  },
+  {
+    to: '/work/applications',
+    label: 'Applications'
   }
 ])
 

@@ -26,9 +26,11 @@ export function createApi({
       timeout: 5000,
       withCredentials: true,
       jar,
+      paramsSerializer: {
+        indexes: null
+      },
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json'
       }
     })
   )

@@ -6,7 +6,7 @@ import { Eye, EyeOff } from 'lucide-react'
 import { Link, useNavigate, useRouteContext } from '@tanstack/react-router'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { isErrorResponse } from '@/types/helper'
+import { getErrorMessage } from '@/types/helper'
 import { isAxiosError } from 'axios'
 import { toast } from 'sonner'
 
@@ -27,7 +27,12 @@ export const AuthPage = () => {
     e.preventDefault()
 
     await mutation.mutateAsync(
-      { email, password, firstName, lastName },
+      {
+        email,
+        password,
+        firstName: firstName || undefined,
+        lastName: lastName || undefined
+      },
       {
         onSuccess: (res) => {
           if ('email' in res) {
@@ -45,10 +50,10 @@ export const AuthPage = () => {
           }
         },
         onError: (err) => {
-          if (isAxiosError(err) && isErrorResponse(err.response?.data)) {
-            toast.error(err.response?.data.error)
+          if (isAxiosError(err)) {
+            toast.error(getErrorMessage(err.response?.data, 'Authentication failed'))
           } else {
-            toast.error('Password setup failed')
+            toast.error('Authentication failed')
           }
         }
       }

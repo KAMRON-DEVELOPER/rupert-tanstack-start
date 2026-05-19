@@ -2,11 +2,12 @@ import { getRouteApi } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useGetCompaniesQueryOptions } from '@/services/companies/companies'
 import CompanyCard from './CompanyCard'
+import EmptyState from '@/components/forms/EmptyState'
 
 const CompanyList = () => {
   const deps = getRouteApi('/(apps)/(work)/work/companies/').useLoaderDeps()
   const {
-    data: { data: vacancies, total }
+    data: { data: companies, total }
   } = useSuspenseQuery(useGetCompaniesQueryOptions(deps))
 
   return (
@@ -14,9 +15,11 @@ const CompanyList = () => {
       <p>Total companies: {total}</p>
 
       <div className="space-y-2">
-        {vacancies.map((c) => (
-          <CompanyCard key={c.id} c={c} />
-        ))}
+        {companies.length === 0 ? (
+          <EmptyState title="No companies found" />
+        ) : (
+          companies.map((c) => <CompanyCard key={c.id} c={c} />)
+        )}
       </div>
     </div>
   )

@@ -11,9 +11,11 @@ export function createServerApi() {
     requestCookieHeader,
     onSetCookieHeaders: (setCookieHeaders) => {
       const headers = new Headers()
+
       for (const setCookieHeader of setCookieHeaders) {
         headers.append('set-cookie', setCookieHeader)
       }
+
       setResponseHeaders(headers)
     }
   })

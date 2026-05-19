@@ -1,12 +1,17 @@
-import { getRouteApi } from '@tanstack/react-router'
 import ProfileHeader from './profile/ProfileHeader'
 import ProfileAbout from './profile/ProfileAbout'
 import ProfileSkills from './profile/ProfileSkills'
 import ProfileResumes from './profile/ProfileResumes'
 import ProfileSidebar from './profile/ProfileSidebar'
+import ProfileSessions from './profile/ProfileSessions'
+import ProfileWorkExperiences from './profile/ProfileWorkExperiences'
+import ProfileFollows from './profile/ProfileFollows'
+import ProfileAccount from './profile/ProfileAccount'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { useGetProfileQueryOptions } from '@/services/users/auth'
 
 const ProfilePage = () => {
-  const user = getRouteApi('/(public)/profile/').useLoaderData()
+  const { data: user } = useSuspenseQuery(useGetProfileQueryOptions())
 
   return (
     <div className="bg-muted/30 min-h-screen py-8">
@@ -17,9 +22,13 @@ const ProfilePage = () => {
             <ProfileAbout bio={user.bio} />
             <ProfileSkills user={user} />
             <ProfileResumes user={user} />
+            <ProfileWorkExperiences />
+            <ProfileSessions />
+            <ProfileFollows />
           </div>
           <div className="space-y-8">
             <ProfileSidebar user={user} />
+            <ProfileAccount />
           </div>
         </div>
       </div>

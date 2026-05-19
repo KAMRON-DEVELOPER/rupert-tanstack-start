@@ -1,5 +1,4 @@
 import { createServerFn } from '@tanstack/react-start'
-import { MessageResponse } from '@/types/types'
 import { createServerApi } from '@/services/api.server'
 import { AuthProbeSchema, UserSchema } from '@/types/user'
 
@@ -23,10 +22,12 @@ export const getProfileFn = createServerFn().handler(async () => {
 })
 
 export const updateProfileFn = createServerFn({ method: 'POST' })
-  .inputValidator((data: UserSchema) => data)
+  .inputValidator((data: FormData) => data)
   .handler(async ({ data }) => {
     const api = createServerApi()
-    return api<UserSchema>('users/', { method: 'PATCH', data })
+
+    await api<null>('users/', { method: 'PATCH', data })
+    return null
   })
 
 export const deleteProfileFn = createServerFn({ method: 'POST' }).handler(
@@ -39,5 +40,6 @@ export const deleteProfileFn = createServerFn({ method: 'POST' }).handler(
 
 export const logoutFn = createServerFn({ method: 'POST' }).handler(async () => {
   const api = createServerApi()
-  return api<MessageResponse>('users/auth/logout', { method: 'POST' })
+  await api<null>('users/auth/logout', { method: 'POST' })
+  return null
 })

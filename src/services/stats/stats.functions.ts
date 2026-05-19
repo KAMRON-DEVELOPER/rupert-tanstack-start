@@ -4,5 +4,5 @@ import { createServerApi } from '@/services/api.server'
 
 export const getStatsFn = createServerFn().handler(async () => {
   const api = createServerApi()
-  return api<StatsSchema>('stats')
+  return api<StatsSchema>('stats/')
 })

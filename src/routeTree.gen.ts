@@ -26,117 +26,131 @@ import { Route as appsworkWorkIndexRouteImport } from './routes/(apps)/(work)/wo
 import { Route as appsmessagesMessagesIndexRouteImport } from './routes/(apps)/(messages)/messages.index'
 import { Route as appsworkWorkVacanciesIndexRouteImport } from './routes/(apps)/(work)/work.vacancies.index'
 import { Route as appsworkWorkCompaniesIndexRouteImport } from './routes/(apps)/(work)/work.companies.index'
+import { Route as appsworkWorkApplicationsIndexRouteImport } from './routes/(apps)/(work)/work.applications.index'
 import { Route as appsmessagesMessagesGroupsIndexRouteImport } from './routes/(apps)/(messages)/messages.groups.index'
 import { Route as appsmessagesMessagesChatsIndexRouteImport } from './routes/(apps)/(messages)/messages.chats.index'
 import { Route as appsworkWorkVacanciesIdRouteImport } from './routes/(apps)/(work)/work.vacancies.$id'
 import { Route as appsworkWorkCompaniesIdRouteImport } from './routes/(apps)/(work)/work.companies.$id'
+import { Route as appsworkWorkApplicationsIdRouteImport } from './routes/(apps)/(work)/work.applications.$id'
 
 const publicRouteRoute = publicRouteRouteImport.update({
   id: '/(public)',
-  getParentRoute: () => rootRouteImport
+  getParentRoute: () => rootRouteImport,
 } as any)
 const appsRouteRoute = appsRouteRouteImport.update({
   id: '/(apps)',
-  getParentRoute: () => rootRouteImport
+  getParentRoute: () => rootRouteImport,
 } as any)
 const publicIndexRoute = publicIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => publicRouteRoute
+  getParentRoute: () => publicRouteRoute,
 } as any)
 const publicTermsRoute = publicTermsRouteImport.update({
   id: '/terms',
   path: '/terms',
-  getParentRoute: () => publicRouteRoute
+  getParentRoute: () => publicRouteRoute,
 } as any)
 const publicPrivacyRoute = publicPrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
-  getParentRoute: () => publicRouteRoute
+  getParentRoute: () => publicRouteRoute,
 } as any)
 const appsworkRouteRoute = appsworkRouteRouteImport.update({
   id: '/(work)',
-  getParentRoute: () => appsRouteRoute
+  getParentRoute: () => appsRouteRoute,
 } as any)
 const appsmessagesRouteRoute = appsmessagesRouteRouteImport.update({
   id: '/(messages)',
-  getParentRoute: () => appsRouteRoute
+  getParentRoute: () => appsRouteRoute,
 } as any)
 const usersAuthIndexRoute = usersAuthIndexRouteImport.update({
   id: '/(users)/auth/',
   path: '/auth/',
-  getParentRoute: () => rootRouteImport
+  getParentRoute: () => rootRouteImport,
 } as any)
 const publicProfileIndexRoute = publicProfileIndexRouteImport.update({
   id: '/profile/',
   path: '/profile/',
-  getParentRoute: () => publicRouteRoute
+  getParentRoute: () => publicRouteRoute,
 } as any)
 const appsPostsIndexRoute = appsPostsIndexRouteImport.update({
   id: '/posts/',
   path: '/posts/',
-  getParentRoute: () => appsRouteRoute
+  getParentRoute: () => appsRouteRoute,
 } as any)
 const appsFeedsIndexRoute = appsFeedsIndexRouteImport.update({
   id: '/feeds/',
   path: '/feeds/',
-  getParentRoute: () => appsRouteRoute
+  getParentRoute: () => appsRouteRoute,
 } as any)
 const usersAuthVerifyRoute = usersAuthVerifyRouteImport.update({
   id: '/(users)/auth/verify',
   path: '/auth/verify',
-  getParentRoute: () => rootRouteImport
+  getParentRoute: () => rootRouteImport,
 } as any)
 const usersAuthPasswordSetupRoute = usersAuthPasswordSetupRouteImport.update({
   id: '/(users)/auth/password-setup',
   path: '/auth/password-setup',
-  getParentRoute: () => rootRouteImport
+  getParentRoute: () => rootRouteImport,
 } as any)
 const appsworkWorkIndexRoute = appsworkWorkIndexRouteImport.update({
   id: '/work/',
   path: '/work/',
-  getParentRoute: () => appsworkRouteRoute
+  getParentRoute: () => appsworkRouteRoute,
 } as any)
 const appsmessagesMessagesIndexRoute =
   appsmessagesMessagesIndexRouteImport.update({
     id: '/messages/',
     path: '/messages/',
-    getParentRoute: () => appsmessagesRouteRoute
+    getParentRoute: () => appsmessagesRouteRoute,
   } as any)
 const appsworkWorkVacanciesIndexRoute =
   appsworkWorkVacanciesIndexRouteImport.update({
     id: '/work/vacancies/',
     path: '/work/vacancies/',
-    getParentRoute: () => appsworkRouteRoute
+    getParentRoute: () => appsworkRouteRoute,
   } as any)
 const appsworkWorkCompaniesIndexRoute =
   appsworkWorkCompaniesIndexRouteImport.update({
     id: '/work/companies/',
     path: '/work/companies/',
-    getParentRoute: () => appsworkRouteRoute
+    getParentRoute: () => appsworkRouteRoute,
+  } as any)
+const appsworkWorkApplicationsIndexRoute =
+  appsworkWorkApplicationsIndexRouteImport.update({
+    id: '/work/applications/',
+    path: '/work/applications/',
+    getParentRoute: () => appsworkRouteRoute,
   } as any)
 const appsmessagesMessagesGroupsIndexRoute =
   appsmessagesMessagesGroupsIndexRouteImport.update({
     id: '/messages/groups/',
     path: '/messages/groups/',
-    getParentRoute: () => appsmessagesRouteRoute
+    getParentRoute: () => appsmessagesRouteRoute,
   } as any)
 const appsmessagesMessagesChatsIndexRoute =
   appsmessagesMessagesChatsIndexRouteImport.update({
     id: '/messages/chats/',
     path: '/messages/chats/',
-    getParentRoute: () => appsmessagesRouteRoute
+    getParentRoute: () => appsmessagesRouteRoute,
   } as any)
 const appsworkWorkVacanciesIdRoute = appsworkWorkVacanciesIdRouteImport.update({
   id: '/work/vacancies/$id',
   path: '/work/vacancies/$id',
-  getParentRoute: () => appsworkRouteRoute
+  getParentRoute: () => appsworkRouteRoute,
 } as any)
 const appsworkWorkCompaniesIdRoute = appsworkWorkCompaniesIdRouteImport.update({
   id: '/work/companies/$id',
   path: '/work/companies/$id',
-  getParentRoute: () => appsworkRouteRoute
+  getParentRoute: () => appsworkRouteRoute,
 } as any)
+const appsworkWorkApplicationsIdRoute =
+  appsworkWorkApplicationsIdRouteImport.update({
+    id: '/work/applications/$id',
+    path: '/work/applications/$id',
+    getParentRoute: () => appsworkRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/privacy': typeof publicPrivacyRoute
@@ -150,10 +164,12 @@ export interface FileRoutesByFullPath {
   '/auth/': typeof usersAuthIndexRoute
   '/messages/': typeof appsmessagesMessagesIndexRoute
   '/work/': typeof appsworkWorkIndexRoute
+  '/work/applications/$id': typeof appsworkWorkApplicationsIdRoute
   '/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
   '/work/vacancies/$id': typeof appsworkWorkVacanciesIdRoute
   '/messages/chats/': typeof appsmessagesMessagesChatsIndexRoute
   '/messages/groups/': typeof appsmessagesMessagesGroupsIndexRoute
+  '/work/applications/': typeof appsworkWorkApplicationsIndexRoute
   '/work/companies/': typeof appsworkWorkCompaniesIndexRoute
   '/work/vacancies/': typeof appsworkWorkVacanciesIndexRoute
 }
@@ -169,10 +185,12 @@ export interface FileRoutesByTo {
   '/auth': typeof usersAuthIndexRoute
   '/messages': typeof appsmessagesMessagesIndexRoute
   '/work': typeof appsworkWorkIndexRoute
+  '/work/applications/$id': typeof appsworkWorkApplicationsIdRoute
   '/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
   '/work/vacancies/$id': typeof appsworkWorkVacanciesIdRoute
   '/messages/chats': typeof appsmessagesMessagesChatsIndexRoute
   '/messages/groups': typeof appsmessagesMessagesGroupsIndexRoute
+  '/work/applications': typeof appsworkWorkApplicationsIndexRoute
   '/work/companies': typeof appsworkWorkCompaniesIndexRoute
   '/work/vacancies': typeof appsworkWorkVacanciesIndexRoute
 }
@@ -193,10 +211,12 @@ export interface FileRoutesById {
   '/(users)/auth/': typeof usersAuthIndexRoute
   '/(apps)/(messages)/messages/': typeof appsmessagesMessagesIndexRoute
   '/(apps)/(work)/work/': typeof appsworkWorkIndexRoute
+  '/(apps)/(work)/work/applications/$id': typeof appsworkWorkApplicationsIdRoute
   '/(apps)/(work)/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
   '/(apps)/(work)/work/vacancies/$id': typeof appsworkWorkVacanciesIdRoute
   '/(apps)/(messages)/messages/chats/': typeof appsmessagesMessagesChatsIndexRoute
   '/(apps)/(messages)/messages/groups/': typeof appsmessagesMessagesGroupsIndexRoute
+  '/(apps)/(work)/work/applications/': typeof appsworkWorkApplicationsIndexRoute
   '/(apps)/(work)/work/companies/': typeof appsworkWorkCompaniesIndexRoute
   '/(apps)/(work)/work/vacancies/': typeof appsworkWorkVacanciesIndexRoute
 }
@@ -214,10 +234,12 @@ export interface FileRouteTypes {
     | '/auth/'
     | '/messages/'
     | '/work/'
+    | '/work/applications/$id'
     | '/work/companies/$id'
     | '/work/vacancies/$id'
     | '/messages/chats/'
     | '/messages/groups/'
+    | '/work/applications/'
     | '/work/companies/'
     | '/work/vacancies/'
   fileRoutesByTo: FileRoutesByTo
@@ -233,10 +255,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/messages'
     | '/work'
+    | '/work/applications/$id'
     | '/work/companies/$id'
     | '/work/vacancies/$id'
     | '/messages/chats'
     | '/messages/groups'
+    | '/work/applications'
     | '/work/companies'
     | '/work/vacancies'
   id:
@@ -256,10 +280,12 @@ export interface FileRouteTypes {
     | '/(users)/auth/'
     | '/(apps)/(messages)/messages/'
     | '/(apps)/(work)/work/'
+    | '/(apps)/(work)/work/applications/$id'
     | '/(apps)/(work)/work/companies/$id'
     | '/(apps)/(work)/work/vacancies/$id'
     | '/(apps)/(messages)/messages/chats/'
     | '/(apps)/(messages)/messages/groups/'
+    | '/(apps)/(work)/work/applications/'
     | '/(apps)/(work)/work/companies/'
     | '/(apps)/(work)/work/vacancies/'
   fileRoutesById: FileRoutesById
@@ -393,6 +419,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appsworkWorkCompaniesIndexRouteImport
       parentRoute: typeof appsworkRouteRoute
     }
+    '/(apps)/(work)/work/applications/': {
+      id: '/(apps)/(work)/work/applications/'
+      path: '/work/applications'
+      fullPath: '/work/applications/'
+      preLoaderRoute: typeof appsworkWorkApplicationsIndexRouteImport
+      parentRoute: typeof appsworkRouteRoute
+    }
     '/(apps)/(messages)/messages/groups/': {
       id: '/(apps)/(messages)/messages/groups/'
       path: '/messages/groups'
@@ -421,6 +454,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appsworkWorkCompaniesIdRouteImport
       parentRoute: typeof appsworkRouteRoute
     }
+    '/(apps)/(work)/work/applications/$id': {
+      id: '/(apps)/(work)/work/applications/$id'
+      path: '/work/applications/$id'
+      fullPath: '/work/applications/$id'
+      preLoaderRoute: typeof appsworkWorkApplicationsIdRouteImport
+      parentRoute: typeof appsworkRouteRoute
+    }
   }
 }
 
@@ -433,7 +473,7 @@ interface appsmessagesRouteRouteChildren {
 const appsmessagesRouteRouteChildren: appsmessagesRouteRouteChildren = {
   appsmessagesMessagesIndexRoute: appsmessagesMessagesIndexRoute,
   appsmessagesMessagesChatsIndexRoute: appsmessagesMessagesChatsIndexRoute,
-  appsmessagesMessagesGroupsIndexRoute: appsmessagesMessagesGroupsIndexRoute
+  appsmessagesMessagesGroupsIndexRoute: appsmessagesMessagesGroupsIndexRoute,
 }
 
 const appsmessagesRouteRouteWithChildren =
@@ -441,22 +481,26 @@ const appsmessagesRouteRouteWithChildren =
 
 interface appsworkRouteRouteChildren {
   appsworkWorkIndexRoute: typeof appsworkWorkIndexRoute
+  appsworkWorkApplicationsIdRoute: typeof appsworkWorkApplicationsIdRoute
   appsworkWorkCompaniesIdRoute: typeof appsworkWorkCompaniesIdRoute
   appsworkWorkVacanciesIdRoute: typeof appsworkWorkVacanciesIdRoute
+  appsworkWorkApplicationsIndexRoute: typeof appsworkWorkApplicationsIndexRoute
   appsworkWorkCompaniesIndexRoute: typeof appsworkWorkCompaniesIndexRoute
   appsworkWorkVacanciesIndexRoute: typeof appsworkWorkVacanciesIndexRoute
 }
 
 const appsworkRouteRouteChildren: appsworkRouteRouteChildren = {
   appsworkWorkIndexRoute: appsworkWorkIndexRoute,
+  appsworkWorkApplicationsIdRoute: appsworkWorkApplicationsIdRoute,
   appsworkWorkCompaniesIdRoute: appsworkWorkCompaniesIdRoute,
   appsworkWorkVacanciesIdRoute: appsworkWorkVacanciesIdRoute,
+  appsworkWorkApplicationsIndexRoute: appsworkWorkApplicationsIndexRoute,
   appsworkWorkCompaniesIndexRoute: appsworkWorkCompaniesIndexRoute,
-  appsworkWorkVacanciesIndexRoute: appsworkWorkVacanciesIndexRoute
+  appsworkWorkVacanciesIndexRoute: appsworkWorkVacanciesIndexRoute,
 }
 
 const appsworkRouteRouteWithChildren = appsworkRouteRoute._addFileChildren(
-  appsworkRouteRouteChildren
+  appsworkRouteRouteChildren,
 )
 
 interface appsRouteRouteChildren {
@@ -470,11 +514,11 @@ const appsRouteRouteChildren: appsRouteRouteChildren = {
   appsmessagesRouteRoute: appsmessagesRouteRouteWithChildren,
   appsworkRouteRoute: appsworkRouteRouteWithChildren,
   appsFeedsIndexRoute: appsFeedsIndexRoute,
-  appsPostsIndexRoute: appsPostsIndexRoute
+  appsPostsIndexRoute: appsPostsIndexRoute,
 }
 
 const appsRouteRouteWithChildren = appsRouteRoute._addFileChildren(
-  appsRouteRouteChildren
+  appsRouteRouteChildren,
 )
 
 interface publicRouteRouteChildren {
@@ -488,11 +532,11 @@ const publicRouteRouteChildren: publicRouteRouteChildren = {
   publicPrivacyRoute: publicPrivacyRoute,
   publicTermsRoute: publicTermsRoute,
   publicIndexRoute: publicIndexRoute,
-  publicProfileIndexRoute: publicProfileIndexRoute
+  publicProfileIndexRoute: publicProfileIndexRoute,
 }
 
 const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
-  publicRouteRouteChildren
+  publicRouteRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
@@ -500,7 +544,7 @@ const rootRouteChildren: RootRouteChildren = {
   publicRouteRoute: publicRouteRouteWithChildren,
   usersAuthPasswordSetupRoute: usersAuthPasswordSetupRoute,
   usersAuthVerifyRoute: usersAuthVerifyRoute,
-  usersAuthIndexRoute: usersAuthIndexRoute
+  usersAuthIndexRoute: usersAuthIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

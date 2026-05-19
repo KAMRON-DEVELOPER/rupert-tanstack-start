@@ -1,7 +1,7 @@
 export const ProviderList = ['google', 'github']
 export type Provider = (typeof ProviderList)[number]
 
-export const FollowStatusList = ['pending', 'accepted', 'declined']
+export const FollowStatusList = ['pending', 'accepted', 'declined'] as const
 export type FollowStatus = (typeof FollowStatusList)[number]
 
 export const FollowPolicyList = ['auto_accept', 'require_approval']

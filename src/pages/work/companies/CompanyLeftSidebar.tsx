@@ -10,7 +10,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { CompanyTypeList } from '@/types/literals'
+import { CompanyTypeList, type CompanyType } from '@/types/literals'
 import { Search, Building2, Globe, MapPin, FilterX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -68,7 +68,7 @@ const CompanyLeftSidebar = () => {
           <Select
             value={search.type || 'all'}
             onValueChange={(val) =>
-              updateFilter({ type: val === 'all' ? undefined : (val as any) })
+              updateFilter({ type: val === 'all' ? undefined : (val as CompanyType) })
             }
           >
             <SelectTrigger className="w-full">

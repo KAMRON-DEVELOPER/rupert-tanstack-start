@@ -15,7 +15,7 @@ export interface MessageResponse {
 }
 
 export interface ErrorResponse {
-  error: string
+  details: string | string[]
 }
 
 export interface Tag {

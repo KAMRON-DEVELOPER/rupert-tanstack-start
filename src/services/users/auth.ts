@@ -5,7 +5,12 @@ import {
 } from '@tanstack/react-query'
 
 import { CreateApi } from '@/services/api'
-import type { UserSchema } from '@/types/user'
+import type {
+  EmailAuthRequest,
+  PasswordSetupRequest,
+  UserSchema,
+  UserUpdateRequest
+} from '@/types/user'
 import type { MessageResponse } from '@/types/types'
 import {
   deleteProfileFn,
@@ -13,6 +18,31 @@ import {
   logoutFn,
   updateProfileFn
 } from './auth.functions'
+
+const appendFormDataValue = (
+  formData: FormData,
+  key: string,
+  value: unknown
+) => {
+  if (value === undefined || value === null) return
+
+  if (typeof File !== 'undefined' && value instanceof File) {
+    formData.append(key, value)
+    return
+  }
+
+  formData.append(key, String(value))
+}
+
+const toUserUpdateFormData = (data: UserUpdateRequest) => {
+  const formData = new FormData()
+
+  Object.entries(data).forEach(([key, value]) => {
+    appendFormDataValue(formData, key, value)
+  })
+
+  return formData
+}
 
 export const useGetProfileQueryOptions = () =>
   queryOptions({
@@ -24,12 +54,7 @@ export const useEmailAuthMutation = (api: CreateApi) => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: {
-      email: string
-      password: string
-      firstName?: string | null
-      lastName?: string | null
-    }) =>
+    mutationFn: (data: EmailAuthRequest) =>
       api<UserSchema | MessageResponse>('users/auth/email', {
         method: 'POST',
         data
@@ -42,8 +67,11 @@ export const useEmailAuthMutation = (api: CreateApi) => {
 
 export const usePasswordSetupMutation = (api: CreateApi) => {
   return useMutation({
-    mutationFn: ({ password, token }: { password: string; token: string }) =>
-      api<MessageResponse>('users/auth/password-setup', {
+    mutationFn: ({
+      password,
+      token
+    }: PasswordSetupRequest & { token: string }) =>
+      api<null>('users/auth/password-setup', {
         method: 'POST',
         data: { password },
         params: { token }
@@ -62,9 +90,10 @@ export const useUpdateProfileMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: UserSchema) => updateProfileFn({ data }),
+    mutationFn: (data: UserUpdateRequest) =>
+      updateProfileFn({ data: toUserUpdateFormData(data) }),
     onSuccess: () => {
-      queryClient.clear()
+      queryClient.invalidateQueries({ queryKey: ['profile'] })
     }
   })
 }

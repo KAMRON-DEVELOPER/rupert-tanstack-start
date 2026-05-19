@@ -14,11 +14,25 @@ import { UUID } from '@/types/primitives'
 import { Id, Skill } from '@/types/types'
 import { ResumeCardSchema, UserCardSchema } from '@/types/user'
 
-export interface VacancySkillLinkSchema {
+export interface VacancySkillLinkSchema extends Id {
+  vacancyId: UUID
   skill: Skill
   proficiency: ProficiencyLevel
-  yearsOfExperienceMin?: number
+  yearsOfExperienceMin: number | null
   isRequired: boolean
+}
+
+export interface VacancySkillLinkRequest {
+  skillId: UUID
+  proficiency: ProficiencyLevel
+  yearsOfExperienceMin?: number | null
+  isRequired?: boolean
+}
+
+export interface VacancySkillLinkUpdateRequest {
+  proficiency?: ProficiencyLevel | null
+  yearsOfExperienceMin?: number | null
+  isRequired?: boolean | null
 }
 
 export interface VacancyCardSchema extends Id {
@@ -26,41 +40,74 @@ export interface VacancyCardSchema extends Id {
   title: string
   submissionType: SubmissionType
   specialization: Specialization
-  salaryMin?: number
-  salaryMax?: number
-  salaryCurrency?: SalaryCurrency
-  yearsOfExperienceMin?: number
+  salaryMin: number | null
+  salaryMax: number | null
+  salaryCurrency: SalaryCurrency | null
+  yearsOfExperienceMin: number | null
   workFormat: WorkFormat
   employmentType: EmploymentType
   status: VacancyStatus
   country: string
   city: string
-  isSaved: boolean
-  hasApplied: boolean
+  isSaved: boolean | null
+  hasApplied: boolean | null
 }
 
 export interface VacancySchema extends VacancyCardSchema {
   description: string
-  externalApplyUrl?: string
-  workHoursPerWeek?: number
-  paymentFrequency?: PaymentFrequency
-  skill_links: VacancySkillLinkSchema[]
+  externalApplyUrl: string | null
+  workHoursPerWeek: number | null
+  paymentFrequency: PaymentFrequency | null
+  skillLinks: VacancySkillLinkSchema[]
 }
+
+export interface VacancyRequest {
+  title: string
+  description: string
+  country: string
+  city: string
+  externalApplyUrl?: string | null
+  submissionType: SubmissionType
+  specialization: Specialization
+  salaryMin?: number | null
+  salaryMax?: number | null
+  salaryCurrency?: SalaryCurrency | null
+  paymentFrequency?: PaymentFrequency | null
+  yearsOfExperienceMin?: number | null
+  workFormat?: WorkFormat
+  workHoursPerWeek?: number | null
+  employmentType?: EmploymentType
+  status?: VacancyStatus
+  skills?: VacancySkillLinkRequest[]
+}
+
+export type VacancyUpdateRequest = Partial<VacancyRequest>
 
 export interface ApplicationCardSchema extends Id {
   vacancyId: UUID
   applicantId: UUID
   status: ApplicationStatus
-  coverLetter?: string
+  coverLetter: string | null
   vacancy: VacancyCardSchema
-  resume?: ResumeCardSchema
+  resume: ResumeCardSchema | null
 }
 
-export interface ApplicationSchema {
+export interface ApplicationSchema extends ApplicationCardSchema {
   applicant: UserCardSchema
-  recruiterNote?: string
+  recruiterNote: string | null
 }
 
-export interface SavedVacancyScema {
+export interface ApplicationRequest {
+  vacancyId: UUID
+  resumeId?: UUID | null
+  coverLetter?: string | null
+}
+
+export interface ApplicationStatusUpdateRequest {
+  status: ApplicationStatus
+  recruiterNote?: string | null
+}
+
+export interface SavedVacancySchema {
   vacancy: VacancyCardSchema
 }

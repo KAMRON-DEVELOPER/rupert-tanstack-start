@@ -23,7 +23,7 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
       <div className="px-6 pb-6">
         <div className="relative -mt-12 mb-4 flex items-end justify-between">
           <Avatar className="border-primary-foreground size-24 border-4 shadow-md">
-            <AvatarImage src={user.avatarUrl} alt={user.firstName} />
+            <AvatarImage src={user.avatarUrl ?? undefined} alt={user.firstName} />
             <AvatarFallback className="text-2xl">
               {user.firstName[0]}
               {user.lastName?.[0]}

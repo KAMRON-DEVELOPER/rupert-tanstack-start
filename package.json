@@ -6,6 +6,7 @@
     "dev": "vite dev",
     "build": "vite build",
     "start": "node .output/server/index.mjs",
+    "type-check": "tsc --noEmit",
     "format": "NODE_OPTIONS='--experimental-strip-types' prettier . --write",
     "format:check": "NODE_OPTIONS='--experimental-strip-types' prettier . --check",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -51,6 +52,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "^5.9.3",
     "vite": "^8.0.3",

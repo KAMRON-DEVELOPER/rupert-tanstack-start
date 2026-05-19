@@ -99,8 +99,7 @@ const ProfileSidebar = ({ user }: ProfileSidebarProps) => {
           <div className="flex flex-col">
             <span className="text-muted-foreground text-xs">Member Since</span>
             <span className="text-sm font-medium">
-              {/* Assuming there's a createdAt field in the actual data, even if not in Schema */}
-              {new Date().toLocaleDateString('en-US', {
+              {new Date(user.createdAt).toLocaleDateString('en-US', {
                 month: 'long',
                 year: 'numeric'
               })}
