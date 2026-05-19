@@ -1,6 +1,7 @@
 # Rupert Frontend (Tanstack Start)
 
-Follow the [Build a Project from Scratch](https://tanstack.com/start/latest/docs/framework/react/build-from-scratch) instruction.
+Follow the [Build a Project from Scratch](https://tanstack.com/start/latest/docs/framework/react/build-from-scratch)
+instruction.
 
 Setup new Project
 
@@ -25,7 +26,8 @@ Update configuration files
 Install dependencies
 
 ```bash
-npm i react react-dom nitro @tanstack/react-start @tanstack/react-router @tanstack/react-query @tanstack/react-router-devtools @tanstack/react-query-devtools
+npm i react react-dom nitro @tanstack/react-start @tanstack/react-router \
+  @tanstack/react-query @tanstack/react-router-devtools @tanstack/react-query-devtools
 
 npm i -D vite @vitejs/plugin-react typescript @types/react @types/react-dom @types/node
 ```
@@ -53,7 +55,9 @@ npx shadcn@latest init
 # or
 npx shadcn@latest init -t start --base radix
 
-npx shadcn@latest add card sidebar button input textarea separator label slider select switch dialog alert-dialog chart progress tooltip collapsible badge popover calendar dropdown-menu tabs alert accordion avatar
+npx shadcn@latest add card sidebar button input textarea separator label slider
+select switch dialog alert-dialog chart progress tooltip collapsible badge
+popover calendar dropdown-menu tabs alert accordion avatar
 ```
 
 Additional packages
