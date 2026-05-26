@@ -114,3 +114,87 @@ This codebase runs SSR via TanStack Start. Keep these in mind:
 - Do not introduce new abstractions (custom hooks, utility functions, context)
   unless reuse across two or more places is immediate and obvious.
 - Prefer `rg` for searching the codebase.
+
+## TanStack Router Conventions in This Project
+
+- We use TanStack Start with file-based routing only.
+- Route files stay thin. Put business logic in `services/`.
+- Prefer route directories for large domains and flat routes for shallow nesting.
+- `routeTree.gen.ts` is generated automatically. Never edit it manually.
+- Group routes with `(group)` directories when organization is needed without
+  affecting URLs.
+- Use pathless layouts (`_layout`) for shared guards, loaders, or wrappers.
+
+### Current Route Structure
+
+```txt
+src/routes/
+├── __root.tsx
+├── index.tsx
+├── (public)/
+├── (apps)/
+└── (users)/
+```
+
+### Route File Rules
+
+| Pattern          | Purpose                 |
+| ---------------- | ----------------------- |
+| `index.tsx`      | Index route             |
+| `about.tsx`      | Static route            |
+| `$id.tsx`        | Dynamic route           |
+| `$.tsx`          | Catch-all / splat route |
+| `_layout.tsx`    | Pathless layout         |
+| `(group)/`       | Organizational grouping |
+| `-component.tsx` | Excluded from routing   |
+
+### Preferred Patterns
+
+#### Thin route files
+
+```tsx
+import { createFileRoute } from '@tanstack/react-router'
+import { UsersPage } from '@/pages/users/users-page'
+
+export const Route = createFileRoute('/users')({
+  component: UsersPage,
+})
+```
+
+#### Use loaders only for prefetching
+
+```tsx
+import { createFileRoute } from '@tanstack/react-router'
+import { queryClient } from '@/lib/query-client'
+import { useGetUsersQueryOptions } from '@/services/users'
+
+export const Route = createFileRoute('/users')({
+  loader: () =>
+    queryClient.ensureQueryData(useGetUsersQueryOptions()),
+})
+```
+
+#### Pathless layouts for auth/app wrappers
+
+```txt
+routes/
+├── _authenticated/
+│   ├── route.tsx
+│   ├── dashboard.tsx
+│   └── settings.tsx
+```
+
+### SSR Rules
+
+- Never access `window` or `document` at module scope.
+- Use `createServerFn` for server-side data access.
+- Do not duplicate loader fetching inside components.
+- Browser-only state must initialize in effects or guarded blocks.
+
+### AI Agent Notes
+
+- Read sibling routes before adding new routes.
+- Match existing naming conventions exactly.
+- Do not introduce custom routing abstractions.
+- Keep layouts shallow unless nesting is already established.
+- Prefer extending existing route groups over creating new top-level domains.
