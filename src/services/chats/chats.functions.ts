@@ -15,7 +15,7 @@ export const getChatsFn = createServerFn()
   .inputValidator((data: PaginationSearch) => data)
   .handler(async ({ data: params }) => {
     const api = createServerApi()
-    const data = await api<unknown>('chats/', {
+    const data = await api('chats/', {
       params: toApiParams(params)
     })
     return chatListResponseSchema.parse(data) satisfies ChatListResponse
@@ -25,7 +25,7 @@ export const getChatMessagesFn = createServerFn()
   .inputValidator((data: PaginationSearch & { chatId: string }) => data)
   .handler(async ({ data: { chatId, ...params } }) => {
     const api = createServerApi()
-    const data = await api<unknown>(`chats/${chatId}/messages`, {
+    const data = await api(`chats/${chatId}/messages`, {
       params: toApiParams(params)
     })
     return chatMessagesResponseSchema.parse(data) satisfies ChatMessagesResponse

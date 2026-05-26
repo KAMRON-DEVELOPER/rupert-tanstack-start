@@ -157,7 +157,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { UsersPage } from '@/pages/users/users-page'
 
 export const Route = createFileRoute('/users')({
-  component: UsersPage,
+  component: UsersPage
 })
 ```
 
@@ -169,8 +169,7 @@ import { queryClient } from '@/lib/query-client'
 import { useGetUsersQueryOptions } from '@/services/users'
 
 export const Route = createFileRoute('/users')({
-  loader: () =>
-    queryClient.ensureQueryData(useGetUsersQueryOptions()),
+  loader: () => queryClient.ensureQueryData(useGetUsersQueryOptions())
 })
 ```
 

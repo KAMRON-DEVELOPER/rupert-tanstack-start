@@ -8,7 +8,7 @@ export const getSkillsFn = createServerFn()
   .inputValidator((data: PaginationSearch) => data)
   .handler(async ({ data: params }) => {
     const api = createServerApi()
-    const data = await api<unknown>('skills/', {
+    const data = await api('skills/', {
       params: toApiParams(params)
     })
     return skillListResponseSchema.parse(data)

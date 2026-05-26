@@ -14,14 +14,18 @@ import { Route as appsRouteRouteImport } from './routes/(apps)/route'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
 import { Route as publicTermsRouteImport } from './routes/(public)/terms'
 import { Route as publicPrivacyRouteImport } from './routes/(public)/privacy'
+import { Route as adminAdminRouteImport } from './routes/(admin)/admin'
 import { Route as appsworkRouteRouteImport } from './routes/(apps)/(work)/route'
 import { Route as appsmessagesRouteRouteImport } from './routes/(apps)/(messages)/route'
 import { Route as usersAuthIndexRouteImport } from './routes/(users)/auth.index'
 import { Route as publicProfileIndexRouteImport } from './routes/(public)/profile.index'
 import { Route as appsPostsIndexRouteImport } from './routes/(apps)/posts.index'
 import { Route as appsFeedsIndexRouteImport } from './routes/(apps)/feeds.index'
+import { Route as adminAdminIndexRouteImport } from './routes/(admin)/admin.index'
 import { Route as usersAuthVerifyRouteImport } from './routes/(users)/auth.verify'
 import { Route as usersAuthPasswordSetupRouteImport } from './routes/(users)/auth.password-setup'
+import { Route as adminAdminSkillsRouteImport } from './routes/(admin)/admin.skills'
+import { Route as adminAdminLocationsRouteImport } from './routes/(admin)/admin.locations'
 import { Route as appsworkWorkIndexRouteImport } from './routes/(apps)/(work)/work.index'
 import { Route as appsmessagesMessagesIndexRouteImport } from './routes/(apps)/(messages)/messages.index'
 import { Route as appsworkWorkVacanciesIndexRouteImport } from './routes/(apps)/(work)/work.vacancies.index'
@@ -56,6 +60,11 @@ const publicPrivacyRoute = publicPrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => publicRouteRoute,
 } as any)
+const adminAdminRoute = adminAdminRouteImport.update({
+  id: '/(admin)/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const appsworkRouteRoute = appsworkRouteRouteImport.update({
   id: '/(work)',
   getParentRoute: () => appsRouteRoute,
@@ -84,6 +93,11 @@ const appsFeedsIndexRoute = appsFeedsIndexRouteImport.update({
   path: '/feeds/',
   getParentRoute: () => appsRouteRoute,
 } as any)
+const adminAdminIndexRoute = adminAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => adminAdminRoute,
+} as any)
 const usersAuthVerifyRoute = usersAuthVerifyRouteImport.update({
   id: '/(users)/auth/verify',
   path: '/auth/verify',
@@ -93,6 +107,16 @@ const usersAuthPasswordSetupRoute = usersAuthPasswordSetupRouteImport.update({
   id: '/(users)/auth/password-setup',
   path: '/auth/password-setup',
   getParentRoute: () => rootRouteImport,
+} as any)
+const adminAdminSkillsRoute = adminAdminSkillsRouteImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => adminAdminRoute,
+} as any)
+const adminAdminLocationsRoute = adminAdminLocationsRouteImport.update({
+  id: '/locations',
+  path: '/locations',
+  getParentRoute: () => adminAdminRoute,
 } as any)
 const appsworkWorkIndexRoute = appsworkWorkIndexRouteImport.update({
   id: '/work/',
@@ -153,11 +177,15 @@ const appsworkWorkApplicationsIdRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/admin': typeof adminAdminRouteWithChildren
   '/privacy': typeof publicPrivacyRoute
   '/terms': typeof publicTermsRoute
   '/': typeof publicIndexRoute
+  '/admin/locations': typeof adminAdminLocationsRoute
+  '/admin/skills': typeof adminAdminSkillsRoute
   '/auth/password-setup': typeof usersAuthPasswordSetupRoute
   '/auth/verify': typeof usersAuthVerifyRoute
+  '/admin/': typeof adminAdminIndexRoute
   '/feeds/': typeof appsFeedsIndexRoute
   '/posts/': typeof appsPostsIndexRoute
   '/profile/': typeof publicProfileIndexRoute
@@ -177,8 +205,11 @@ export interface FileRoutesByTo {
   '/privacy': typeof publicPrivacyRoute
   '/terms': typeof publicTermsRoute
   '/': typeof publicIndexRoute
+  '/admin/locations': typeof adminAdminLocationsRoute
+  '/admin/skills': typeof adminAdminSkillsRoute
   '/auth/password-setup': typeof usersAuthPasswordSetupRoute
   '/auth/verify': typeof usersAuthVerifyRoute
+  '/admin': typeof adminAdminIndexRoute
   '/feeds': typeof appsFeedsIndexRoute
   '/posts': typeof appsPostsIndexRoute
   '/profile': typeof publicProfileIndexRoute
@@ -200,11 +231,15 @@ export interface FileRoutesById {
   '/(public)': typeof publicRouteRouteWithChildren
   '/(apps)/(messages)': typeof appsmessagesRouteRouteWithChildren
   '/(apps)/(work)': typeof appsworkRouteRouteWithChildren
+  '/(admin)/admin': typeof adminAdminRouteWithChildren
   '/(public)/privacy': typeof publicPrivacyRoute
   '/(public)/terms': typeof publicTermsRoute
   '/(public)/': typeof publicIndexRoute
+  '/(admin)/admin/locations': typeof adminAdminLocationsRoute
+  '/(admin)/admin/skills': typeof adminAdminSkillsRoute
   '/(users)/auth/password-setup': typeof usersAuthPasswordSetupRoute
   '/(users)/auth/verify': typeof usersAuthVerifyRoute
+  '/(admin)/admin/': typeof adminAdminIndexRoute
   '/(apps)/feeds/': typeof appsFeedsIndexRoute
   '/(apps)/posts/': typeof appsPostsIndexRoute
   '/(public)/profile/': typeof publicProfileIndexRoute
@@ -223,11 +258,15 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/admin'
     | '/privacy'
     | '/terms'
     | '/'
+    | '/admin/locations'
+    | '/admin/skills'
     | '/auth/password-setup'
     | '/auth/verify'
+    | '/admin/'
     | '/feeds/'
     | '/posts/'
     | '/profile/'
@@ -247,8 +286,11 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/terms'
     | '/'
+    | '/admin/locations'
+    | '/admin/skills'
     | '/auth/password-setup'
     | '/auth/verify'
+    | '/admin'
     | '/feeds'
     | '/posts'
     | '/profile'
@@ -269,11 +311,15 @@ export interface FileRouteTypes {
     | '/(public)'
     | '/(apps)/(messages)'
     | '/(apps)/(work)'
+    | '/(admin)/admin'
     | '/(public)/privacy'
     | '/(public)/terms'
     | '/(public)/'
+    | '/(admin)/admin/locations'
+    | '/(admin)/admin/skills'
     | '/(users)/auth/password-setup'
     | '/(users)/auth/verify'
+    | '/(admin)/admin/'
     | '/(apps)/feeds/'
     | '/(apps)/posts/'
     | '/(public)/profile/'
@@ -293,6 +339,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   appsRouteRoute: typeof appsRouteRouteWithChildren
   publicRouteRoute: typeof publicRouteRouteWithChildren
+  adminAdminRoute: typeof adminAdminRouteWithChildren
   usersAuthPasswordSetupRoute: typeof usersAuthPasswordSetupRoute
   usersAuthVerifyRoute: typeof usersAuthVerifyRoute
   usersAuthIndexRoute: typeof usersAuthIndexRoute
@@ -334,6 +381,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/privacy'
       preLoaderRoute: typeof publicPrivacyRouteImport
       parentRoute: typeof publicRouteRoute
+    }
+    '/(admin)/admin': {
+      id: '/(admin)/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof adminAdminRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/(apps)/(work)': {
       id: '/(apps)/(work)'
@@ -377,6 +431,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appsFeedsIndexRouteImport
       parentRoute: typeof appsRouteRoute
     }
+    '/(admin)/admin/': {
+      id: '/(admin)/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof adminAdminIndexRouteImport
+      parentRoute: typeof adminAdminRoute
+    }
     '/(users)/auth/verify': {
       id: '/(users)/auth/verify'
       path: '/auth/verify'
@@ -390,6 +451,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/password-setup'
       preLoaderRoute: typeof usersAuthPasswordSetupRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(admin)/admin/skills': {
+      id: '/(admin)/admin/skills'
+      path: '/skills'
+      fullPath: '/admin/skills'
+      preLoaderRoute: typeof adminAdminSkillsRouteImport
+      parentRoute: typeof adminAdminRoute
+    }
+    '/(admin)/admin/locations': {
+      id: '/(admin)/admin/locations'
+      path: '/locations'
+      fullPath: '/admin/locations'
+      preLoaderRoute: typeof adminAdminLocationsRouteImport
+      parentRoute: typeof adminAdminRoute
     }
     '/(apps)/(work)/work/': {
       id: '/(apps)/(work)/work/'
@@ -539,9 +614,26 @@ const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
   publicRouteRouteChildren,
 )
 
+interface adminAdminRouteChildren {
+  adminAdminLocationsRoute: typeof adminAdminLocationsRoute
+  adminAdminSkillsRoute: typeof adminAdminSkillsRoute
+  adminAdminIndexRoute: typeof adminAdminIndexRoute
+}
+
+const adminAdminRouteChildren: adminAdminRouteChildren = {
+  adminAdminLocationsRoute: adminAdminLocationsRoute,
+  adminAdminSkillsRoute: adminAdminSkillsRoute,
+  adminAdminIndexRoute: adminAdminIndexRoute,
+}
+
+const adminAdminRouteWithChildren = adminAdminRoute._addFileChildren(
+  adminAdminRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   appsRouteRoute: appsRouteRouteWithChildren,
   publicRouteRoute: publicRouteRouteWithChildren,
+  adminAdminRoute: adminAdminRouteWithChildren,
   usersAuthPasswordSetupRoute: usersAuthPasswordSetupRoute,
   usersAuthVerifyRoute: usersAuthVerifyRoute,
   usersAuthIndexRoute: usersAuthIndexRoute,

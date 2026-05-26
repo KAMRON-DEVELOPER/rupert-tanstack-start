@@ -1,21 +1,33 @@
 import z from 'zod'
 import { uuidSchema } from './types.schemas'
 
-export const countryResponseSchema = z.object({
-  id: uuidSchema,
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
-  code: z.string(),
-  name: z.string()
-})
+export const countryResponseSchema = z
+  .object({
+    id: uuidSchema,
+    created_at: z.string().datetime(),
+    updated_at: z.string().datetime(),
+    code: z.string(),
+    name: z.string()
+  })
+  .transform(({ created_at, updated_at, ...rest }) => ({
+    ...rest,
+    createdAt: created_at,
+    updatedAt: updated_at
+  }))
 
-export const cityResponseSchema = z.object({
-  id: uuidSchema,
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
-  countryId: uuidSchema,
-  name: z.string()
-})
+export const cityResponseSchema = z
+  .object({
+    id: uuidSchema,
+    created_at: z.string().datetime(),
+    updated_at: z.string().datetime(),
+    countryId: uuidSchema,
+    name: z.string()
+  })
+  .transform(({ created_at, updated_at, ...rest }) => ({
+    ...rest,
+    createdAt: created_at,
+    updatedAt: updated_at
+  }))
 
 export const locationRequestSchema = z
   .object({

@@ -11,7 +11,7 @@ export const getCountriesFn = createServerFn()
   .inputValidator((data: PaginationSearch) => data)
   .handler(async ({ data: params }) => {
     const api = createServerApi()
-    const data = await api<unknown>('locations/locations/countries', {
+    const data = await api('locations/countries', {
       params: toApiParams(params)
     })
     return countryListResponseSchema.parse(data)
@@ -21,11 +21,8 @@ export const getCitiesFn = createServerFn()
   .inputValidator((data: PaginationSearch & { countryId: string }) => data)
   .handler(async ({ data: { countryId, ...params } }) => {
     const api = createServerApi()
-    const data = await api<unknown>(
-      `locations/locations/countries/${countryId}/cities`,
-      {
-        params: toApiParams(params)
-      }
-    )
+    const data = await api(`locations/countries/${countryId}/cities`, {
+      params: toApiParams(params)
+    })
     return cityListResponseSchema.parse(data)
   })

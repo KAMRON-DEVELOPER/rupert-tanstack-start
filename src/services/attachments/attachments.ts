@@ -12,7 +12,7 @@ export const useUploadAttachmentsMutation = (api: CreateApi) => {
       const formData = new FormData()
       files.forEach((file) => formData.append('files', file))
 
-      const data = await api<unknown>('attachments/', {
+      const data = await api('attachments/', {
         method: 'POST',
         data: formData
       })
