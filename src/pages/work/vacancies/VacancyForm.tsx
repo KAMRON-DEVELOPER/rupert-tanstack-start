@@ -69,8 +69,8 @@ const VacancyForm = ({ vacancy, open, onOpenChange }: VacancyFormProps) => {
   const [companyId, setCompanyId] = useState(vacancy?.company.id ?? '')
   const [title, setTitle] = useState(vacancy?.title ?? '')
   const [description, setDescription] = useState(vacancy?.description ?? '')
-  const [country, setCountry] = useState(vacancy?.country ?? '')
-  const [city, setCity] = useState(vacancy?.city ?? '')
+  const [countryId, setCountryId] = useState(vacancy?.country.id ?? '')
+  const [cityId, setCityId] = useState(vacancy?.city?.id ?? '')
   const [externalApplyUrl, setExternalApplyUrl] = useState(vacancy?.externalApplyUrl ?? '')
   const [submissionType, setSubmissionType] = useState<SubmissionType>(
     vacancy?.submissionType ?? 'profile'
@@ -107,8 +107,8 @@ const VacancyForm = ({ vacancy, open, onOpenChange }: VacancyFormProps) => {
     const payload: VacancyRequest = {
       title: title.trim(),
       description: description.trim(),
-      country: country.trim(),
-      city: city.trim(),
+      countryId: countryId.trim(),
+      cityId: toOptionalString(cityId),
       externalApplyUrl: toOptionalString(externalApplyUrl),
       submissionType,
       specialization,
@@ -184,21 +184,20 @@ const VacancyForm = ({ vacancy, open, onOpenChange }: VacancyFormProps) => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="vacancy-country">Country</Label>
+              <Label htmlFor="vacancy-country">Country ID</Label>
               <Input
                 id="vacancy-country"
-                value={country}
-                onChange={(event) => setCountry(event.target.value)}
+                value={countryId}
+                onChange={(event) => setCountryId(event.target.value)}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="vacancy-city">City</Label>
+              <Label htmlFor="vacancy-city">City ID</Label>
               <Input
                 id="vacancy-city"
-                value={city}
-                onChange={(event) => setCity(event.target.value)}
-                required
+                value={cityId}
+                onChange={(event) => setCityId(event.target.value)}
               />
             </div>
             <SelectField

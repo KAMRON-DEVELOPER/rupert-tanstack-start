@@ -86,13 +86,13 @@ const CompanyLeftSidebar = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="country">Country</Label>
+          <Label htmlFor="country">Country ID</Label>
           <div className="relative">
             <Input
               id="country"
-              placeholder="Filter by country..."
-              value={search.country || ''}
-              onChange={(e) => updateFilter({ country: e.target.value || undefined })}
+              placeholder="Filter by country ID..."
+              value={search.countryId || ''}
+              onChange={(e) => updateFilter({ countryId: e.target.value || undefined })}
               className="pl-9"
             />
             <Globe className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
@@ -100,13 +100,13 @@ const CompanyLeftSidebar = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="city">City</Label>
+          <Label htmlFor="city">City ID</Label>
           <div className="relative">
             <Input
               id="city"
-              placeholder="Filter by city..."
-              value={search.city || ''}
-              onChange={(e) => updateFilter({ city: e.target.value || undefined })}
+              placeholder="Filter by city ID..."
+              value={search.cityId || ''}
+              onChange={(e) => updateFilter({ cityId: e.target.value || undefined })}
               className="pl-9"
             />
             <MapPin className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />

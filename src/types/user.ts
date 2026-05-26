@@ -1,4 +1,5 @@
 import type { IsoDate, IsoDateTime, UUID } from '@/types/primitives'
+import type { CitySchema, CountrySchema } from '@/types/location.schema'
 import { Id, Skill } from '@/types/types'
 import {
   EmploymentType,
@@ -59,8 +60,8 @@ export interface ResumeSchema extends Id {
   title: string
   summary?: string | null
   specialization: Specialization
-  country: string
-  city: string
+  country: CountrySchema
+  city: CitySchema | null
   salaryExpectationMin: number | null
   salaryExpectationMax: number | null
   salaryCurrency: SalaryCurrency | null
@@ -73,8 +74,8 @@ export interface ResumeRequest {
   title: string
   summary?: string | null
   specialization: Specialization
-  country: string
-  city: string
+  countryId: UUID
+  cityId?: UUID | null
   salaryExpectationMin?: number | null
   salaryExpectationMax?: number | null
   salaryCurrency?: SalaryCurrency | null
@@ -89,8 +90,8 @@ export interface ResumeCardSchema extends Id {
   userId: UUID
   title: string
   specialization: Specialization
-  country: string
-  city: string
+  country: CountrySchema
+  city: CitySchema | null
   salaryExpectationMin: number | null
   salaryExpectationMax: number | null
   salaryCurrency: SalaryCurrency | null
@@ -131,8 +132,8 @@ export interface UserCardSchema extends Id {
   lastName: string | null
   headline: string | null
   avatarUrl: string | null
-  country: string | null
-  city: string | null
+  country: CountrySchema | null
+  city: CitySchema | null
   specialization: Specialization | null
   jobSearchStatus: JobSearchStatus
   followersCount: number
@@ -151,8 +152,8 @@ export interface UserSchema extends Id {
   bio: string | null
   avatarUrl: string | null
   bannerUrl: string | null
-  country: string | null
-  city: string | null
+  country: CountrySchema | null
+  city: CitySchema | null
   // Specialization
   specialization: Specialization | null
   // Contact
@@ -189,12 +190,14 @@ type UserProfileUpdateRequest = Partial<
     | 'telegramUsername'
     | 'followPolicy'
     | 'jobSearchStatus'
-    | 'country'
-    | 'city'
   >
 >
 
 export type UserUpdateRequest = UserProfileUpdateRequest &
+  Partial<{
+    countryId: UUID | null
+    cityId: UUID | null
+  }> &
   Partial<{
     deleteAvatar: boolean | null
     deleteBanner: boolean | null

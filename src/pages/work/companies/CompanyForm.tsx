@@ -52,8 +52,8 @@ const CompanyForm = ({ company, open, onOpenChange }: CompanyFormProps) => {
     logoUrl: company?.logoUrl ?? '',
     websiteUrl: company?.websiteUrl ?? '',
     type: company?.type ?? 'startup',
-    country: company?.country ?? '',
-    city: company?.city ?? '',
+    countryId: company?.country.id ?? '',
+    cityId: company?.city?.id ?? '',
     contactEmail: company?.contactEmail ?? '',
     contactPhone: company?.contactPhone ?? ''
   })
@@ -71,8 +71,8 @@ const CompanyForm = ({ company, open, onOpenChange }: CompanyFormProps) => {
     const payload: CompanyCreateRequest = {
       ...form,
       name: form.name.trim(),
-      country: form.country.trim(),
-      city: form.city.trim(),
+      countryId: form.countryId.trim(),
+      cityId: emptyToNull(form.cityId ?? ''),
       tagline: emptyToNull(form.tagline ?? ''),
       description: emptyToNull(form.description ?? ''),
       logoUrl: emptyToNull(form.logoUrl ?? ''),
@@ -139,21 +139,20 @@ const CompanyForm = ({ company, open, onOpenChange }: CompanyFormProps) => {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="company-country">Country</Label>
+              <Label htmlFor="company-country">Country ID</Label>
               <Input
                 id="company-country"
-                value={form.country}
-                onChange={(event) => updateField('country', event.target.value)}
+                value={form.countryId}
+                onChange={(event) => updateField('countryId', event.target.value)}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="company-city">City</Label>
+              <Label htmlFor="company-city">City ID</Label>
               <Input
                 id="company-city"
-                value={form.city}
-                onChange={(event) => updateField('city', event.target.value)}
-                required
+                value={form.cityId ?? ''}
+                onChange={(event) => updateField('cityId', event.target.value)}
               />
             </div>
             <div className="space-y-2 sm:col-span-2">

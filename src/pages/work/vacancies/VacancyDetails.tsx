@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { locationLabel } from '@/lib/location-label'
 import type { VacancySchema } from '@/types/vacancy'
 import { Link } from '@tanstack/react-router'
 import { Banknote, Building2, Clock, MapPin } from 'lucide-react'
@@ -35,9 +36,7 @@ const VacancyDetails = ({ vacancy }: { vacancy: VacancySchema }) => {
         <div className="grid gap-3 text-sm sm:grid-cols-2">
           <div className="flex items-center gap-2">
             <MapPin className="text-muted-foreground size-4" />
-            <span>
-              {vacancy.country}, {vacancy.city}
-            </span>
+            <span>{locationLabel(vacancy.country, vacancy.city)}</span>
           </div>
           <div className="flex items-center gap-2">
             <Clock className="text-muted-foreground size-4" />

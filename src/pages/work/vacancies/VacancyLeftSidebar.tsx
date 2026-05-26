@@ -118,14 +118,14 @@ const VacancyLeftSidebar = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="country">Location</Label>
+          <Label htmlFor="country">Location IDs</Label>
           <div className="flex flex-col gap-2">
             <div className="relative">
               <Input
                 id="country"
-                placeholder="Country"
-                value={search.country || ''}
-                onChange={(e) => updateFilter({ country: e.target.value || undefined })}
+                placeholder="Country ID"
+                value={search.countryId || ''}
+                onChange={(e) => updateFilter({ countryId: e.target.value || undefined })}
                 className="pl-9"
               />
               <Globe className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
@@ -133,9 +133,9 @@ const VacancyLeftSidebar = () => {
             <div className="relative">
               <Input
                 id="city"
-                placeholder="City"
-                value={search.city || ''}
-                onChange={(e) => updateFilter({ city: e.target.value || undefined })}
+                placeholder="City ID"
+                value={search.cityId || ''}
+                onChange={(e) => updateFilter({ cityId: e.target.value || undefined })}
                 className="pl-9"
               />
               <MapPin className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />

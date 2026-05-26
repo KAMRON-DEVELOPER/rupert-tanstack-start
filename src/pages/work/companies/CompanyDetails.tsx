@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { locationLabel } from '@/lib/location-label'
 import type { CompanySchema } from '@/types/company'
 import { Building2, Globe, Mail, MapPin, Phone } from 'lucide-react'
 
@@ -32,9 +33,7 @@ const CompanyDetails = ({ company }: { company: CompanySchema }) => {
           </div>
           <div className="flex items-center gap-2">
             <MapPin className="text-muted-foreground size-4" />
-            <span>
-              {company.country}, {company.city}
-            </span>
+            <span>{locationLabel(company.country, company.city)}</span>
           </div>
           <div className="flex items-center gap-2">
             <Building2 className="text-muted-foreground size-4" />

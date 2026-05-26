@@ -12,8 +12,8 @@ export const CompanySearchSchema = z.object({
   name: z.string().optional(),
   type: z.enum(CompanyTypeList).optional(),
   status: z.enum(CompanyStatusList).optional(),
-  country: z.string().optional(),
-  city: z.string().optional(),
+  countryId: uuidSchema.optional(),
+  cityId: uuidSchema.optional(),
   hasOpenVacancies: queryBooleanSchema.optional(),
   skillIds: z.array(uuidSchema).optional()
 })

@@ -15,6 +15,24 @@ import { UserSchema, UserUpdateRequest } from '@/types/user'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
+type ProfileEditForm = Pick<
+  UserUpdateRequest,
+  | 'firstName'
+  | 'lastName'
+  | 'headline'
+  | 'birthdate'
+  | 'bio'
+  | 'specialization'
+  | 'phoneNumber'
+  | 'githubUrl'
+  | 'telegramUsername'
+  | 'followPolicy'
+  | 'jobSearchStatus'
+> & {
+  countryId: string
+  cityId: string
+}
+
 interface ProfileEditDialogProps {
   user: UserSchema
   open: boolean
@@ -22,7 +40,21 @@ interface ProfileEditDialogProps {
 }
 
 const ProfileEditDialog = ({ user, open, onOpenChange }: ProfileEditDialogProps) => {
-  const [formData, setFormData] = useState<UserSchema>(user)
+  const [formData, setFormData] = useState<ProfileEditForm>({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    headline: user.headline,
+    birthdate: user.birthdate,
+    bio: user.bio,
+    specialization: user.specialization,
+    phoneNumber: user.phoneNumber,
+    githubUrl: user.githubUrl,
+    telegramUsername: user.telegramUsername,
+    followPolicy: user.followPolicy,
+    jobSearchStatus: user.jobSearchStatus,
+    countryId: user.country?.id ?? '',
+    cityId: user.city?.id ?? ''
+  })
   const updateMutation = useUpdateProfileMutation()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -45,8 +77,8 @@ const ProfileEditDialog = ({ user, open, onOpenChange }: ProfileEditDialogProps)
         telegramUsername: formData.telegramUsername,
         followPolicy: formData.followPolicy,
         jobSearchStatus: formData.jobSearchStatus,
-        country: formData.country,
-        city: formData.city
+        countryId: formData.countryId || null,
+        cityId: formData.cityId || null
       }
 
       await updateMutation.mutateAsync(payload)
@@ -111,17 +143,17 @@ const ProfileEditDialog = ({ user, open, onOpenChange }: ProfileEditDialogProps)
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="country">Country</Label>
+              <Label htmlFor="countryId">Country ID</Label>
               <Input
-                id="country"
-                name="country"
-                value={formData.country || ''}
+                id="countryId"
+                name="countryId"
+                value={formData.countryId}
                 onChange={handleChange}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="city">City</Label>
-              <Input id="city" name="city" value={formData.city || ''} onChange={handleChange} />
+              <Label htmlFor="cityId">City ID</Label>
+              <Input id="cityId" name="cityId" value={formData.cityId} onChange={handleChange} />
             </div>
           </div>
           <DialogFooter>

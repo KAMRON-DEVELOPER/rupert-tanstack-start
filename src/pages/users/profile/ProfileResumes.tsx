@@ -24,6 +24,7 @@ import {
   SpecializationList
 } from '@/types/literals'
 import type { ResumeRequest, UserSchema } from '@/types/user'
+import { locationLabel } from '@/lib/location-label'
 import { FileText, Pencil, Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import {
@@ -42,17 +43,22 @@ interface ProfileResumesProps {
   user: UserSchema
 }
 
+type ResumeFormState = Partial<Omit<ResumeRequest, 'countryId' | 'cityId'>> & {
+  countryId: string
+  cityId: string
+}
+
 const ProfileResumes = ({ user }: ProfileResumesProps) => {
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [editingResumeId, setEditingResumeId] = useState<string | null>(null)
   const [skillResumeId, setSkillResumeId] = useState<string | null>(null)
   const [skillId, setSkillId] = useState('')
   const [skillProficiency, setSkillProficiency] = useState<ProficiencyLevel>('intermediate')
-  const [newResume, setNewResume] = useState<Partial<ResumeRequest>>({
+  const [newResume, setNewResume] = useState<ResumeFormState>({
     title: '',
     specialization: 'fullstack',
-    country: user.country || '',
-    city: user.city || ''
+    countryId: user.country?.id ?? '',
+    cityId: user.city?.id ?? ''
   })
   const createResumeMutation = useCreateResumeMutation()
   const updateResumeMutation = useUpdateResumeMutation()
@@ -70,8 +76,8 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
     const resumeToAdd: ResumeRequest = {
       title: newResume.title,
       specialization: newResume.specialization,
-      country: newResume.country || '',
-      city: newResume.city || '',
+      countryId: newResume.countryId,
+      cityId: newResume.cityId || null,
       skills: []
     }
 
@@ -82,8 +88,8 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
       setNewResume({
         title: '',
         specialization: 'fullstack',
-        country: user.country || '',
-        city: user.city || ''
+        countryId: user.country?.id ?? '',
+        cityId: user.city?.id ?? ''
       })
     } catch {
       toast.error('Failed to add resume')
@@ -109,8 +115,8 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
           title: newResume.title,
           summary: newResume.summary ?? null,
           specialization: newResume.specialization,
-          country: newResume.country || '',
-          city: newResume.city || ''
+          countryId: newResume.countryId,
+          cityId: newResume.cityId || null
         }
       })
       toast.success('Resume updated')
@@ -127,8 +133,8 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
       title: resume.title,
       summary: resume.summary ?? '',
       specialization: resume.specialization,
-      country: resume.country,
-      city: resume.city
+      countryId: resume.country.id,
+      cityId: resume.city?.id ?? ''
     })
     setIsAddOpen(true)
   }
@@ -138,8 +144,8 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
     setNewResume({
       title: '',
       specialization: 'fullstack',
-      country: user.country || '',
-      city: user.city || ''
+      countryId: user.country?.id ?? '',
+      cityId: user.city?.id ?? ''
     })
     setIsAddOpen(true)
   }
@@ -217,7 +223,7 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
                   <div>
                     <h4 className="font-medium">{resume.title}</h4>
                     <p className="text-muted-foreground text-xs">
-                      {resume.specialization} • {resume.city}, {resume.country}
+                      {resume.specialization} • {locationLabel(resume.country, resume.city)}
                     </p>
                     {resume.skills && resume.skills.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-2">
@@ -341,19 +347,19 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="resume-country">Country</Label>
+                <Label htmlFor="resume-country">Country ID</Label>
                 <Input
                   id="resume-country"
-                  value={newResume.country}
-                  onChange={(e) => setNewResume((prev) => ({ ...prev, country: e.target.value }))}
+                  value={newResume.countryId}
+                  onChange={(e) => setNewResume((prev) => ({ ...prev, countryId: e.target.value }))}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="resume-city">City</Label>
+                <Label htmlFor="resume-city">City ID</Label>
                 <Input
                   id="resume-city"
-                  value={newResume.city}
-                  onChange={(e) => setNewResume((prev) => ({ ...prev, city: e.target.value }))}
+                  value={newResume.cityId}
+                  onChange={(e) => setNewResume((prev) => ({ ...prev, cityId: e.target.value }))}
                 />
               </div>
             </div>

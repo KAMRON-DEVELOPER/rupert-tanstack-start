@@ -1,4 +1,5 @@
 import { CompanyCardSchema } from '@/types/company'
+import type { CitySchema, CountrySchema } from '@/types/location.schema'
 import {
   ApplicationStatus,
   EmploymentType,
@@ -47,8 +48,8 @@ export interface VacancyCardSchema extends Id {
   workFormat: WorkFormat
   employmentType: EmploymentType
   status: VacancyStatus
-  country: string
-  city: string
+  country: CountrySchema
+  city: CitySchema | null
   isSaved: boolean | null
   hasApplied: boolean | null
 }
@@ -64,8 +65,8 @@ export interface VacancySchema extends VacancyCardSchema {
 export interface VacancyRequest {
   title: string
   description: string
-  country: string
-  city: string
+  countryId: UUID
+  cityId?: UUID | null
   externalApplyUrl?: string | null
   submissionType: SubmissionType
   specialization: Specialization

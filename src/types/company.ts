@@ -1,4 +1,5 @@
 import { CompanyMemberRole, CompanyStatus, CompanyType } from '@/types/literals'
+import type { CitySchema, CountrySchema } from '@/types/location.schema'
 import { UUID } from '@/types/primitives'
 import { UserCardSchema } from '@/types/user'
 import { Id } from '@/types/types'
@@ -9,8 +10,8 @@ export interface CompanyCardSchema extends Id {
   logoUrl: string | null
   type: CompanyType
   status: CompanyStatus
-  country: string
-  city: string
+  country: CountrySchema
+  city: CitySchema | null
   openVacanciesCount: number | null
 }
 
@@ -30,8 +31,8 @@ export interface CompanyCreateRequest {
   logoUrl?: string | null
   websiteUrl?: string | null
   type: CompanyType
-  country: string
-  city: string
+  countryId: UUID
+  cityId?: UUID | null
   contactEmail?: string | null
   contactPhone?: string | null
 }

@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { UserSchema } from '@/types/user'
+import { locationLabel } from '@/lib/location-label'
 import { MapPin, Pencil } from 'lucide-react'
 import ProfileEditDialog from './ProfileEditDialog'
 import { useState } from 'react'
@@ -12,6 +13,7 @@ interface ProfileHeaderProps {
 
 const ProfileHeader = ({ user }: ProfileHeaderProps) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const location = locationLabel(user.country, user.city)
 
   return (
     <Card className="overflow-hidden border-none shadow-sm">
@@ -41,14 +43,10 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
           </h1>
           {user.headline && <p className="text-muted-foreground text-lg">{user.headline}</p>}
           <div className="text-muted-foreground mt-3 flex flex-wrap gap-4 text-sm">
-            {(user.city || user.country) && (
+            {location && (
               <div className="flex items-center gap-1">
                 <MapPin className="size-4" />
-                <span>
-                  {user.city}
-                  {user.city && user.country ? ', ' : ''}
-                  {user.country}
-                </span>
+                <span>{location}</span>
               </div>
             )}
             <div className="flex gap-4">

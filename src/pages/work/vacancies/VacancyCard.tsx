@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { locationLabel } from '@/lib/location-label'
 import { Building2, MapPin, Clock, Banknote } from 'lucide-react'
 
 const VacancyCard = ({ v }: { v: VacancyCardSchema }) => {
@@ -42,10 +43,7 @@ const VacancyCard = ({ v }: { v: VacancyCardSchema }) => {
         <div className="text-muted-foreground grid grid-cols-2 gap-2 text-sm">
           <div className="flex items-center gap-2">
             <MapPin className="h-4 w-4 shrink-0" />
-            <span className="truncate">
-              {v.country}
-              {v.city ? `, ${v.city}` : ''}
-            </span>
+            <span className="truncate">{locationLabel(v.country, v.city)}</span>
           </div>
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 shrink-0" />

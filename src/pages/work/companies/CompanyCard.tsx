@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { locationLabel } from '@/lib/location-label'
 import { Building2, MapPin, Briefcase } from 'lucide-react'
 
 const CompanyCard = ({ c }: { c: CompanyCardSchema }) => {
@@ -32,10 +33,7 @@ const CompanyCard = ({ c }: { c: CompanyCardSchema }) => {
       <CardContent className="grid gap-2">
         <div className="text-muted-foreground flex items-center gap-2 text-sm">
           <MapPin className="h-4 w-4" />
-          <span>
-            {c.country}
-            {c.city ? `, ${c.city}` : ''}
-          </span>
+          <span>{locationLabel(c.country, c.city)}</span>
         </div>
         <div className="text-muted-foreground flex items-center gap-2 text-sm">
           <Briefcase className="h-4 w-4" />

@@ -22,8 +22,8 @@ export const VacancySearchSchema = z.object({
   workFormat: z.enum(WorkFormatList).optional(),
   employmentType: z.enum(EmploymentTypeList).optional(),
   status: z.enum(VacancyStatusList).optional(),
-  country: z.string().optional(),
-  city: z.string().optional(),
+  countryId: uuidSchema.optional(),
+  cityId: uuidSchema.optional(),
   skillIds: z.array(uuidSchema).optional()
 })
 

@@ -1,4 +1,5 @@
 import { IsoDateTime, UUID } from './primitives'
+import type { SkillSchema } from './skill.schema'
 
 export interface Pagination {
   limit: number
@@ -22,9 +23,7 @@ export interface Tag {
   name: string
 }
 
-export interface Skill {
-  name: string
-}
+export type Skill = SkillSchema
 
 export interface Id {
   id: UUID
