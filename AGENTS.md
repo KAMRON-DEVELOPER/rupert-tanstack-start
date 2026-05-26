@@ -17,24 +17,24 @@ Always identify which mode applies before starting. Do not mix them.
 - Map API errors explicitly — handle `AxiosError` status codes, surface useful messages.
 - Add only the minimum component needed to exercise and verify the logic. No polish.
 - Prefer server functions (`createServerFn`) for data fetching; keep cookie forwarding
-intact via `createServerApi`.
+  intact via `createServerApi`.
 - Query keys must be consistent with the existing `['resource', params]` convention.
 - For PATCH/update mutations, only send changed fields. For FormData mutations,
-follow the existing `toUserUpdateFormData` pattern.
+  follow the existing `toUserUpdateFormData` pattern.
 
 ### UI / Design Mode — layout, styling, visual polish
 
 - Do not touch service layer, types, or query logic unless it is actively broken.
 - Before writing a single class, read through the existing page and its sibling
-components to understand spacing, sizing conventions, and recurring patterns.
+  components to understand spacing, sizing conventions, and recurring patterns.
 - Sizes, spacing, and layout values must be proportional — derive from existing
-scale rather than arbitrary pixel values.
+  scale rather than arbitrary pixel values.
 - Prefer fewer Tailwind classes and shallower nesting. If you need more than three
-levels of nesting in JSX, reconsider the structure.
+  levels of nesting in JSX, reconsider the structure.
 - If a component library (e.g. shadcn) is present, treat it as already themed.
-Do not override its variables or add wrapper styles that fight the theme.
+  Do not override its variables or add wrapper styles that fight the theme.
 - When a component library is absent, use CSS custom properties or a minimal utility
-layer consistent with what already exists.
+  layer consistent with what already exists.
 
 ---
 
@@ -66,7 +66,7 @@ or `beforeLoad`. Business logic lives in `services/`, not in route files.
 Two files per domain:
 
 - `*.functions.ts` — `createServerFn` handlers. Always use `createServerApi()` here,
-never `createApi()` directly.
+  never `createApi()` directly.
 - `*.ts` — `queryOptions`, `useMutation` hooks. Client-side only.
 
 `queryOptions` factories are named `useGet<Resource>QueryOptions`.
@@ -82,15 +82,15 @@ empty value filtering.
 This codebase runs SSR via TanStack Start. Keep these in mind:
 
 - Never access `window`, `document`, or browser APIs at module level.
-Guard with `typeof window !== 'undefined'` or use `useEffect`.
+  Guard with `typeof window !== 'undefined'` or use `useEffect`.
 - Theme and locale state that depends on browser storage must be deferred to the
-client to avoid hydration mismatches. `suppressHydrationWarning` is already applied
-at the root for theme.
+  client to avoid hydration mismatches. `suppressHydrationWarning` is already applied
+  at the root for theme.
 - `createServerFn` handlers run on the server — no browser APIs, no client state.
 - Do not store user-specific data in module-level singletons; each request must
-be isolated (`createServerApi()` is called per request for this reason).
+  be isolated (`createServerApi()` is called per request for this reason).
 - Data prefetched in `loader` via `queryClient.ensureQueryData` will hydrate on
-the client automatically — do not refetch the same data manually on mount.
+  the client automatically — do not refetch the same data manually on mount.
 
 ---
 
@@ -98,19 +98,19 @@ the client automatically — do not refetch the same data manually on mount.
 
 - No `any`. Use `unknown` and narrow, or define the actual type.
 - Prefer `type` over `interface` for API shapes and component props unless
-extension is needed.
+  extension is needed.
 - Zod schemas live in `types/*.schema.ts`; derived TypeScript types are inferred
-via `z.infer`.
+  via `z.infer`.
 - For shared response shapes use existing types: `ListResponse<T>`, `Pagination`,
-`MessageResponse`.
+  `MessageResponse`.
 
 ---
 
 ## General Coding Standards
 
 - Read enough context before editing. Check the domain's existing service, types,
-and page files first.
+  and page files first.
 - Batch related changes. Avoid micro-edits that require follow-up patches.
 - Do not introduce new abstractions (custom hooks, utility functions, context)
-unless reuse across two or more places is immediate and obvious.
+  unless reuse across two or more places is immediate and obvious.
 - Prefer `rg` for searching the codebase.
