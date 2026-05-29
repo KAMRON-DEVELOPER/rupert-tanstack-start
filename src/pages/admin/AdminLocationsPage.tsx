@@ -196,9 +196,9 @@ export function AdminLocationsPage() {
             updateCountryMutation.mutate(
               { countryId: editingCountry.id, data },
               {
-                onSuccess: (country) => {
+                onSuccess: (_country) => {
                   setEditingCountry(null)
-                  setSelectedCountry((current) => (current?.id === country.id ? country : current))
+                  // setSelectedCountry(country)
                   toast.success('Country updated')
                 },
                 onError: (error) => showMutationError(error, 'Failed to update country')

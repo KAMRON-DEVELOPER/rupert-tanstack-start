@@ -30,11 +30,6 @@ export function getRouter() {
     }),
     mutationCache: new MutationCache({
       onError: (err) => {
-        if (typeof window === 'undefined') return
-
-        const pathname = router.state.location.pathname
-        if (pathname === '/auth') return
-
         if (isAxiosError(err) && err.response?.status === 401) {
           redirectToAuth()
         }

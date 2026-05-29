@@ -12,7 +12,7 @@ export const Route = createFileRoute('/(public)/')({
   //   }
   // },
   loader: async ({ context: { queryClient } }) => {
-    await Promise.all([queryClient.ensureQueryData(useGetStatsQueryOptions())])
+    await queryClient.ensureQueryData(useGetStatsQueryOptions())
   },
   component: HomePage
 })

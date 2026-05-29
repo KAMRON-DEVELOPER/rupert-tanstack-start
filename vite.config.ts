@@ -13,7 +13,13 @@ export default defineConfig({
   //   noExternal: true,
   // },
   publicDir: 'public',
-  plugins: [tailwindcss(), tanstackStart(), nitro(), viteReact()],
+  plugins: [tailwindcss(), tanstackStart(
+    {
+      router: {
+        // virtualRouteConfig: './routes.ts'
+      }
+    }
+  ), nitro(), viteReact()],
   resolve: {
     // This enables built-in support for path aliases defined in tsconfig.json
     tsconfigPaths: true,
