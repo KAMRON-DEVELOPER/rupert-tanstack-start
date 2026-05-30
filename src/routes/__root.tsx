@@ -72,7 +72,7 @@ function RootComponent() {
             }}
           />
         </ThemeProvider>
-        <TanStackRouterDevtools position="bottom-left" />
+        <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools />
       </QueryClientProvider>
     </RootDocument>

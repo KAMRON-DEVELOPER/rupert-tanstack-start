@@ -3,14 +3,6 @@ import HomePage from '@/pages/home/HomePage'
 import { useGetStatsQueryOptions } from '@/services/stats/stats'
 
 export const Route = createFileRoute('/(public)/')({
-  // beforeLoad: ({ context: { isAuthenticated } }) => {
-  //   if (isAuthenticated) {
-  //     throw redirect({
-  //       to: '/work/vacancies',
-  //       replace: true
-  //     })
-  //   }
-  // },
   loader: async ({ context: { queryClient } }) => {
     await queryClient.ensureQueryData(useGetStatsQueryOptions())
   },
