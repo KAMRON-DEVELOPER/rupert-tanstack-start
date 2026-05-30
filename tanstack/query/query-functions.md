@@ -19,11 +19,11 @@ useQuery({
   queryFn: async () => {
     const data = await fetchTodoById(todoId)
     return data
-  },
+  }
 })
 useQuery({
   queryKey: ['todos', todoId],
-  queryFn: ({ queryKey }) => fetchTodoById(queryKey[1]),
+  queryFn: ({ queryKey }) => fetchTodoById(queryKey[1])
 })
 ```
 
@@ -47,7 +47,7 @@ const { error } = useQuery({
     }
 
     return data
-  },
+  }
 })
 ```
 
@@ -68,7 +68,7 @@ useQuery({
       throw new Error('Network response was not ok')
     }
     return response.json()
-  },
+  }
 })
 ```
 
@@ -84,7 +84,7 @@ Query keys are not just for uniquely identifying the data you are fetching, but 
 function Todos({ status, page }) {
   const result = useQuery({
     queryKey: ['todos', { status, page }],
-    queryFn: fetchTodoList,
+    queryFn: fetchTodoList
   })
 }
 

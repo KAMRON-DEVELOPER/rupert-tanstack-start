@@ -7,7 +7,7 @@ You may want to reuse options that are intended to be passed to `Link`, `redirec
 ```tsx
 const dashboardLinkOptions = {
   to: '/dashboard',
-  search: { search: '' },
+  search: { search: '' }
 }
 
 function DashboardComponent() {
@@ -24,7 +24,7 @@ There are a few problems here. `dashboardLinkOptions.to` is inferred as `string`
 ```tsx
 const dashboardLinkOptions = linkOptions({
   to: '/dashboard',
-  search: { search: '' },
+  search: { search: '' }
 })
 
 function DashboardComponent() {
@@ -37,7 +37,7 @@ This allows eager type checking of `dashboardLinkOptions` which can then be re-u
 ```tsx
 const dashboardLinkOptions = linkOptions({
   to: '/dashboard',
-  search: { search: '' },
+  search: { search: '' }
 })
 
 export const Route = createFileRoute('/dashboard')({
@@ -46,7 +46,7 @@ export const Route = createFileRoute('/dashboard')({
   beforeLoad: () => {
     // can used in redirect
     throw redirect(dashboardLinkOptions)
-  },
+  }
 })
 
 function DashboardComponent() {
@@ -73,23 +73,23 @@ const options = linkOptions([
   {
     to: '/dashboard',
     label: 'Summary',
-    activeOptions: { exact: true },
+    activeOptions: { exact: true }
   },
   {
     to: '/dashboard/invoices',
-    label: 'Invoices',
+    label: 'Invoices'
   },
   {
     to: '/dashboard/users',
-    label: 'Users',
-  },
+    label: 'Users'
+  }
 ])
 
 function DashboardComponent() {
   return (
     <>
       <div className="flex items-center border-b">
-        <h2 className="text-xl p-2">Dashboard</h2>
+        <h2 className="p-2 text-xl">Dashboard</h2>
       </div>
 
       <div className="flex flex-wrap divide-x">

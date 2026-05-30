@@ -18,7 +18,15 @@ export const getChatsFn = createServerFn()
     const data = await api('chats/', {
       params: toApiParams(params)
     })
-    return chatListResponseSchema.parse(data) satisfies ChatListResponse
+    const result = chatListResponseSchema.safeParse(data)
+    if (!result.success) {
+      console.error('[getChatsFn] schema parse failed:', result.error.issues)
+      console.error('[getChatsFn] raw data:', JSON.stringify(data, null, 2))
+      throw new Error(
+        `Chat list schema validation failed: ${result.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join(', ')}`
+      )
+    }
+    return result.data satisfies ChatListResponse
   })
 
 export const getChatMessagesFn = createServerFn()

@@ -20,7 +20,7 @@ import {
   route,
   index,
   layout,
-  physical,
+  physical
 } from '@tanstack/virtual-file-routes'
 
 export const routes = rootRoute('root.tsx', [
@@ -30,11 +30,11 @@ export const routes = rootRoute('root.tsx', [
       index('app/dashboard-index.tsx'),
       route('/invoices', 'app/dashboard-invoices.tsx', [
         index('app/invoices-index.tsx'),
-        route('$id', 'app/invoice-detail.tsx'),
-      ]),
+        route('$id', 'app/invoice-detail.tsx')
+      ])
     ]),
-    physical('/posts', 'posts'),
-  ]),
+    physical('/posts', 'posts')
+  ])
 ])
 ```
 
@@ -62,10 +62,10 @@ export default defineConfig({
   plugins: [
     tanstackRouter({
       target: 'react',
-      virtualRouteConfig: './routes.ts',
+      virtualRouteConfig: './routes.ts'
     }),
-    react(),
-  ],
+    react()
+  ]
 })
 ```
 
@@ -80,10 +80,10 @@ export default defineConfig({
   plugins: [
     tanstackRouter({
       target: 'solid',
-      virtualRouteConfig: './routes.ts',
+      virtualRouteConfig: './routes.ts'
     }),
-    solid(),
-  ],
+    solid()
+  ]
 })
 ```
 
@@ -103,7 +103,7 @@ const routes = rootRoute('root.tsx', [
 ])
 
 export default defineConfig({
-  plugins: [tanstackRouter({ virtualRouteConfig: routes }), react()],
+  plugins: [tanstackRouter({ virtualRouteConfig: routes }), react()]
 })
 ```
 
@@ -123,8 +123,8 @@ const routes = rootRoute('root.tsx', [
 export default defineConfig({
   plugins: [
     tanstackRouter({ virtualRouteConfig: routes, target: 'react' }),
-    react(),
-  ],
+    react()
+  ]
 })
 ```
 
@@ -142,8 +142,8 @@ const routes = rootRoute('root.tsx', [
 export default defineConfig({
   plugins: [
     tanstackRouter({ virtualRouteConfig: routes, target: 'solid' }),
-    solid(),
-  ],
+    solid()
+  ]
 })
 ```
 
@@ -183,7 +183,7 @@ import { route } from '@tanstack/virtual-file-routes'
 export const routes = rootRoute('root.tsx', [
   route('/about', 'about.tsx', [
     // ... children routes
-  ]),
+  ])
 ])
 ```
 
@@ -198,8 +198,8 @@ import { route } from '@tanstack/virtual-file-routes'
 export const routes = rootRoute('root.tsx', [
   route('/hello', [
     route('/world', 'world.tsx'), // full path will be "/hello/world"
-    route('/universe', 'universe.tsx'), // full path will be "/hello/universe"
-  ]),
+    route('/universe', 'universe.tsx') // full path will be "/hello/universe"
+  ])
 ])
 ```
 
@@ -224,7 +224,7 @@ import { layout } from '@tanstack/virtual-file-routes'
 export const routes = rootRoute('root.tsx', [
   layout('pathlessLayout.tsx', [
     // ... children routes
-  ]),
+  ])
 ])
 ```
 
@@ -237,7 +237,7 @@ import { layout } from '@tanstack/virtual-file-routes'
 export const routes = rootRoute('root.tsx', [
   layout('my-pathless-layout-id', 'pathlessLayout.tsx', [
     // ... children routes
-  ]),
+  ])
 ])
 ```
 
@@ -282,12 +282,12 @@ export const routes = rootRoute('root.tsx', [
       index('app/dashboard-index.tsx'),
       route('/invoices', 'app/dashboard-invoices.tsx', [
         index('app/invoices-index.tsx'),
-        route('$id', 'app/invoice-detail.tsx'),
-      ]),
+        route('$id', 'app/invoice-detail.tsx')
+      ])
     ]),
     // Mount the `posts` directory under the `/posts` path
-    physical('/posts', 'posts'),
-  ]),
+    physical('/posts', 'posts')
+  ])
 ])
 ```
 
@@ -315,7 +315,7 @@ import { physical, rootRoute, route } from '@tanstack/virtual-file-routes'
 export const routes = rootRoute('__root.tsx', [
   route('/about', 'about.tsx'),
   // Merge features/ routes at root level (no path prefix)
-  physical('features'),
+  physical('features')
   // Or equivalently: physical('', 'features')
 ])
 ```
@@ -358,12 +358,12 @@ Let's look at the `bar` directory which contains a special file named `__virtual
 import {
   defineVirtualSubtreeConfig,
   index,
-  route,
+  route
 } from '@tanstack/virtual-file-routes'
 
 export default defineVirtualSubtreeConfig([
   index('home.tsx'),
-  route('$id', 'details.tsx'),
+  route('$id', 'details.tsx')
 ])
 ```
 

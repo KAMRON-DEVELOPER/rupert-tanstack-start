@@ -1,5 +1,5 @@
-import z from 'zod'
-import { paginationSchema, uuidSchema } from './types.schemas'
+import z, { uuidv4 } from 'zod'
+import { paginationSchema } from './types.schemas'
 import { CompanyStatusList, CompanyTypeList } from './literals'
 
 const queryBooleanSchema = z.preprocess((value) => {
@@ -12,10 +12,10 @@ export const CompanySearchSchema = z.object({
   name: z.string().optional(),
   type: z.enum(CompanyTypeList).optional(),
   status: z.enum(CompanyStatusList).optional(),
-  countryId: uuidSchema.optional(),
-  cityId: uuidSchema.optional(),
+  countryId: uuidv4().optional(),
+  cityId: uuidv4().optional(),
   hasOpenVacancies: queryBooleanSchema.optional(),
-  skillIds: z.array(uuidSchema).optional()
+  skillIds: z.array(uuidv4()).optional()
 })
 
 export const companySearch = CompanySearchSchema.extend(paginationSchema.shape)

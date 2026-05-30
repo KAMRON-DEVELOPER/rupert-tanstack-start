@@ -21,6 +21,7 @@ type UseChatWebSocketResult = {
   status: ChatSocketStatus
   lastEvent: ChatWsInboundPayload | null
   lastError: string | null
+  authFailed: boolean
   send: (payload: ChatWsOutboundPayload) => boolean
 }
 
@@ -208,6 +209,25 @@ const updateChatSettingsInLists = (
   )
 }
 
+const setUserOnlineInLists = (
+  queryClient: QueryClient,
+  userId: string,
+  isOnline: boolean
+) => {
+  queryClient.setQueriesData(
+    { predicate: ({ queryKey }) => getListKeyKind(queryKey) === 'chat-list' },
+    (data) =>
+      updateCollection<ChatListItemResponse>(
+        data,
+        (items) =>
+          items.map((item) =>
+            item.user.id === userId ? { ...item, isOnline } : item
+          ),
+        'all'
+      )
+  )
+}
+
 const toWebSocketUrl = () => {
   const url = new URL(BASE_URL)
   url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:'
@@ -280,12 +300,23 @@ const routeInboundEvent = (
   if (event.type === 'chat_read') {
     queryClient.invalidateQueries({ queryKey: ['chats'] })
   }
+
+  if (event.type === 'user_online') {
+    setUserOnlineInLists(queryClient, event.userId, true)
+  }
+
+  if (event.type === 'user_offline') {
+    setUserOnlineInLists(queryClient, event.userId, false)
+  }
 }
 
 export const useChatWebSocket = (): UseChatWebSocketResult => {
   const queryClient = useQueryClient()
   const socketRef = useRef<ReconnectingWebSocket | null>(null)
   const heartbeatRef = useRef<number | null>(null)
+  const isUnloadingRef = useRef(false)
+  const connectTimeRef = useRef<number>(0)
+  const didOpenRef = useRef(false)
   const [status, setStatus] = useState<ChatSocketStatus>('idle')
   const [lastEvent, setLastEvent] = useState<ChatWsInboundPayload | null>(null)
   const [lastError, setLastError] = useState<string | null>(null)
@@ -322,9 +353,17 @@ export const useChatWebSocket = (): UseChatWebSocketResult => {
 
     const socket = new ReconnectingWebSocket(wsUrl, [], { maxRetries: 10 })
     socketRef.current = socket
+    connectTimeRef.current = Date.now()
+    didOpenRef.current = false
     setStatus('connecting')
 
+    const handleBeforeUnload = () => {
+      isUnloadingRef.current = true
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+
     const handleOpen = () => {
+      didOpenRef.current = true
       setStatus('open')
       setLastError(null)
       stopHeartbeat()
@@ -334,11 +373,24 @@ export const useChatWebSocket = (): UseChatWebSocketResult => {
     }
 
     const handleClose = () => {
+      if (isUnloadingRef.current) return
+      if (!didOpenRef.current && Date.now() - connectTimeRef.current < 2000) {
+        setStatus('closed')
+        setLastError('Authentication failed — please refresh the page')
+        stopHeartbeat()
+        return
+      }
       setStatus('closed')
       stopHeartbeat()
     }
 
     const handleError = () => {
+      if (isUnloadingRef.current) return
+      if (!didOpenRef.current && Date.now() - connectTimeRef.current < 2000) {
+        setStatus('error')
+        setLastError('Authentication failed — please refresh the page')
+        return
+      }
       setStatus('error')
       setLastError('Chat socket connection failed')
     }
@@ -376,6 +428,7 @@ export const useChatWebSocket = (): UseChatWebSocketResult => {
 
     return () => {
       stopHeartbeat()
+      window.removeEventListener('beforeunload', handleBeforeUnload)
       socket.removeEventListener('open', handleOpen)
       socket.removeEventListener('close', handleClose)
       socket.removeEventListener('error', handleError)
@@ -385,5 +438,9 @@ export const useChatWebSocket = (): UseChatWebSocketResult => {
     }
   }, [queryClient, stopHeartbeat, wsUrl])
 
-  return { status, lastEvent, lastError, send }
+  const authFailed =
+    (status === 'closed' || status === 'error') &&
+    lastError === 'Authentication failed — please refresh the page'
+
+  return { status, lastEvent, lastError, authFailed, send }
 }

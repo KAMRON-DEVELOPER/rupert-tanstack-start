@@ -16,7 +16,7 @@ const addTodoMutation = useMutation({
   mutationFn: (newTodo: string) => axios.post('/api/data', { text: newTodo }),
   // make sure to _return_ the Promise from the query invalidation
   // so that the mutation stays in `pending` state until the refetch is finished
-  onSettled: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
+  onSettled: () => queryClient.invalidateQueries({ queryKey: ['todos'] })
 })
 
 const { isPending, submittedAt, variables, mutate, isError } = addTodoMutation
@@ -69,13 +69,13 @@ This approach works very well if the mutation and the query live in the same com
 const { mutate } = useMutation({
   mutationFn: (newTodo: string) => axios.post('/api/data', { text: newTodo }),
   onSettled: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
-  mutationKey: ['addTodo'],
+  mutationKey: ['addTodo']
 })
 
 // access variables somewhere else
 const variables = useMutationState<string>({
   filters: { mutationKey: ['addTodo'], status: 'pending' },
-  select: (mutation) => mutation.state.variables,
+  select: (mutation) => mutation.state.variables
 })
 ```
 
@@ -120,7 +120,7 @@ useMutation({
   },
   // Always refetch after error or success:
   onSettled: (data, error, variables, onMutateResult, context) =>
-    context.client.invalidateQueries({ queryKey: ['todos'] }),
+    context.client.invalidateQueries({ queryKey: ['todos'] })
 })
 ```
 
@@ -152,12 +152,12 @@ useMutation({
   onError: (err, newTodo, onMutateResult, context) => {
     context.client.setQueryData(
       ['todos', onMutateResult.newTodo.id],
-      onMutateResult.previousTodo,
+      onMutateResult.previousTodo
     )
   },
   // Always refetch after error or success:
   onSettled: (newTodo, error, variables, onMutateResult, context) =>
-    context.client.invalidateQueries({ queryKey: ['todos', newTodo.id] }),
+    context.client.invalidateQueries({ queryKey: ['todos', newTodo.id] })
 })
 ```
 
@@ -175,7 +175,7 @@ useMutation({
     if (error) {
       // do something
     }
-  },
+  }
 })
 ```
 

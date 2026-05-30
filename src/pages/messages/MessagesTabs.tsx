@@ -8,7 +8,8 @@ const tabs = linkOptions([
   },
   {
     to: '/messages/groups',
-    label: 'Groups'
+    label: 'Groups',
+    disabled: true
   }
 ])
 

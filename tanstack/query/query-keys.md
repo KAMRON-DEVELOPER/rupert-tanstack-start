@@ -84,7 +84,7 @@ Since query keys uniquely describe the data they are fetching, they should inclu
 function Todos({ todoId }) {
   const result = useQuery({
     queryKey: ['todos', todoId],
-    queryFn: () => fetchTodoById(todoId),
+    queryFn: () => fetchTodoById(todoId)
   })
 }
 ```

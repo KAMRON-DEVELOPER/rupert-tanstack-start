@@ -7,12 +7,14 @@ import {
   useCreateCountryMutation,
   useUpdateCountryMutation,
   useCreateCityMutation,
-  useUpdateCityMutation
+  useUpdateCityMutation,
+  useDeleteCountryMutation,
+  useDeleteCityMutation
 } from '@/services/admin/admin'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Plus, Edit, ChevronRight, MapPin } from 'lucide-react'
+import { Plus, Edit, ChevronRight, MapPin, Trash2 } from 'lucide-react'
 import { CountryForm } from '@/components/admin/CountryForm'
 import { CityForm } from '@/components/admin/CityForm'
 import type { CitySchema, CountrySchema } from '@/types/location.schema'
@@ -20,6 +22,17 @@ import type { CountryCreateRequest, CountryUpdateRequest } from '@/types/admin.s
 import { getErrorMessage } from '@/types/helper'
 import { isAxiosError } from 'axios'
 import { toast } from 'sonner'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
 
 const toCountryUpdateRequest = (
   initialData: CountrySchema,
@@ -61,6 +74,35 @@ export function AdminLocationsPage() {
   const updateCountryMutation = useUpdateCountryMutation()
   const createCityMutation = useCreateCityMutation()
   const updateCityMutation = useUpdateCityMutation()
+  const deleteCountryMutation = useDeleteCountryMutation()
+  const deleteCityMutation = useDeleteCityMutation()
+
+  const handleDeleteCountry = (countryId: string) => {
+    deleteCountryMutation.mutate(
+      { countryId },
+      {
+        onSuccess: () => {
+          if (selectedCountry?.id === countryId) {
+            setSelectedCountry(null)
+          }
+          toast.success('Country deleted')
+        },
+        onError: (error) => showMutationError(error, 'Failed to delete country')
+      }
+    )
+  }
+
+  const handleDeleteCity = (countryId: string, cityId: string) => {
+    deleteCityMutation.mutate(
+      { countryId, cityId },
+      {
+        onSuccess: () => {
+          toast.success('City deleted')
+        },
+        onError: (error) => showMutationError(error, 'Failed to delete city')
+      }
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -86,12 +128,12 @@ export function AdminLocationsPage() {
               <div className="text-muted-foreground py-8 text-center text-sm">
                 Loading countries...
               </div>
-            ) : countries?.length === 0 ? (
+            ) : countries?.data?.length === 0 ? (
               <div className="text-muted-foreground py-8 text-center text-sm">
                 No countries found.
               </div>
             ) : (
-              countries?.map((country) => (
+              countries?.data?.map((country) => (
                 <div
                   key={country.id}
                   className={`hover:bg-accent flex cursor-pointer items-center justify-between rounded-lg border p-2 transition-colors ${
@@ -111,6 +153,31 @@ export function AdminLocationsPage() {
                     >
                       <Edit className="h-3 w-3" />
                     </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon-sm" title="Delete country">
+                          <Trash2 className="text-destructive h-3 w-3" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Delete Country</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Are you sure you want to delete &quot;{country.name}&quot;? This will
+                            also remove all associated cities. This action cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            variant="destructive"
+                            onClick={() => handleDeleteCountry(country.id)}
+                          >
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                     <ChevronRight className="h-4 w-4 opacity-50" />
                   </div>
                 </div>
@@ -139,12 +206,12 @@ export function AdminLocationsPage() {
               <div className="text-muted-foreground py-10 text-center text-sm">
                 Loading cities...
               </div>
-            ) : cities?.length === 0 ? (
+            ) : cities?.data?.length === 0 ? (
               <div className="text-muted-foreground py-10 text-center text-sm">
                 No cities found for this country.
               </div>
             ) : (
-              cities?.map((city) => (
+              cities?.data?.map((city) => (
                 <div
                   key={city.id}
                   className="flex items-center justify-between rounded-lg border p-2"
@@ -153,9 +220,36 @@ export function AdminLocationsPage() {
                     <MapPin className="text-muted-foreground h-3 w-3" />
                     <span>{city.name}</span>
                   </div>
-                  <Button variant="ghost" size="icon-sm" onClick={() => setEditingCity(city)}>
-                    <Edit className="h-3 w-3" />
-                  </Button>
+                  <div className="flex items-center gap-1">
+                    <Button variant="ghost" size="icon-sm" onClick={() => setEditingCity(city)}>
+                      <Edit className="h-3 w-3" />
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon-sm" title="Delete city">
+                          <Trash2 className="text-destructive h-3 w-3" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Delete City</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Are you sure you want to delete &quot;{city.name}&quot;? This action
+                            cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            variant="destructive"
+                            onClick={() => handleDeleteCity(city.countryId, city.id)}
+                          >
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 </div>
               ))
             )}

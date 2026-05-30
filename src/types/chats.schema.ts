@@ -1,9 +1,8 @@
-import z from 'zod'
+import z, { uuidv4 } from 'zod'
 import {
   attachmentIdWithPositionRequestSchema,
   attachmentWithPositionResponseSchema
 } from './attachment.schema'
-import { uuidSchema } from './types.schemas'
 
 export const ChatEventList = [
   'ping',
@@ -38,7 +37,7 @@ export const ChatEventList = [
 export const chatEventSchema = z.enum(ChatEventList)
 
 export const chatListUserResponseSchema = z.object({
-  id: uuidSchema,
+  id: uuidv4(),
   firstName: z.string(),
   lastName: z.string().nullable().optional().default(null),
   avatarUrl: z.string().nullable().optional().default(null),
@@ -46,13 +45,13 @@ export const chatListUserResponseSchema = z.object({
 })
 
 export const chatMessageResponseSchema = z.object({
-  id: uuidSchema,
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
-  senderId: uuidSchema.nullable(),
+  id: uuidv4(),
+  createdAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
+  senderId: uuidv4().nullable(),
   message: z.string().nullable(),
-  chatId: uuidSchema,
-  replyId: uuidSchema.nullable(),
+  chatId: uuidv4(),
+  replyId: uuidv4().nullable(),
   attachments: z
     .array(attachmentWithPositionResponseSchema)
     .optional()
@@ -65,7 +64,7 @@ export const chatListLastMessageResponseSchema =
   })
 
 export const chatListItemResponseSchema = z.object({
-  id: uuidSchema,
+  id: uuidv4(),
   user: chatListUserResponseSchema,
   isPinned: z.boolean(),
   isMuted: z.boolean(),
@@ -74,11 +73,17 @@ export const chatListItemResponseSchema = z.object({
     .nullable()
     .optional()
     .default(null),
-  unreadCount: z.number().int().min(0)
+  unreadCount: z.number().int().min(0),
+  isOnline: z.boolean().optional().default(false)
 })
 
 export const chatListResponseSchema = z.object({
   data: z.array(chatListItemResponseSchema),
+  total: z.number().int().min(0)
+})
+
+export const userSearchResponseSchema = z.object({
+  data: z.array(chatListUserResponseSchema),
   total: z.number().int().min(0)
 })
 
@@ -89,13 +94,13 @@ export const chatMessagesResponseSchema = z.object({
 
 export const createChatSchema = z
   .object({
-    participantId: uuidSchema
+    participantId: uuidv4()
   })
   .strict()
 
 export const chatRoomActionRequestSchema = z
   .object({
-    chatId: uuidSchema
+    chatId: uuidv4()
   })
   .strict()
 
@@ -107,22 +112,22 @@ export const scopedChatActionRequestSchema = chatRoomActionRequestSchema
 
 export const messageActionRequestSchema = chatRoomActionRequestSchema
   .extend({
-    messageId: uuidSchema
+    messageId: uuidv4()
   })
   .strict()
 
 export const readChatRequestSchema = chatRoomActionRequestSchema
   .extend({
-    lastSeenAt: z.string().datetime().optional()
+    lastSeenAt: z.iso.datetime().optional()
   })
   .strict()
 
 export const createChatMessageRequestSchema = z
   .object({
     message: z.string().nullable().optional().default(null),
-    chatId: uuidSchema.nullable().optional().default(null),
-    replyId: uuidSchema.nullable().optional().default(null),
-    participantId: uuidSchema.nullable().optional().default(null),
+    chatId: uuidv4().nullable().optional().default(null),
+    replyId: uuidv4().nullable().optional().default(null),
+    participantId: uuidv4().nullable().optional().default(null),
     attachments: z
       .array(attachmentIdWithPositionRequestSchema)
       .optional()
@@ -244,8 +249,8 @@ const chatCreatedWithItemEventSchema = z.object({
 
 const chatCreatedWithIdsEventSchema = z.object({
   type: z.literal('chat_created'),
-  chatId: uuidSchema,
-  participantId: uuidSchema
+  chatId: uuidv4(),
+  participantId: uuidv4()
 })
 
 export const chatWsInboundPayloadSchema = z.union([
@@ -255,44 +260,44 @@ export const chatWsInboundPayloadSchema = z.union([
     detail: z.unknown(),
     statusCode: z.number().int().optional()
   }),
-  z.object({ type: z.literal('chat_joined'), chatId: uuidSchema }),
-  z.object({ type: z.literal('chat_left'), chatId: uuidSchema }),
+  z.object({ type: z.literal('chat_joined'), chatId: uuidv4() }),
+  z.object({ type: z.literal('chat_left'), chatId: uuidv4() }),
   z.union([chatCreatedWithItemEventSchema, chatCreatedWithIdsEventSchema]),
   z.object({
     type: z.literal('chat_read'),
-    chatId: uuidSchema,
-    userId: uuidSchema,
-    lastSeenAt: z.string().datetime()
+    chatId: uuidv4(),
+    userId: uuidv4(),
+    lastSeenAt: z.iso.datetime()
   }),
   z.object({
     type: z.literal('chat_cleared'),
-    chatId: uuidSchema,
-    userId: uuidSchema,
-    clearedAt: z.string().datetime(),
+    chatId: uuidv4(),
+    userId: uuidv4(),
+    clearedAt: z.iso.datetime(),
     forParticipant: z.boolean()
   }),
   z.object({
     type: z.literal('chat_deleted'),
-    chatId: uuidSchema,
-    userId: uuidSchema,
-    deletedAt: z.string().datetime().optional(),
+    chatId: uuidv4(),
+    userId: uuidv4(),
+    deletedAt: z.iso.datetime().optional(),
     forParticipant: z.boolean()
   }),
-  z.object({ type: z.literal('user_online'), userId: uuidSchema }),
+  z.object({ type: z.literal('user_online'), userId: uuidv4() }),
   z.object({
     type: z.literal('user_offline'),
-    userId: uuidSchema,
-    lastOnlineAt: z.string().datetime()
+    userId: uuidv4(),
+    lastOnlineAt: z.iso.datetime()
   }),
   z.object({
     type: z.literal('typing_start'),
-    chatId: uuidSchema,
-    userId: uuidSchema
+    chatId: uuidv4(),
+    userId: uuidv4()
   }),
   z.object({
     type: z.literal('typing_stop'),
-    chatId: uuidSchema,
-    userId: uuidSchema
+    chatId: uuidv4(),
+    userId: uuidv4()
   }),
   z.object({
     type: z.literal('message_created'),
@@ -304,12 +309,12 @@ export const chatWsInboundPayloadSchema = z.union([
   }),
   z.object({
     type: z.literal('message_deleted'),
-    chatId: uuidSchema,
-    messageId: uuidSchema
+    chatId: uuidv4(),
+    messageId: uuidv4()
   }),
   z.object({
     type: z.literal('chat_settings_updated'),
-    chatId: uuidSchema,
+    chatId: uuidv4(),
     isPinned: z.boolean(),
     isMuted: z.boolean(),
     isArchived: z.boolean()
@@ -324,6 +329,7 @@ export type ChatListLastMessageResponse = z.infer<
 >
 export type ChatListItemResponse = z.infer<typeof chatListItemResponseSchema>
 export type ChatListResponse = z.infer<typeof chatListResponseSchema>
+export type UserSearchResponse = z.infer<typeof userSearchResponseSchema>
 export type ChatMessagesResponse = z.infer<typeof chatMessagesResponseSchema>
 export type CreateChatRequest = z.infer<typeof createChatSchema>
 export type CreateChatMessageRequest = z.infer<

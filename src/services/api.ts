@@ -23,7 +23,7 @@ export function createApi({
   const client = wrapper(
     axios.create({
       baseURL: BASE_URL,
-      timeout: 5000,
+      timeout: 2500,
       withCredentials: true,
       jar,
       paramsSerializer: {

@@ -27,9 +27,9 @@ export const Route = createFileRoute('/posts/$postId')({
 
     return {
       fastData,
-      deferredSlowData: slowDataPromise,
+      deferredSlowData: slowDataPromise
     }
-  },
+  }
 })
 ```
 
@@ -43,7 +43,7 @@ import { createFileRoute, Await } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/posts/$postId')({
   // ...
-  component: PostIdComponent,
+  component: PostIdComponent
 })
 
 function PostIdComponent() {
@@ -99,7 +99,7 @@ export const Route = createFileRoute('/posts/$postId')({
 
     // Fetch and await some data that resolves quickly
     await queryClient.ensureQueryData(fastDataOptions())
-  },
+  }
 })
 ```
 
@@ -117,7 +117,7 @@ export const Route = createFileRoute('/posts/$postId')({
 
     // Fetch and await some data that resolves quickly
     await queryClient.ensureQueryData(fastDataOptions())
-  },
+  }
 })
 ```
 
@@ -137,7 +137,7 @@ import { slowDataOptions, fastDataOptions } from '~/api/query-options'
 
 export const Route = createFileRoute('/posts/$postId')({
   // ...
-  component: PostIdComponent,
+  component: PostIdComponent
 })
 
 function PostIdComponent() {
@@ -169,7 +169,7 @@ import { slowDataOptions, fastDataOptions } from '~/api/query-options'
 
 export const Route = createFileRoute('/posts/$postId')({
   // ...
-  component: PostIdComponent,
+  component: PostIdComponent
 })
 
 function PostIdComponent() {

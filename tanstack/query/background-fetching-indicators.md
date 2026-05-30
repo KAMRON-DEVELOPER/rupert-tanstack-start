@@ -13,10 +13,10 @@ function Todos() {
     status,
     data: todos,
     error,
-    isFetching,
+    isFetching
   } = useQuery({
     queryKey: ['todos'],
-    queryFn: fetchTodos,
+    queryFn: fetchTodos
   })
 
   return status === 'pending' ? (

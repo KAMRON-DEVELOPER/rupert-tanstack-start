@@ -33,6 +33,7 @@ import {
   getWorkExperiencesFn,
   revokeSessionFn,
   revokeSessionsFn,
+  searchUsersFn,
   unfollowUserFn,
   updateFollowRequestFn,
   updateResumeFn,
@@ -87,6 +88,16 @@ export const useGetFollowRequestsQueryOptions = (data: Partial<Pagination>) =>
   queryOptions({
     queryKey: ['follow-requests', data],
     queryFn: () => getFollowRequestsFn({ data })
+  })
+
+export const useSearchUsersQueryOptions = (data: {
+  q: string
+  offset?: number
+  limit?: number
+}) =>
+  queryOptions({
+    queryKey: ['users', 'search', data],
+    queryFn: () => searchUsersFn({ data })
   })
 
 export const useRevokeSessionMutation = () => {

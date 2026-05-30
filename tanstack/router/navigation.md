@@ -25,7 +25,7 @@ This is the core `ToOptions` interface that is used in every navigation and rout
 type ToOptions<
   TRouteTree extends AnyRoute = AnyRoute,
   TFrom extends RoutePaths<TRouteTree> | string = string,
-  TTo extends string = '',
+  TTo extends string = ''
 > = {
   // `from` is an optional route ID or path. If it is not supplied, only absolute paths will be auto-completed and type-safe. It's common to supply the route.fullPath of the origin route you are rendering from for convenience. If you don't know the origin route, leave this empty and work with absolute paths or unsafe relative paths.
   from?: string
@@ -87,7 +87,7 @@ This is the core `NavigateOptions` interface that extends `ToOptions`. Any API t
 export type NavigateOptions<
   TRouteTree extends AnyRoute = AnyRoute,
   TFrom extends RoutePaths<TRouteTree> | string = string,
-  TTo extends string = '',
+  TTo extends string = ''
 > = ToOptions<TRouteTree, TFrom, TTo> & {
   // `replace` is a boolean that determines whether the navigation should replace the current history entry or push a new one.
   replace?: boolean
@@ -116,7 +116,7 @@ Anywhere an actual `<a>` tag the `LinkOptions` interface which extends `Navigate
 export type LinkOptions<
   TRouteTree extends AnyRoute = AnyRoute,
   TFrom extends RoutePaths<TRouteTree> | string = string,
-  TTo extends string = '',
+  TTo extends string = ''
 > = NavigateOptions<TRouteTree, TFrom, TTo> & {
   // The standard anchor tag target attribute
   target?: HTMLAnchorElement['target']
@@ -162,7 +162,7 @@ In addition to the [`LinkOptions`](#linkoptions-interface) interface, the `Link`
 ```tsx
 export type LinkProps<
   TFrom extends RoutePaths<RegisteredRouter['routeTree']> | string = string,
-  TTo extends string = '',
+  TTo extends string = ''
 > = LinkOptions<RegisteredRouter['routeTree'], TFrom, TTo> & {
   // A function that returns additional props for the `active` state of this link. These props override other props passed to the link (`style`'s are merged, `className`'s are concatenated)
   activeProps?:
@@ -208,7 +208,7 @@ const link = (
   <Link
     to="/blog/post/$postId"
     params={{
-      postId: 'my-first-blog-post',
+      postId: 'my-first-blog-post'
     }}
   >
     Blog Post
@@ -231,7 +231,7 @@ Relative links can be combined with a `from` route path. If a from route path is
 
 ```tsx
 const postIdRoute = createRoute({
-  path: '/blog/post/$postId',
+  path: '/blog/post/$postId'
 })
 
 const link = (
@@ -251,7 +251,7 @@ Another common need is to navigate one route back relative to the current locati
 
 ```tsx
 export const Route = createFileRoute('/posts/$postId')({
-  component: PostComponent,
+  component: PostComponent
 })
 
 function PostComponent() {
@@ -283,7 +283,7 @@ const link = (
   <Link
     to="/search"
     search={{
-      query: 'tanstack',
+      query: 'tanstack'
     }}
   >
     Search
@@ -299,7 +299,7 @@ const link = (
     to="."
     search={(prev) => ({
       ...prev,
-      page: prev.page + 1,
+      page: prev.page + 1
     })}
   >
     Next Page
@@ -320,7 +320,7 @@ const link = (
   <Link
     to="/blog/post/$postId"
     params={{
-      postId: 'my-first-blog-post',
+      postId: 'my-first-blog-post'
     }}
     hash="section-1"
   >
@@ -575,21 +575,21 @@ function Component() {
   const clearFilters = () => {
     navigate({
       to: '/posts/{-$category}/{-$tag}',
-      params: { category: undefined, tag: undefined },
+      params: { category: undefined, tag: undefined }
     })
   }
 
   const setCategory = (category: string) => {
     navigate({
       to: '/posts/{-$category}/{-$tag}',
-      params: (prev) => ({ ...prev, category }),
+      params: (prev) => ({ ...prev, category })
     })
   }
 
   const applyFilters = (category?: string, tag?: string) => {
     navigate({
       to: '/posts/{-$category}/{-$tag}',
-      params: { category, tag },
+      params: { category, tag }
     })
   }
 }
@@ -606,12 +606,12 @@ const link = (
   <Link
     to="/blog/post/$postId"
     params={{
-      postId: 'my-first-blog-post',
+      postId: 'my-first-blog-post'
     }}
     activeProps={{
       style: {
-        fontWeight: 'bold',
-      },
+        fontWeight: 'bold'
+      }
     }}
   >
     Section 1
@@ -748,7 +748,7 @@ function Component() {
 
     const response = await fetch('/posts', {
       method: 'POST',
-      body: JSON.stringify({ title: 'My First Post' }),
+      body: JSON.stringify({ title: 'My First Post' })
     })
 
     const { id: postId } = await response.json()

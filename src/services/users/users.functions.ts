@@ -1,6 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
 import { createServerApi } from '@/services/api.server'
 import { toApiParams } from '@/services/api-params'
+import { userSearchResponseSchema } from '@/types/chats.schema'
+import type { UserSearchResponse } from '@/types/chats.schema'
 import type { ListResponse, MessageResponse, Pagination } from '@/types/types'
 import type {
   FollowSchema,
@@ -251,4 +253,16 @@ export const updateFollowRequestFn = createServerFn({ method: 'POST' })
       method: 'PATCH',
       data
     })
+  })
+
+export const searchUsersFn = createServerFn()
+  .inputValidator(
+    (data: { q: string; offset?: number; limit?: number }) => data
+  )
+  .handler(async ({ data: { q, ...params } }) => {
+    const api = createServerApi()
+    const data = await api('users/search', {
+      params: toApiParams({ q, ...params })
+    })
+    return userSearchResponseSchema.parse(data) satisfies UserSearchResponse
   })

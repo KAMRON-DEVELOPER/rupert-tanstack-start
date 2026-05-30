@@ -14,7 +14,7 @@ import {
   createServerFn,
   createServerOnlyFn,
   createClientOnlyFn,
-  createIsomorphicFn,
+  createIsomorphicFn
 } from '@tanstack/react-start'
 
 // Server function (RPC call)
@@ -96,7 +96,7 @@ export const Route = createFileRoute('/users')({
     // This runs on BOTH server and client!
     const secret = process.env.SECRET // Exposed to client
     return fetch(`/api/users?key=${secret}`)
-  },
+  }
 })
 
 // ✅ Use server function for server-only operations
@@ -106,7 +106,7 @@ const getUsersSecurely = createServerFn().handler(() => {
 })
 
 export const Route = createFileRoute('/users')({
-  loader: () => getUsersSecurely(), // Isomorphic call to server function
+  loader: () => getUsersSecurely() // Isomorphic call to server function
 })
 ```
 

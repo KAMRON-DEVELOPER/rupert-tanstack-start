@@ -13,9 +13,9 @@ export const routes = rootRoute('root.tsx', [
       index('app/dashboard-index.tsx'),
       route('/invoices', 'app/dashboard-invoices.tsx', [
         index('app/invoices-index.tsx'),
-        route('$id', 'app/invoice-detail.tsx'),
-      ]),
+        route('$id', 'app/invoice-detail.tsx')
+      ])
     ]),
-    physical('/posts', 'posts'),
-  ]),
+    physical('/posts', 'posts')
+  ])
 ])

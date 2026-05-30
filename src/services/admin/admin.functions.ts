@@ -7,13 +7,15 @@ import {
   SkillRequestSchema,
   AdminCountrySchema,
   AdminCitySchema,
-  AdminSkillSchema,
   type CountryCreateRequest,
   type CreateCityVariables,
   type UpdateCityVariables,
   type UpdateCountryVariables,
   type UpdateSkillVariables,
-  type SkillRequest
+  type SkillRequest,
+  type DeleteCountryVariables,
+  type DeleteCityVariables,
+  type DeleteSkillVariables
 } from '@/types/admin.schema'
 
 export const createCountryFn = createServerFn({ method: 'POST' })
@@ -78,8 +80,7 @@ export const createSkillFn = createServerFn({ method: 'POST' })
       method: 'POST',
       data
     })
-    console.log(response)
-    return AdminSkillSchema.parse(response)
+    response
   })
 
 export const updateSkillFn = createServerFn({ method: 'POST' })
@@ -92,5 +93,32 @@ export const updateSkillFn = createServerFn({ method: 'POST' })
     await api(`admin/skills/${data.skillId}`, {
       method: 'PATCH',
       data: data.data
+    })
+  })
+
+export const deleteCountryFn = createServerFn({ method: 'POST' })
+  .inputValidator((data: DeleteCountryVariables) => data)
+  .handler(async ({ data }) => {
+    const api = createServerApi()
+    await api(`admin/locations/countries/${data.countryId}`, {
+      method: 'DELETE'
+    })
+  })
+
+export const deleteCityFn = createServerFn({ method: 'POST' })
+  .inputValidator((data: DeleteCityVariables) => data)
+  .handler(async ({ data }) => {
+    const api = createServerApi()
+    await api(`admin/locations/${data.countryId}/cities/${data.cityId}`, {
+      method: 'DELETE'
+    })
+  })
+
+export const deleteSkillFn = createServerFn({ method: 'POST' })
+  .inputValidator((data: DeleteSkillVariables) => data)
+  .handler(async ({ data }) => {
+    const api = createServerApi()
+    await api(`admin/skills/${data.skillId}`, {
+      method: 'DELETE'
     })
   })

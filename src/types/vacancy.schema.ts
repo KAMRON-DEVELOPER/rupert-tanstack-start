@@ -1,4 +1,4 @@
-import z from 'zod'
+import z, { uuidv4 } from 'zod'
 import {
   ApplicationStatusList,
   EmploymentTypeList,
@@ -8,10 +8,10 @@ import {
   VacancyStatusList,
   WorkFormatList
 } from '@/types/literals'
-import { paginationSchema, uuidSchema } from '@/types/types.schemas'
+import { paginationSchema } from '@/types/types.schemas'
 
 export const VacancySearchSchema = z.object({
-  companyId: uuidSchema.optional(),
+  companyId: uuidv4().optional(),
   title: z.string().optional(),
   submissionType: z.enum(SubmissionTypeList).optional(),
   specialization: z.enum(SpecializationList).optional(),
@@ -22,9 +22,9 @@ export const VacancySearchSchema = z.object({
   workFormat: z.enum(WorkFormatList).optional(),
   employmentType: z.enum(EmploymentTypeList).optional(),
   status: z.enum(VacancyStatusList).optional(),
-  countryId: uuidSchema.optional(),
-  cityId: uuidSchema.optional(),
-  skillIds: z.array(uuidSchema).optional()
+  countryId: uuidv4().optional(),
+  cityId: uuidv4().optional(),
+  skillIds: z.array(uuidv4()).optional()
 })
 
 export const vacancySearch = VacancySearchSchema.extend(paginationSchema.shape)
@@ -32,8 +32,8 @@ export const vacancySearch = VacancySearchSchema.extend(paginationSchema.shape)
 export type VacancySearch = z.infer<typeof vacancySearch>
 
 export const ApplicationSearchSchema = z.object({
-  vacancyId: uuidSchema.optional(),
-  applicantId: uuidSchema.optional(),
+  vacancyId: uuidv4().optional(),
+  applicantId: uuidv4().optional(),
   status: z.enum(ApplicationStatusList).optional()
 })
 

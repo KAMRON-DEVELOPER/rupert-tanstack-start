@@ -62,7 +62,7 @@ Route `loader` functions are called when a route match is loaded. They are calle
 ```tsx
 // src/routes/posts.tsx
 export const Route = createFileRoute('/posts')({
-  loader: () => fetchPosts(),
+  loader: () => fetchPosts()
 })
 ```
 
@@ -70,8 +70,8 @@ export const Route = createFileRoute('/posts')({
 // src/routes/posts.tsx
 export const Route = createFileRoute('/posts')({
   loader: {
-    handler: () => fetchPosts(),
-  },
+    handler: () => fetchPosts()
+  }
 })
 ```
 
@@ -187,8 +187,8 @@ export const Route = createFileRoute('/posts')({
   loader: ({ deps: { offset, limit } }) =>
     fetchPosts({
       offset,
-      limit,
-    }),
+      limit
+    })
 })
 ```
 
@@ -225,7 +225,7 @@ By default, `staleTime` for navigations is set to `0`ms (and 30 seconds for prel
 export const Route = createFileRoute('/posts')({
   loader: () => fetchPosts(),
   // Consider the route's data fresh for 10 seconds
-  staleTime: 10_000,
+  staleTime: 10_000
 })
 ```
 
@@ -242,8 +242,8 @@ If you want a specific loader to wait for a stale reload to finish before contin
 export const Route = createFileRoute('/posts')({
   loader: {
     handler: () => fetchPosts(),
-    staleReloadMode: 'blocking',
-  },
+    staleReloadMode: 'blocking'
+  }
 })
 ```
 
@@ -252,7 +252,7 @@ You can also change the default for the entire router:
 ```tsx
 const router = createRouter({
   routeTree,
-  defaultStaleReloadMode: 'blocking',
+  defaultStaleReloadMode: 'blocking'
 })
 ```
 
@@ -266,7 +266,7 @@ To disable automatic stale reloads for a route, set the `staleTime` option to `I
 // /routes/posts.tsx
 export const Route = createFileRoute('/posts')({
   loader: () => fetchPosts(),
-  staleTime: Infinity,
+  staleTime: Infinity
 })
 ```
 
@@ -275,7 +275,7 @@ You can even turn this off for all routes by setting the `defaultStaleTime` opti
 ```tsx
 const router = createRouter({
   routeTree,
-  defaultStaleTime: Infinity,
+  defaultStaleTime: Infinity
 })
 ```
 
@@ -296,7 +296,7 @@ export const Route = createFileRoute('/posts')({
   // Do not cache this route's data after it's unloaded
   gcTime: 0,
   // Only reload the route when the user navigates to it or when deps change
-  shouldReload: false,
+  shouldReload: false
 })
 ```
 
@@ -313,7 +313,7 @@ We break down this use case in the [External Data Loading](./external-data-loadi
 ```tsx
 const router = createRouter({
   routeTree,
-  defaultPreloadStaleTime: 0,
+  defaultPreloadStaleTime: 0
 })
 ```
 
@@ -377,7 +377,7 @@ export const Route = createRootRouteWithContext<{
 // This can be a powerful tool for dependency injection across your router
 // and routes.
 export const Route = createFileRoute('/posts')({
-  loader: ({ context: { fetchPosts } }) => fetchPosts(),
+  loader: ({ context: { fetchPosts } }) => fetchPosts()
 })
 ```
 
@@ -392,8 +392,8 @@ const router = createRouter({
   routeTree,
   context: {
     // Supply the fetchPosts function to the router context
-    fetchPosts,
-  },
+    fetchPosts
+  }
 })
 ```
 
@@ -404,7 +404,7 @@ To use path params in your `loader` function, access them via the `params` prope
 ```tsx
 // src/routes/posts.$postId.tsx
 export const Route = createFileRoute('/posts/$postId')({
-  loader: ({ params: { postId } }) => fetchPostById(postId),
+  loader: ({ params: { postId } }) => fetchPostById(postId)
 })
 ```
 
@@ -417,13 +417,13 @@ Passing down global context to your router is great, but what if you want to pro
 export const Route = createFileRoute('/posts')({
   // Pass the fetchPosts function to the route context
   beforeLoad: () => ({
-    fetchPosts: () => console.info('foo'),
+    fetchPosts: () => console.info('foo')
   }),
   loader: ({ context: { fetchPosts } }) => {
     fetchPosts() // 'foo'
 
     // ...
-  },
+  }
 })
 ```
 
@@ -445,9 +445,9 @@ export const Route = createFileRoute('/users/user')({
       userId: string
     },
   loaderDeps: ({ search: { userId } }) => ({
-    userId,
+    userId
   }),
-  loader: async ({ deps: { userId } }) => getUser(userId),
+  loader: async ({ deps: { userId } }) => getUser(userId)
 })
 ```
 
@@ -458,15 +458,15 @@ export const Route = createFileRoute('/users/user')({
 export const Route = createFileRoute('/posts')({
   // Use zod to validate and parse the search params
   validateSearch: z.object({
-    offset: z.number().int().nonnegative().catch(0),
+    offset: z.number().int().nonnegative().catch(0)
   }),
   // Pass the offset to your loader deps via the loaderDeps function
   loaderDeps: ({ search: { offset } }) => ({ offset }),
   // Use the offset from context in the loader function
   loader: async ({ deps: { offset } }) =>
     fetchPosts({
-      offset,
-    }),
+      offset
+    })
 })
 ```
 
@@ -480,8 +480,8 @@ export const Route = createFileRoute('/posts')({
   loader: ({ abortController }) =>
     fetchPosts({
       // Pass this to an underlying fetch call or anything that supports signals
-      signal: abortController.signal,
-    }),
+      signal: abortController.signal
+    })
 })
 ```
 
@@ -494,8 +494,8 @@ The `preload` property of the `loader` function is a boolean which is `true` whe
 export const Route = createFileRoute('/posts')({
   loader: async ({ preload }) =>
     fetchPosts({
-      maxAge: preload ? 10_000 : 0, // Preloads should hang around a bit longer
-    }),
+      maxAge: preload ? 10_000 : 0 // Preloads should hang around a bit longer
+    })
 })
 ```
 
@@ -537,7 +537,7 @@ export const Route = createFileRoute('/posts')({
   onError: ({ error }) => {
     // Log the error
     console.error(error)
-  },
+  }
 })
 ```
 
@@ -551,7 +551,7 @@ export const Route = createFileRoute('/posts')({
   onCatch: ({ error, errorInfo }) => {
     // Log the error
     console.error(error)
-  },
+  }
 })
 ```
 
@@ -569,7 +569,7 @@ export const Route = createFileRoute('/posts')({
   errorComponent: ({ error }) => {
     // Render an error message
     return <div>{error.message}</div>
-  },
+  }
 })
 ```
 
@@ -593,7 +593,7 @@ export const Route = createFileRoute('/posts')({
         </button>
       </div>
     )
-  },
+  }
 })
 ```
 
@@ -619,7 +619,7 @@ export const Route = createFileRoute('/posts')({
         </button>
       </div>
     )
-  },
+  }
 })
 ```
 
@@ -639,6 +639,6 @@ export const Route = createFileRoute('/posts')({
 
     // Fallback to the default ErrorComponent
     return <ErrorComponent error={error} />
-  },
+  }
 })
 ```

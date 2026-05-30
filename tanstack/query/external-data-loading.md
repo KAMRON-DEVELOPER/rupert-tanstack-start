@@ -60,7 +60,7 @@ export const Route = createFileRoute('/posts')({
         ))}
       </div>
     )
-  },
+  }
 })
 ```
 
@@ -77,7 +77,7 @@ Let's take a look at a more realistic example using TanStack Query.
 // src/routes/posts.tsx
 const postsQueryOptions = queryOptions({
   queryKey: ['posts'],
-  queryFn: () => fetchPosts(),
+  queryFn: () => fetchPosts()
 })
 
 export const Route = createFileRoute('/posts')({
@@ -86,7 +86,7 @@ export const Route = createFileRoute('/posts')({
   component: () => {
     // Read the data from the cache and subscribe to updates
     const {
-      data: { posts },
+      data: { posts }
     } = useSuspenseQuery(postsQueryOptions)
 
     return (
@@ -96,7 +96,7 @@ export const Route = createFileRoute('/posts')({
         ))}
       </div>
     )
-  },
+  }
 })
 ```
 
@@ -129,7 +129,7 @@ export const Route = createFileRoute('/')({
         </button>
       </div>
     )
-  },
+  }
 })
 ```
 
@@ -161,13 +161,13 @@ export function createRouter() {
     // convenience (you can provide anything you want to the router
     // context!)
     context: {
-      queryClient,
+      queryClient
     },
     // On the server, dehydrate the loader client so the router
     // can serialize it and send it to the client for us
     dehydrate: () => {
       return {
-        queryClientState: dehydrate(queryClient),
+        queryClientState: dehydrate(queryClient)
       }
     },
     // On the client, hydrate the loader client with the data
@@ -182,7 +182,7 @@ export function createRouter() {
           {children}
         </QueryClientProvider>
       )
-    },
+    }
   })
 }
 ```

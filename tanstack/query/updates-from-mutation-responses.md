@@ -14,19 +14,19 @@ const mutation = useMutation({
   mutationFn: editTodo,
   onSuccess: (data) => {
     queryClient.setQueryData(['todo', { id: 5 }], data)
-  },
+  }
 })
 
 mutation.mutate({
   id: 5,
-  name: 'Do the laundry',
+  name: 'Do the laundry'
 })
 
 // The query below will be updated with the response from the
 // successful mutation
 const { status, data, error } = useQuery({
   queryKey: ['todo', { id: 5 }],
-  queryFn: fetchTodoById,
+  queryFn: fetchTodoById
 })
 ```
 
@@ -46,7 +46,7 @@ const useMutateTodo = () => {
     // Notice the second argument is the variables object that the `mutate` function receives
     onSuccess: (data, variables) => {
       queryClient.setQueryData(['todo', { id: variables.id }], data)
-    },
+    }
   })
 }
 ```
@@ -75,9 +75,9 @@ queryClient.setQueryData(
     oldData
       ? {
           ...oldData,
-          title: 'my new post title',
+          title: 'my new post title'
         }
-      : oldData,
+      : oldData
 )
 ```
 

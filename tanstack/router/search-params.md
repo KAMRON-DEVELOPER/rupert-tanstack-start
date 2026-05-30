@@ -51,7 +51,7 @@ const link = (
       pageIndex: 3,
       includeCategories: ['electronics', 'gifts'],
       sortBy: 'price',
-      desc: true,
+      desc: true
     }}
   />
 )
@@ -105,9 +105,9 @@ export const Route = createFileRoute('/shop/products')({
     return {
       page: Number(search?.page ?? 1),
       filter: (search.filter as string) || '',
-      sort: (search.sort as ProductSearchSortOptions) || 'newest',
+      sort: (search.sort as ProductSearchSortOptions) || 'newest'
     }
-  },
+  }
 })
 ```
 
@@ -134,9 +134,9 @@ export const Route = createFileRoute('/shop/products')({
     return {
       page: Number(search?.page ?? 1),
       filter: (search.filter as string) || '',
-      sort: (search.sort as ProductSearchSortOptions) || 'newest',
+      sort: (search.sort as ProductSearchSortOptions) || 'newest'
     }
-  },
+  }
 })
 ```
 
@@ -148,13 +148,13 @@ import { z } from 'zod'
 const productSearchSchema = z.object({
   page: z.number().catch(1),
   filter: z.string().catch(''),
-  sort: z.enum(['newest', 'oldest', 'price']).catch('newest'),
+  sort: z.enum(['newest', 'oldest', 'price']).catch('newest')
 })
 
 type ProductSearch = z.infer<typeof productSearchSchema>
 
 export const Route = createFileRoute('/shop/products')({
-  validateSearch: (search) => productSearchSchema.parse(search),
+  validateSearch: (search) => productSearchSchema.parse(search)
 })
 ```
 
@@ -178,11 +178,11 @@ import { z } from 'zod'
 const productSearchSchema = z.object({
   page: z.number().default(1),
   filter: z.string().default(''),
-  sort: z.enum(['newest', 'oldest', 'price']).default('newest'),
+  sort: z.enum(['newest', 'oldest', 'price']).default('newest')
 })
 
 export const Route = createFileRoute('/shop/products/')({
-  validateSearch: productSearchSchema,
+  validateSearch: productSearchSchema
 })
 ```
 
@@ -207,11 +207,11 @@ import { z } from 'zod'
 const productSearchSchema = z.object({
   page: z.number().default(1),
   filter: z.string().default(''),
-  sort: z.enum(['newest', 'oldest', 'price']).default('newest'),
+  sort: z.enum(['newest', 'oldest', 'price']).default('newest')
 })
 
 export const Route = createFileRoute('/shop/products/')({
-  validateSearch: zodValidator(productSearchSchema),
+  validateSearch: zodValidator(productSearchSchema)
 })
 ```
 
@@ -223,12 +223,12 @@ import { z } from 'zod'
 const productSearchSchema = z.object({
   page: z.number().default(1),
   filter: z.string().default(''),
-  sort: z.enum(['newest', 'oldest', 'price']).default('newest'),
+  sort: z.enum(['newest', 'oldest', 'price']).default('newest')
 })
 
 export const Route = createFileRoute('/shop/products/')({
   // With Zod v4, we can use the schema without the adapter
-  validateSearch: productSearchSchema,
+  validateSearch: productSearchSchema
 })
 ```
 
@@ -248,12 +248,12 @@ const productSearchSchema = z.object({
   page: fallback(z.number(), 1).default(1),
   filter: fallback(z.string(), '').default(''),
   sort: fallback(z.enum(['newest', 'oldest', 'price']), 'newest').default(
-    'newest',
-  ),
+    'newest'
+  )
 })
 
 export const Route = createFileRoute('/shop/products/')({
-  validateSearch: zodValidator(productSearchSchema),
+  validateSearch: zodValidator(productSearchSchema)
 })
 ```
 
@@ -268,16 +268,16 @@ const productSearchSchema = z.object({
   page: fallback(z.number(), 1).default(1),
   filter: fallback(z.string(), '').default(''),
   sort: fallback(z.enum(['newest', 'oldest', 'price']), 'newest').default(
-    'newest',
-  ),
+    'newest'
+  )
 })
 
 export const Route = createFileRoute('/shop/products/')({
   validateSearch: zodValidator({
     schema: productSearchSchema,
     input: 'output',
-    output: 'input',
-  }),
+    output: 'input'
+  })
 })
 ```
 
@@ -298,12 +298,12 @@ const productSearchSchema = v.object({
   filter: v.optional(v.fallback(v.string(), ''), ''),
   sort: v.optional(
     v.fallback(v.picklist(['newest', 'oldest', 'price']), 'newest'),
-    'newest',
-  ),
+    'newest'
+  )
 })
 
 export const Route = createFileRoute('/shop/products/')({
-  validateSearch: productSearchSchema,
+  validateSearch: productSearchSchema
 })
 ```
 
@@ -320,11 +320,11 @@ import { type } from 'arktype'
 const productSearchSchema = type({
   page: 'number = 1',
   filter: 'string = ""',
-  sort: '"newest" | "oldest" | "price" = "newest"',
+  sort: '"newest" | "oldest" | "price" = "newest"'
 })
 
 export const Route = createFileRoute('/shop/products/')({
-  validateSearch: productSearchSchema,
+  validateSearch: productSearchSchema
 })
 ```
 
@@ -341,28 +341,28 @@ const productSearchSchema = S.standardSchemaV1(
       S.optional,
       S.withDefaults({
         constructor: () => 1,
-        decoding: () => 1,
-      }),
+        decoding: () => 1
+      })
     ),
     filter: S.String.pipe(
       S.optional,
       S.withDefaults({
         constructor: () => '',
-        decoding: () => '',
-      }),
+        decoding: () => ''
+      })
     ),
     sort: S.Literal('newest', 'oldest', 'price').pipe(
       S.optional,
       S.withDefaults({
         constructor: () => 'newest' as const,
-        decoding: () => 'newest' as const,
-      }),
-    ),
-  }),
+        decoding: () => 'newest' as const
+      })
+    )
+  })
 )
 
 export const Route = createFileRoute('/shop/products/')({
-  validateSearch: productSearchSchema,
+  validateSearch: productSearchSchema
 })
 ```
 
@@ -384,13 +384,13 @@ The search parameters and types of parents are merged as you go down the route t
 const productSearchSchema = z.object({
   page: z.number().catch(1),
   filter: z.string().catch(''),
-  sort: z.enum(['newest', 'oldest', 'price']).catch('newest'),
+  sort: z.enum(['newest', 'oldest', 'price']).catch('newest')
 })
 
 type ProductSearch = z.infer<typeof productSearchSchema>
 
 export const Route = createFileRoute('/shop/products')({
-  validateSearch: productSearchSchema,
+  validateSearch: productSearchSchema
 })
 ```
 
@@ -399,7 +399,7 @@ export const Route = createFileRoute('/shop/products/$productId')({
   beforeLoad: ({ search }) => {
     search
     // ^? ProductSearch ✅
-  },
+  }
 })
 ```
 
@@ -411,7 +411,7 @@ You can access your route's validated search params in your route's `component` 
 
 ```tsx title="src/routes/shop/products.tsx"
 export const Route = createFileRoute('/shop/products')({
-  validateSearch: productSearchSchema,
+  validateSearch: productSearchSchema
 })
 
 const ProductList = () => {
@@ -431,7 +431,7 @@ You can access your route's validated search params anywhere in your app using t
 ```tsx
 // src/routes/shop.products.tsx
 export const Route = createFileRoute('/shop/products')({
-  validateSearch: productSearchSchema,
+  validateSearch: productSearchSchema
   // ...
 })
 
@@ -446,7 +446,7 @@ const ProductList = () => {
   // OR
 
   const { page, filter, sort } = useSearch({
-    from: Route.fullPath,
+    from: Route.fullPath
   })
 
   return <div>...</div>
@@ -458,7 +458,7 @@ Or, you can loosen up the type-safety and get an optional `search` object by pas
 ```tsx
 function ProductList() {
   const search = useSearch({
-    strict: false,
+    strict: false
   })
   // {
   //   page: number | undefined
@@ -483,7 +483,7 @@ Here's an example:
 
 ```tsx title="src/routes/shop/products.tsx"
 export const Route = createFileRoute('/shop/products')({
-  validateSearch: productSearchSchema,
+  validateSearch: productSearchSchema
 })
 
 const ProductList = () => {
@@ -539,7 +539,7 @@ The `navigate` function also accepts a `search` option that works the same way a
 
 ```tsx title="src/routes/shop/products.tsx"
 export const Route = createFileRoute('/shop/products/$productId')({
-  validateSearch: productSearchSchema,
+  validateSearch: productSearchSchema
 })
 
 const ProductList = () => {
@@ -550,7 +550,7 @@ const ProductList = () => {
       <button
         onClick={() => {
           navigate({
-            search: (prev) => ({ page: prev.page + 1 }),
+            search: (prev) => ({ page: prev.page + 1 })
           })
         }}
       >
@@ -584,7 +584,7 @@ import { z } from 'zod'
 import { zodValidator } from '@tanstack/zod-adapter'
 
 const searchSchema = z.object({
-  rootValue: z.string().optional(),
+  rootValue: z.string().optional()
 })
 
 export const Route = createRootRoute({
@@ -595,11 +595,11 @@ export const Route = createRootRoute({
         const result = next(search)
         return {
           rootValue: search.rootValue,
-          ...result,
+          ...result
         }
-      },
-    ],
-  },
+      }
+    ]
+  }
 })
 ```
 
@@ -615,14 +615,14 @@ import { createFileRoute, retainSearchParams } from '@tanstack/react-router'
 import { zodValidator } from '@tanstack/zod-adapter'
 
 const searchSchema = z.object({
-  rootValue: z.string().optional(),
+  rootValue: z.string().optional()
 })
 
 export const Route = createRootRoute({
   validateSearch: zodValidator(searchSchema),
   search: {
-    middlewares: [retainSearchParams(['rootValue'])],
-  },
+    middlewares: [retainSearchParams(['rootValue'])]
+  }
 })
 ```
 
@@ -634,14 +634,14 @@ import { createFileRoute, retainSearchParams } from '@tanstack/solid-router'
 import { zodValidator } from '@tanstack/zod-adapter'
 
 const searchSchema = z.object({
-  rootValue: z.string().optional(),
+  rootValue: z.string().optional()
 })
 
 export const Route = createRootRoute({
   validateSearch: zodValidator(searchSchema),
   search: {
-    middlewares: [retainSearchParams(['rootValue'])],
-  },
+    middlewares: [retainSearchParams(['rootValue'])]
+  }
 })
 ```
 
@@ -660,20 +660,20 @@ import { zodValidator } from '@tanstack/zod-adapter'
 
 const defaultValues = {
   one: 'abc',
-  two: 'xyz',
+  two: 'xyz'
 }
 
 const searchSchema = z.object({
   one: z.string().default(defaultValues.one),
-  two: z.string().default(defaultValues.two),
+  two: z.string().default(defaultValues.two)
 })
 
 export const Route = createFileRoute('/hello')({
   validateSearch: zodValidator(searchSchema),
   search: {
     // strip default values
-    middlewares: [stripSearchParams(defaultValues)],
-  },
+    middlewares: [stripSearchParams(defaultValues)]
+  }
 })
 ```
 
@@ -686,20 +686,20 @@ import { zodValidator } from '@tanstack/zod-adapter'
 
 const defaultValues = {
   one: 'abc',
-  two: 'xyz',
+  two: 'xyz'
 }
 
 const searchSchema = z.object({
   one: z.string().default(defaultValues.one),
-  two: z.string().default(defaultValues.two),
+  two: z.string().default(defaultValues.two)
 })
 
 export const Route = createFileRoute('/hello')({
   validateSearch: zodValidator(searchSchema),
   search: {
     // strip default values
-    middlewares: [stripSearchParams(defaultValues)],
-  },
+    middlewares: [stripSearchParams(defaultValues)]
+  }
 })
 ```
 
@@ -716,7 +716,7 @@ import {
   Link,
   createFileRoute,
   retainSearchParams,
-  stripSearchParams,
+  stripSearchParams
 } from '@tanstack/react-router'
 import { z } from 'zod'
 import { zodValidator } from '@tanstack/zod-adapter'
@@ -728,15 +728,15 @@ export const Route = createFileRoute('/search')({
     z.object({
       retainMe: z.string().optional(),
       arrayWithDefaults: z.string().array().default(defaultValues),
-      required: z.string(),
-    }),
+      required: z.string()
+    })
   ),
   search: {
     middlewares: [
       retainSearchParams(['retainMe']),
-      stripSearchParams({ arrayWithDefaults: defaultValues }),
-    ],
-  },
+      stripSearchParams({ arrayWithDefaults: defaultValues })
+    ]
+  }
 })
 ```
 
@@ -747,7 +747,7 @@ import {
   Link,
   createFileRoute,
   retainSearchParams,
-  stripSearchParams,
+  stripSearchParams
 } from '@tanstack/solid-router'
 import { z } from 'zod'
 import { zodValidator } from '@tanstack/zod-adapter'
@@ -759,15 +759,15 @@ export const Route = createFileRoute('/search')({
     z.object({
       retainMe: z.string().optional(),
       arrayWithDefaults: z.string().array().default(defaultValues),
-      required: z.string(),
-    }),
+      required: z.string()
+    })
   ),
   search: {
     middlewares: [
       retainSearchParams(['retainMe']),
-      stripSearchParams({ arrayWithDefaults: defaultValues }),
-    ],
-  },
+      stripSearchParams({ arrayWithDefaults: defaultValues })
+    ]
+  }
 })
 ```
 

@@ -25,7 +25,7 @@ import { createFileRoute } from '@tanstack/react-router'
 export const Route = createFileRoute('/posts/$postId')({
   loader: async ({ params }) => {
     return fetchPost(params.postId)
-  },
+  }
 })
 ```
 
@@ -37,7 +37,7 @@ import { createFileRoute } from '@tanstack/solid-router'
 export const Route = createFileRoute('/posts/$postId')({
   loader: async ({ params }) => {
     return fetchPost(params.postId)
-  },
+  }
 })
 ```
 
@@ -55,7 +55,7 @@ Path params are passed to the loader as a `params` object. The keys of this obje
 export const Route = createFileRoute('/posts/$postId')({
   loader: async ({ params }) => {
     return fetchPost(params.postId)
-  },
+  }
 })
 ```
 
@@ -65,7 +65,7 @@ The `params` object is also passed to the `beforeLoad` option:
 export const Route = createFileRoute('/posts/$postId')({
   beforeLoad: async ({ params }) => {
     // do something with params.postId
-  },
+  }
 })
 ```
 
@@ -79,7 +79,7 @@ If we add a component to our `postRoute`, we can access the `postId` variable fr
 
 ```tsx title="src/routes/posts.$postId.tsx"
 export const Route = createFileRoute('/posts/$postId')({
-  component: PostComponent,
+  component: PostComponent
 })
 
 function PostComponent() {
@@ -92,7 +92,7 @@ function PostComponent() {
 
 ```tsx title="src/routes/posts.$postId.tsx"
 export const Route = createFileRoute('/posts/$postId')({
-  component: PostComponent,
+  component: PostComponent
 })
 
 function PostComponent() {
@@ -145,8 +145,8 @@ export const Route = createFileRoute('/posts/$postId')({
       if (!/^\d+$/.test(postId)) return false
       return { postId: Number(postId) }
     },
-    stringify: ({ postId }) => ({ postId: String(postId) }),
-  },
+    stringify: ({ postId }) => ({ postId: String(postId) })
+  }
 })
 ```
 
@@ -200,7 +200,7 @@ Prefixes are defined by placing the prefix text outside the curly braces before 
 
 ```tsx title="src/routes/posts/post-{$postId}.tsx"
 export const Route = createFileRoute('/posts/post-{$postId}')({
-  component: PostComponent,
+  component: PostComponent
 })
 
 function PostComponent() {
@@ -214,7 +214,7 @@ function PostComponent() {
 
 ```tsx title="src/routes/posts/post-{$postId}.tsx"
 export const Route = createFileRoute('/posts/post-{$postId}')({
-  component: PostComponent,
+  component: PostComponent
 })
 
 function PostComponent() {
@@ -234,7 +234,7 @@ You can even combines prefixes with wildcard routes to create more complex patte
 
 ```tsx title="src/routes/on-disk/storage-{$postId}/$.tsx"
 export const Route = createFileRoute('/on-disk/storage-{$postId}/$')({
-  component: StorageComponent,
+  component: StorageComponent
 })
 
 function StorageComponent() {
@@ -249,7 +249,7 @@ function StorageComponent() {
 
 ```tsx title="src/routes/on-disk/storage-{$postId}/$.tsx"
 export const Route = createFileRoute('/on-disk/storage-{$postId}/$')({
-  component: StorageComponent,
+  component: StorageComponent
 })
 
 function StorageComponent() {
@@ -272,7 +272,7 @@ Suffixes are defined by placing the suffix text outside the curly braces after t
 
 ```tsx title="src/routes/files/{$fileName}[.]txt.tsx"
 export const Route = createFileRoute('/files/{$fileName}.txt')({
-  component: FileComponent,
+  component: FileComponent
 })
 
 function FileComponent() {
@@ -286,7 +286,7 @@ function FileComponent() {
 
 ```tsx title="src/routes/files/{$fileName}[.]txt.tsx"
 export const Route = createFileRoute('/files/{$fileName}.txt')({
-  component: FileComponent,
+  component: FileComponent
 })
 
 function FileComponent() {
@@ -306,7 +306,7 @@ You can also combine suffixes with wildcards for more complex routing patterns:
 
 ```tsx title="src/routes/files/{$}[.]txt.tsx"
 export const Route = createFileRoute('/files/{$}.txt')({
-  component: FileComponent,
+  component: FileComponent
 })
 
 function FileComponent() {
@@ -320,7 +320,7 @@ function FileComponent() {
 
 ```tsx title="src/routes/files/{$}[.]txt.tsx"
 export const Route = createFileRoute('/files/{$}.txt')({
-  component: FileComponent,
+  component: FileComponent
 })
 
 function FileComponent() {
@@ -342,7 +342,7 @@ You can combine both prefixes and suffixes to create very specific routing patte
 
 ```tsx title="src/routes/users/user-{$userId}[.]json.tsx"
 export const Route = createFileRoute('/users/user-{$userId}.json')({
-  component: UserComponent,
+  component: UserComponent
 })
 
 function UserComponent() {
@@ -356,7 +356,7 @@ function UserComponent() {
 
 ```tsx title="src/routes/users/user-{$userId}[.]json.tsx"
 export const Route = createFileRoute('/users/user-{$userId}.json')({
-  component: UserComponent,
+  component: UserComponent
 })
 
 function UserComponent() {
@@ -382,19 +382,19 @@ Optional path parameters are defined using curly braces with a dash prefix: `{-$
 // Single optional parameter
 // src/routes/posts/{-$category}.tsx
 export const Route = createFileRoute('/posts/{-$category}')({
-  component: PostsComponent,
+  component: PostsComponent
 })
 
 // Multiple optional parameters
 // src/routes/posts/{-$category}/{-$slug}.tsx
 export const Route = createFileRoute('/posts/{-$category}/{-$slug}')({
-  component: PostComponent,
+  component: PostComponent
 })
 
 // Mixed required and optional parameters
 // src/routes/users/$id/{-$tab}.tsx
 export const Route = createFileRoute('/users/$id/{-$tab}')({
-  component: UserComponent,
+  component: UserComponent
 })
 ```
 
@@ -449,7 +449,7 @@ export const Route = createFileRoute('/posts/{-$category}')({
   loader: async ({ params }) => {
     // params.category might be undefined
     return fetchPosts({ category: params.category })
-  },
+  }
 })
 ```
 
@@ -464,7 +464,7 @@ export const Route = createFileRoute('/posts/{-$category}')({
       // Validate category exists
       await validateCategory(params.category)
     }
-  },
+  }
 })
 ```
 
@@ -482,7 +482,7 @@ Optional parameters support prefix and suffix patterns:
 // Route: /files/prefix{-$name}.txt
 // Matches: /files/prefix.txt and /files/prefixdocument.txt
 export const Route = createFileRoute('/files/prefix{-$name}.txt')({
-  component: FileComponent,
+  component: FileComponent
 })
 
 function FileComponent() {
@@ -497,7 +497,7 @@ function FileComponent() {
 // Route: /files/prefix{-$name}.txt
 // Matches: /files/prefix.txt and /files/prefixdocument.txt
 export const Route = createFileRoute('/files/prefix{-$name}.txt')({
-  component: FileComponent,
+  component: FileComponent
 })
 
 function FileComponent() {
@@ -520,7 +520,7 @@ You can create routes where all parameters are optional:
 // Route: /{-$year}/{-$month}/{-$day}
 // Matches: /, /2023, /2023/12, /2023/12/25
 export const Route = createFileRoute('/{-$year}/{-$month}/{-$day}')({
-  component: DateComponent,
+  component: DateComponent
 })
 
 function DateComponent() {
@@ -549,7 +549,7 @@ function DateComponent() {
 // Route: /{-$year}/{-$month}/{-$day}
 // Matches: /, /2023, /2023/12, /2023/12/25
 export const Route = createFileRoute('/{-$year}/{-$month}/{-$day}')({
-  component: DateComponent,
+  component: DateComponent
 })
 
 function DateComponent() {
@@ -586,7 +586,7 @@ Optional parameters can be combined with wildcards for complex routing patterns:
 // Route: /docs/{-$version}/$
 // Matches: /docs/extra/path, /docs/v2/extra/path
 export const Route = createFileRoute('/docs/{-$version}/$')({
-  component: DocsComponent,
+  component: DocsComponent
 })
 
 function DocsComponent() {
@@ -608,7 +608,7 @@ function DocsComponent() {
 // Route: /docs/{-$version}/$
 // Matches: /docs/extra/path, /docs/v2/extra/path
 export const Route = createFileRoute('/docs/{-$version}/$')({
-  component: DocsComponent,
+  component: DocsComponent
 })
 
 function DocsComponent() {
@@ -736,7 +736,7 @@ Use optional language prefixes to support URLs like `/en/about`, `/fr/about`, or
 ```tsx title="src/routes/{-$locale}/about.tsx"
 // Route: /{-$locale}/about
 export const Route = createFileRoute('/{-$locale}/about')({
-  component: AboutComponent,
+  component: AboutComponent
 })
 
 function AboutComponent() {
@@ -747,12 +747,12 @@ function AboutComponent() {
     en: { title: 'About Us', description: 'Learn more about our company.' },
     fr: {
       title: 'À Propos',
-      description: 'En savoir plus sur notre entreprise.',
+      description: 'En savoir plus sur notre entreprise.'
     },
     es: {
       title: 'Acerca de',
-      description: 'Conoce más sobre nuestra empresa.',
-    },
+      description: 'Conoce más sobre nuestra empresa.'
+    }
   }
 
   return (
@@ -769,7 +769,7 @@ function AboutComponent() {
 ```tsx title="src/routes/{-$locale}/about.tsx"
 // Route: /{-$locale}/about
 export const Route = createFileRoute('/{-$locale}/about')({
-  component: AboutComponent,
+  component: AboutComponent
 })
 
 function AboutComponent() {
@@ -780,12 +780,12 @@ function AboutComponent() {
     en: { title: 'About Us', description: 'Learn more about our company.' },
     fr: {
       title: 'À Propos',
-      description: 'En savoir plus sur notre entreprise.',
+      description: 'En savoir plus sur notre entreprise.'
     },
     es: {
       title: 'Acerca de',
-      description: 'Conoce más sobre nuestra empresa.',
-    },
+      description: 'Conoce más sobre nuestra empresa.'
+    }
   }
 
   return (
@@ -835,7 +835,7 @@ export const Route = createFileRoute('/{-$locale}/blog/{-$category}/$slug')({
 
     return fetchBlogPost({ slug, category, locale })
   },
-  component: BlogPostComponent,
+  component: BlogPostComponent
 })
 
 function BlogPostComponent() {
@@ -877,7 +877,7 @@ export const Route = createFileRoute('/{-$locale}/blog/{-$category}/$slug')({
 
     return fetchBlogPost({ slug, category, locale })
   },
-  component: BlogPostComponent,
+  component: BlogPostComponent
 })
 
 function BlogPostComponent() {
@@ -921,7 +921,7 @@ function LanguageSwitcher() {
   const languages = [
     { code: 'en', name: 'English' },
     { code: 'fr', name: 'Français' },
-    { code: 'es', name: 'Español' },
+    { code: 'es', name: 'Español' }
   ]
 
   return (
@@ -932,7 +932,7 @@ function LanguageSwitcher() {
           to="/{-$locale}/blog/{-$category}/$slug"
           params={(prev) => ({
             ...prev,
-            locale: code === 'en' ? undefined : code, // Remove 'en' for clean URLs
+            locale: code === 'en' ? undefined : code // Remove 'en' for clean URLs
           })}
           className={currentParams.locale === code ? 'active' : ''}
         >
@@ -953,7 +953,7 @@ function LanguageSwitcher() {
   const languages = [
     { code: 'en', name: 'English' },
     { code: 'fr', name: 'Français' },
-    { code: 'es', name: 'Español' },
+    { code: 'es', name: 'Español' }
   ]
 
   return (
@@ -963,7 +963,7 @@ function LanguageSwitcher() {
           to="/{-$locale}/blog/{-$category}/$slug"
           params={(prev) => ({
             ...prev,
-            locale: code === 'en' ? undefined : code, // Remove 'en' for clean URLs
+            locale: code === 'en' ? undefined : code // Remove 'en' for clean URLs
           })}
           class={currentParams().locale === code ? 'active' : ''}
         >
@@ -1101,7 +1101,7 @@ Organize i18n routes using optional parameters for flexible locale handling:
 
 // routes/{-$locale}/index.tsx
 export const Route = createFileRoute('/{-$locale}/')({
-  component: HomeComponent,
+  component: HomeComponent
 })
 
 function HomeComponent() {
@@ -1118,7 +1118,7 @@ function HomeComponent() {
 
 // routes/{-$locale}/about.tsx
 export const Route = createFileRoute('/{-$locale}/about')({
-  component: AboutComponent,
+  component: AboutComponent
 })
 ```
 
@@ -1136,7 +1136,7 @@ export const Route = createFileRoute('/{-$locale}/about')({
 
 // routes/{-$locale}/index.tsx
 export const Route = createFileRoute('/{-$locale}/')({
-  component: HomeComponent,
+  component: HomeComponent
 })
 
 function HomeComponent() {
@@ -1153,7 +1153,7 @@ function HomeComponent() {
 
 // routes/{-$locale}/about.tsx
 export const Route = createFileRoute('/{-$locale}/about')({
-  component: AboutComponent,
+  component: AboutComponent
 })
 ```
 
@@ -1179,38 +1179,38 @@ export const Route = createFileRoute('/{-$locale}/products/$id')({
       meta: [
         {
           name: 'description',
-          content: product.description[locale] || product.description.en,
+          content: product.description[locale] || product.description.en
         },
         {
           property: 'og:locale',
-          content: locale,
-        },
+          content: locale
+        }
       ],
       links: [
         // Canonical URL (always use default locale format)
         {
           rel: 'canonical',
-          href: `https://example.com/products/${params.id}`,
+          href: `https://example.com/products/${params.id}`
         },
         // Alternate language versions
         {
           rel: 'alternate',
           hreflang: 'en',
-          href: `https://example.com/products/${params.id}`,
+          href: `https://example.com/products/${params.id}`
         },
         {
           rel: 'alternate',
           hreflang: 'fr',
-          href: `https://example.com/fr/products/${params.id}`,
+          href: `https://example.com/fr/products/${params.id}`
         },
         {
           rel: 'alternate',
           hreflang: 'es',
-          href: `https://example.com/es/products/${params.id}`,
-        },
-      ],
+          href: `https://example.com/es/products/${params.id}`
+        }
+      ]
     }
-  },
+  }
 })
 ```
 
@@ -1228,38 +1228,38 @@ export const Route = createFileRoute('/{-$locale}/products/$id')({
       meta: [
         {
           name: 'description',
-          content: product.description[locale] || product.description.en,
+          content: product.description[locale] || product.description.en
         },
         {
           property: 'og:locale',
-          content: locale,
-        },
+          content: locale
+        }
       ],
       links: [
         // Canonical URL (always use default locale format)
         {
           rel: 'canonical',
-          href: `https://example.com/products/${params.id}`,
+          href: `https://example.com/products/${params.id}`
         },
         // Alternate language versions
         {
           rel: 'alternate',
           hreflang: 'en',
-          href: `https://example.com/products/${params.id}`,
+          href: `https://example.com/products/${params.id}`
         },
         {
           rel: 'alternate',
           hreflang: 'fr',
-          href: `https://example.com/fr/products/${params.id}`,
+          href: `https://example.com/fr/products/${params.id}`
         },
         {
           rel: 'alternate',
           hreflang: 'es',
-          href: `https://example.com/es/products/${params.id}`,
-        },
-      ],
+          href: `https://example.com/es/products/${params.id}`
+        }
+      ]
     }
-  },
+  }
 })
 ```
 
@@ -1290,16 +1290,16 @@ export const Route = createFileRoute('/{-$locale}/shop/{-$category}')({
     if (locale && !validateLocale(locale)) {
       throw redirect({
         to: '/shop/{-$category}',
-        params: { category: params.category },
+        params: { category: params.category }
       })
     }
 
     return {
       locale: (locale as Locale) || 'en',
-      isDefaultLocale: !locale || locale === 'en',
+      isDefaultLocale: !locale || locale === 'en'
     }
   },
-  component: ShopComponent,
+  component: ShopComponent
 })
 
 function ShopComponent() {
@@ -1342,16 +1342,16 @@ export const Route = createFileRoute('/{-$locale}/shop/{-$category}')({
     if (locale && !validateLocale(locale)) {
       throw redirect({
         to: '/shop/{-$category}',
-        params: { category: params.category },
+        params: { category: params.category }
       })
     }
 
     return {
       locale: (locale as Locale) || 'en',
-      isDefaultLocale: !locale || locale === 'en',
+      isDefaultLocale: !locale || locale === 'en'
     }
   },
-  component: ShopComponent,
+  component: ShopComponent
 })
 
 function ShopComponent() {
@@ -1388,7 +1388,7 @@ Example usage:
 ```tsx
 const router = createRouter({
   // ...
-  pathParamsAllowedCharacters: ['@'],
+  pathParamsAllowedCharacters: ['@']
 })
 ```
 

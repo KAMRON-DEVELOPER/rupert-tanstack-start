@@ -14,7 +14,7 @@ function groupOptions(id: number) {
   return queryOptions({
     queryKey: ['groups', id],
     queryFn: () => fetchGroups(id),
-    staleTime: 5 * 1000,
+    staleTime: 5 * 1000
   })
 }
 
@@ -23,7 +23,7 @@ function groupOptions(id: number) {
 useQuery(groupOptions(1))
 useSuspenseQuery(groupOptions(5))
 useQueries({
-  queries: [groupOptions(1), groupOptions(2)],
+  queries: [groupOptions(1), groupOptions(2)]
 })
 queryClient.prefetchQuery(groupOptions(23))
 queryClient.setQueryData(groupOptions(42).queryKey, newGroups)
@@ -45,7 +45,7 @@ You can still override some options at the component level. A very common and us
 
 const query = useQuery({
   ...groupOptions(1),
-  select: (data) => data.groupName,
+  select: (data) => data.groupName
 })
 ```
 

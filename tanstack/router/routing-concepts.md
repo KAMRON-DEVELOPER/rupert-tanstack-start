@@ -18,7 +18,7 @@ All other routes, other than the [Root Route](#the-root-route), are configured u
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
-  component: PostsComponent,
+  component: PostsComponent
 })
 ```
 
@@ -28,7 +28,7 @@ export const Route = createFileRoute('/')({
 import { createFileRoute } from '@tanstack/solid-router'
 
 export const Route = createFileRoute('/')({
-  component: PostsComponent,
+  component: PostsComponent
 })
 ```
 
@@ -115,7 +115,7 @@ Let's take a look at an `/about` route:
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/about')({
-  component: AboutComponent,
+  component: AboutComponent
 })
 
 function AboutComponent() {
@@ -129,7 +129,7 @@ function AboutComponent() {
 import { createFileRoute } from '@tanstack/solid-router'
 
 export const Route = createFileRoute('/about')({
-  component: AboutComponent,
+  component: AboutComponent
 })
 
 function AboutComponent() {
@@ -156,7 +156,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 // Note the trailing slash, which is used to target index routes
 export const Route = createFileRoute('/posts/')({
-  component: PostsIndexComponent,
+  component: PostsIndexComponent
 })
 
 function PostsIndexComponent() {
@@ -171,7 +171,7 @@ import { createFileRoute } from '@tanstack/solid-router'
 
 // Note the trailing slash, which is used to target index routes
 export const Route = createFileRoute('/posts/')({
-  component: PostsIndexComponent,
+  component: PostsIndexComponent
 })
 
 function PostsIndexComponent() {
@@ -200,7 +200,7 @@ export const Route = createFileRoute('/posts/$postId')({
   // In a loader
   loader: ({ params }) => fetchPost(params.postId),
   // Or in a component
-  component: PostComponent,
+  component: PostComponent
 })
 
 function PostComponent() {
@@ -219,7 +219,7 @@ export const Route = createFileRoute('/posts/$postId')({
   // In a loader
   loader: ({ params }) => fetchPost(params.postId),
   // Or in a component
-  component: PostComponent,
+  component: PostComponent
 })
 
 function PostComponent() {
@@ -262,7 +262,7 @@ Optional path parameters allow you to define route segments that may or may not 
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/posts/{-$category}')({
-  component: PostsComponent,
+  component: PostsComponent
 })
 
 function PostsComponent() {
@@ -279,7 +279,7 @@ function PostsComponent() {
 import { createFileRoute } from '@tanstack/solid-router'
 
 export const Route = createFileRoute('/posts/{-$category}')({
-  component: PostsComponent,
+  component: PostsComponent
 })
 
 function PostsComponent() {
@@ -304,7 +304,7 @@ You can also define multiple optional parameters in a single route:
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/posts/{-$category}/{-$slug}')({
-  component: PostsComponent,
+  component: PostsComponent
 })
 ```
 
@@ -315,7 +315,7 @@ export const Route = createFileRoute('/posts/{-$category}/{-$slug}')({
 import { createFileRoute } from '@tanstack/solid-router'
 
 export const Route = createFileRoute('/posts/{-$category}/{-$slug}')({
-  component: PostsComponent,
+  component: PostsComponent
 })
 ```
 
@@ -357,7 +357,7 @@ This tree structure is used to wrap the child routes with a layout component:
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/app')({
-  component: AppLayoutComponent,
+  component: AppLayoutComponent
 })
 
 function AppLayoutComponent() {
@@ -376,7 +376,7 @@ function AppLayoutComponent() {
 import { Outlet, createFileRoute } from '@tanstack/solid-router'
 
 export const Route = createFileRoute('/app')({
-  component: AppLayoutComponent,
+  component: AppLayoutComponent
 })
 
 function AppLayoutComponent() {
@@ -453,7 +453,7 @@ The `_pathlessLayout.tsx` route is used to wrap the child routes with a Pathless
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_pathlessLayout')({
-  component: PathlessLayoutComponent,
+  component: PathlessLayoutComponent
 })
 
 function PathlessLayoutComponent() {
@@ -472,7 +472,7 @@ function PathlessLayoutComponent() {
 import { Outlet, createFileRoute } from '@tanstack/solid-router'
 
 export const Route = createFileRoute('/_pathlessLayout')({
-  component: PathlessLayoutComponent,
+  component: PathlessLayoutComponent
 })
 
 function PathlessLayoutComponent() {
@@ -578,7 +578,7 @@ import { PostsFooter } from './-components/footer'
 
 export const Route = createFileRoute('/posts')({
   loader: () => fetchPosts(),
-  component: PostComponent,
+  component: PostComponent
 })
 
 function PostComponent() {
@@ -604,7 +604,7 @@ import { PostsFooter } from './-components/footer'
 
 export const Route = createFileRoute('/posts')({
   loader: () => fetchPosts(),
-  component: PostComponent,
+  component: PostComponent
 })
 
 function PostComponent() {

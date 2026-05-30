@@ -14,7 +14,7 @@ Understanding where code runs is fundamental to building TanStack Start applicat
 function formatPrice(price: number) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'USD'
   }).format(price)
 }
 
@@ -24,7 +24,7 @@ export const Route = createFileRoute('/products')({
     // This runs on server during SSR AND on client during navigation
     const response = await fetch('/api/products')
     return response.json()
-  },
+  }
 })
 ```
 
@@ -224,7 +224,7 @@ export const Route = createFileRoute('/users')({
     // This runs on BOTH server and client!
     const secret = process.env.SECRET // Exposed to client
     return fetch(`/api/users?key=${secret}`)
-  },
+  }
 })
 
 // ✅ Use server function for server-only operations
@@ -234,7 +234,7 @@ const getUsersSecurely = createServerFn().handler(() => {
 })
 
 export const Route = createFileRoute('/users')({
-  loader: () => getUsersSecurely(), // Isomorphic call to server function
+  loader: () => getUsersSecurely() // Isomorphic call to server function
 })
 ```
 

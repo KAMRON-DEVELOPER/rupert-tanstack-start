@@ -13,7 +13,7 @@ Dependent (or serial) queries depend on previous ones to finish before they can 
 // Get the user
 const { data: user } = useQuery({
   queryKey: ['user', email],
-  queryFn: getUserByEmail,
+  queryFn: getUserByEmail
 })
 
 const userId = user?.id
@@ -22,12 +22,12 @@ const userId = user?.id
 const {
   status,
   fetchStatus,
-  data: projects,
+  data: projects
 } = useQuery({
   queryKey: ['projects', userId],
   queryFn: getProjectsByUser,
   // The query will not execute until the userId exists
-  enabled: !!userId,
+  enabled: !!userId
 })
 ```
 
@@ -68,7 +68,7 @@ Dynamic parallel query - `useQueries` can depend on a previous query also, here'
 const { data: userIds } = useQuery({
   queryKey: ['users'],
   queryFn: getUsersData,
-  select: (users) => users.map((user) => user.id),
+  select: (users) => users.map((user) => user.id)
 })
 
 // Then get the users messages
@@ -77,10 +77,10 @@ const usersMessages = useQueries({
     ? userIds.map((id) => {
         return {
           queryKey: ['messages', id],
-          queryFn: () => getMessagesByUsers(id),
+          queryFn: () => getMessagesByUsers(id)
         }
       })
-    : [], // if userIds is undefined, an empty array will be returned
+    : [] // if userIds is undefined, an empty array will be returned
 })
 ```
 

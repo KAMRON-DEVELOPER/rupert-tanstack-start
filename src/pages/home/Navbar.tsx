@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useRouteContext } from '@tanstack/react-router'
 
 import RupertSvg from '@/assets/icons/RupertSvg'
 
@@ -10,6 +10,7 @@ import NavbarCTA from './Navbar.NavbarCTA'
 import NavbarMenu from './Navbar.NavbarMenu'
 
 const Navbar = () => {
+  const isAuthenticated = useRouteContext({ from: '__root__' }).isAuthenticated
   const dir = useScrollDirection()
 
   return (
@@ -51,7 +52,7 @@ const Navbar = () => {
           <Link
             to="/messages"
             activeOptions={{ exact: false }}
-            disabled={true}
+            disabled={isAuthenticated ? false : true}
             className="hover:text-foreground data-[status=active]:text-primary aria-disabled:hover:text-muted-foreground"
           >
             Messages

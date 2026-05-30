@@ -5,7 +5,10 @@ import {
   createSkillFn,
   updateCityFn,
   updateCountryFn,
-  updateSkillFn
+  updateSkillFn,
+  deleteCountryFn,
+  deleteCityFn,
+  deleteSkillFn
 } from './admin.functions'
 import type {
   CountryCreateRequest,
@@ -13,7 +16,10 @@ import type {
   SkillRequest,
   UpdateCityVariables,
   UpdateCountryVariables,
-  UpdateSkillVariables
+  UpdateSkillVariables,
+  DeleteCountryVariables,
+  DeleteCityVariables,
+  DeleteSkillVariables
 } from '@/types/admin.schema'
 
 export const useCreateCountryMutation = () => {
@@ -78,6 +84,38 @@ export const useUpdateSkillMutation = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: UpdateSkillVariables) => updateSkillFn({ data }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['skills'] })
+    }
+  })
+}
+
+export const useDeleteCountryMutation = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: DeleteCountryVariables) => deleteCountryFn({ data }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['countries'] })
+    }
+  })
+}
+
+export const useDeleteCityMutation = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: DeleteCityVariables) => deleteCityFn({ data }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['countries', variables.countryId, 'cities']
+      })
+    }
+  })
+}
+
+export const useDeleteSkillMutation = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: DeleteSkillVariables) => deleteSkillFn({ data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['skills'] })
     }

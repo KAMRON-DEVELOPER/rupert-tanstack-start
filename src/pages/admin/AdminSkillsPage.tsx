@@ -1,6 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { useGetSkillsQueryOptions } from '@/services/skills/skills'
-import { useCreateSkillMutation, useUpdateSkillMutation } from '@/services/admin/admin'
+import {
+  useCreateSkillMutation,
+  useUpdateSkillMutation,
+  useDeleteSkillMutation
+} from '@/services/admin/admin'
 import { SkillList } from '@/components/admin/SkillList'
 import { SkillForm } from '@/components/admin/SkillForm'
 import { useState } from 'react'
@@ -19,11 +23,11 @@ const showMutationError = (error: Error, fallback: string) => {
 
 export function AdminSkillsPage() {
   const [isCreateOpen, setIsCreateOpen] = useState(false)
-  const [editingSkill, setEditingSkill] = useState<AdminSkill | null>(null)
 
   const { data: skills, isLoading } = useQuery(useGetSkillsQueryOptions())
   const createSkillMutation = useCreateSkillMutation()
   const updateSkillMutation = useUpdateSkillMutation()
+  const deleteSkillMutation = useDeleteSkillMutation()
 
   const handleCreate = (data: SkillRequest) => {
     createSkillMutation.mutate(data, {
@@ -35,17 +39,26 @@ export function AdminSkillsPage() {
     })
   }
 
-  const handleUpdate = (data: SkillRequest) => {
-    if (!editingSkill) return
-
+  const handleRename = (skill: AdminSkill, newName: string) => {
     updateSkillMutation.mutate(
-      { skillId: editingSkill.id, data },
+      { skillId: skill.id, data: { name: newName } },
       {
         onSuccess: () => {
-          setEditingSkill(null)
-          toast.success('Skill updated')
+          toast.success('Skill renamed')
         },
-        onError: (error) => showMutationError(error, 'Failed to update skill')
+        onError: (error) => showMutationError(error, 'Failed to rename skill')
+      }
+    )
+  }
+
+  const handleDelete = (skill: AdminSkill) => {
+    deleteSkillMutation.mutate(
+      { skillId: skill.id },
+      {
+        onSuccess: () => {
+          toast.success('Skill deleted')
+        },
+        onError: (error) => showMutationError(error, 'Failed to delete skill')
       }
     )
   }
@@ -66,7 +79,7 @@ export function AdminSkillsPage() {
       {isLoading ? (
         <div className="text-muted-foreground py-10 text-center text-sm">Loading skills...</div>
       ) : (
-        <SkillList skills={skills || []} onEdit={(skill) => setEditingSkill(skill)} />
+        <SkillList skills={skills?.data || []} onRename={handleRename} onDelete={handleDelete} />
       )}
 
       {isCreateOpen && (
@@ -75,16 +88,6 @@ export function AdminSkillsPage() {
           onSubmit={handleCreate}
           onCancel={() => setIsCreateOpen(false)}
           isLoading={createSkillMutation.isPending}
-        />
-      )}
-
-      {editingSkill && (
-        <SkillForm
-          title="Edit Skill"
-          initialData={{ name: editingSkill.name }}
-          onSubmit={handleUpdate}
-          onCancel={() => setEditingSkill(null)}
-          isLoading={updateSkillMutation.isPending}
         />
       )}
     </div>

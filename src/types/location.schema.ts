@@ -1,50 +1,44 @@
-import z from 'zod'
-import { uuidSchema } from './types.schemas'
+import z, { uuidv4 } from 'zod'
 
-export const countryResponseSchema = z
-  .object({
-    id: uuidSchema,
-    created_at: z.string().datetime(),
-    updated_at: z.string().datetime(),
-    code: z.string(),
-    name: z.string()
-  })
-  .transform(({ created_at, updated_at, ...rest }) => ({
-    ...rest,
-    createdAt: created_at,
-    updatedAt: updated_at
-  }))
+export const countryResponseSchema = z.object({
+  id: uuidv4(),
+  createdAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
+  code: z.string(),
+  name: z.string()
+})
 
-export const cityResponseSchema = z
-  .object({
-    id: uuidSchema,
-    created_at: z.string().datetime(),
-    updated_at: z.string().datetime(),
-    countryId: uuidSchema,
-    name: z.string()
-  })
-  .transform(({ created_at, updated_at, ...rest }) => ({
-    ...rest,
-    createdAt: created_at,
-    updatedAt: updated_at
-  }))
+export const cityResponseSchema = z.object({
+  id: uuidv4(),
+  createdAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
+  countryId: uuidv4(),
+  name: z.string()
+})
 
 export const locationRequestSchema = z
   .object({
-    countryId: uuidSchema,
-    cityId: uuidSchema.nullable().optional().default(null)
+    countryId: uuidv4(),
+    cityId: uuidv4().nullable().optional().default(null)
   })
   .strict()
 
 export const nullableLocationRequestSchema = z
   .object({
-    countryId: uuidSchema.nullable().optional().default(null),
-    cityId: uuidSchema.nullable().optional().default(null)
+    countryId: uuidv4().nullable().optional().default(null),
+    cityId: uuidv4().nullable().optional().default(null)
   })
   .strict()
 
-export const countryListResponseSchema = z.array(countryResponseSchema)
-export const cityListResponseSchema = z.array(cityResponseSchema)
+export const countryListResponseSchema = z.object({
+  data: z.array(countryResponseSchema),
+  total: z.number()
+})
+
+export const cityListResponseSchema = z.object({
+  data: z.array(cityResponseSchema),
+  total: z.number()
+})
 
 export type CountrySchema = z.infer<typeof countryResponseSchema>
 export type CitySchema = z.infer<typeof cityResponseSchema>

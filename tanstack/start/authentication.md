@@ -61,7 +61,7 @@ export const loginFn = createServerFn({ method: 'POST' })
     const session = await useAppSession()
     await session.update({
       userId: user.id,
-      email: user.email,
+      email: user.email
     })
 
     // Redirect to protected area
@@ -86,7 +86,7 @@ export const getCurrentUserFn = createServerFn({ method: 'GET' }).handler(
     }
 
     return await getUserById(userId)
-  },
+  }
 )
 ```
 
@@ -113,8 +113,8 @@ export function useAppSession() {
     cookie: {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      httpOnly: true,
-    },
+      httpOnly: true
+    }
   })
 }
 ```
@@ -178,13 +178,13 @@ export const Route = createFileRoute('/_authed')({
     if (!user) {
       throw redirect({
         to: '/login',
-        search: { redirect: location.href },
+        search: { redirect: location.href }
       })
     }
 
     // Pass user to child routes
     return { user }
-  },
+  }
 })
 ```
 
@@ -193,7 +193,7 @@ export const Route = createFileRoute('/_authed')({
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authed/dashboard')({
-  component: DashboardComponent,
+  component: DashboardComponent
 })
 
 function DashboardComponent() {
@@ -220,7 +220,7 @@ import { createServerFn } from '@tanstack/react-start'
 // User registration
 export const registerFn = createServerFn({ method: 'POST' })
   .inputValidator(
-    (data: { email: string; password: string; name: string }) => data,
+    (data: { email: string; password: string; name: string }) => data
   )
   .handler(async ({ data }) => {
     // Check if user exists
@@ -236,7 +236,7 @@ export const registerFn = createServerFn({ method: 'POST' })
     const user = await createUser({
       email: data.email,
       password: hashedPassword,
-      name: data.name,
+      name: data.name
     })
 
     // Create session
@@ -262,7 +262,7 @@ async function authenticateUser(email: string, password: string) {
 export const roles = {
   USER: 'user',
   ADMIN: 'admin',
-  MODERATOR: 'moderator',
+  MODERATOR: 'moderator'
 } as const
 
 type Role = (typeof roles)[keyof typeof roles]
@@ -271,7 +271,7 @@ export function hasPermission(userRole: Role, requiredRole: Role): boolean {
   const hierarchy = {
     [roles.USER]: 0,
     [roles.MODERATOR]: 1,
-    [roles.ADMIN]: 2,
+    [roles.ADMIN]: 2
   }
 
   return hierarchy[userRole] >= hierarchy[requiredRole]
@@ -283,7 +283,7 @@ export const Route = createFileRoute('/_authed/admin/')({
     if (!hasPermission(context.user.role, roles.ADMIN)) {
       throw redirect({ to: '/unauthorized' })
     }
-  },
+  }
 })
 ```
 
@@ -294,12 +294,12 @@ export const Route = createFileRoute('/_authed/admin/')({
 export const authProviders = {
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID!,
-    redirectUri: `${process.env.APP_URL}/auth/google/callback`,
+    redirectUri: `${process.env.APP_URL}/auth/google/callback`
   },
   github: {
     clientId: process.env.GITHUB_CLIENT_ID!,
-    redirectUri: `${process.env.APP_URL}/auth/github/callback`,
-  },
+    redirectUri: `${process.env.APP_URL}/auth/github/callback`
+  }
 }
 
 export const initiateOAuthFn = createServerFn({ method: 'POST' })
@@ -383,8 +383,8 @@ export function useAppSession() {
       secure: process.env.NODE_ENV === 'production', // HTTPS only in production
       sameSite: 'lax', // CSRF protection
       httpOnly: true, // XSS protection
-      maxAge: 7 * 24 * 60 * 60, // 7 days
-    },
+      maxAge: 7 * 24 * 60 * 60 // 7 days
+    }
   })
 }
 ```
@@ -420,7 +420,7 @@ import { z } from 'zod'
 
 const loginSchema = z.object({
   email: z.string().email().max(255),
-  password: z.string().min(8).max(100),
+  password: z.string().min(8).max(100)
 })
 
 export const loginFn = createServerFn({ method: 'POST' })
@@ -446,7 +446,7 @@ describe('Authentication', () => {
 
   it('should login with valid credentials', async () => {
     const result = await loginFn({
-      data: { email: 'test@example.com', password: 'password123' },
+      data: { email: 'test@example.com', password: 'password123' }
     })
 
     expect(result.error).toBeUndefined()
@@ -455,7 +455,7 @@ describe('Authentication', () => {
 
   it('should reject invalid credentials', async () => {
     const result = await loginFn({
-      data: { email: 'test@example.com', password: 'wrongpassword' },
+      data: { email: 'test@example.com', password: 'wrongpassword' }
     })
 
     expect(result.error).toBe('Invalid credentials')
@@ -521,7 +521,7 @@ function LoginForm() {
 ```tsx
 export const loginFn = createServerFn({ method: 'POST' })
   .inputValidator(
-    (data: { email: string; password: string; rememberMe?: boolean }) => data,
+    (data: { email: string; password: string; rememberMe?: boolean }) => data
   )
   .handler(async ({ data }) => {
     const user = await authenticateUser(data.email, data.password)
@@ -532,8 +532,8 @@ export const loginFn = createServerFn({ method: 'POST' })
       { userId: user.id },
       {
         // Extend session if remember me is checked
-        maxAge: data.rememberMe ? 30 * 24 * 60 * 60 : undefined, // 30 days vs session
-      },
+        maxAge: data.rememberMe ? 30 * 24 * 60 * 60 : undefined // 30 days vs session
+      }
     )
 
     return { success: true }

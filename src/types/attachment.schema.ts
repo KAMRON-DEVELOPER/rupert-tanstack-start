@@ -1,5 +1,4 @@
-import z from 'zod'
-import { uuidSchema } from './types.schemas'
+import z, { uuidv4 } from 'zod'
 
 export const AttachmentStatusList = ['pending', 'ready'] as const
 
@@ -15,7 +14,7 @@ const attachmentMetaValueSchema = z.union([
 const attachmentMetaSchema = z.record(z.string(), attachmentMetaValueSchema)
 
 export const attachmentResponseSchema = z.object({
-  id: uuidSchema,
+  id: uuidv4(),
   objectKey: z.string(),
   originalFilename: z.string().nullable(),
   status: attachmentStatusSchema,
@@ -29,7 +28,7 @@ export const attachmentResponseSchema = z.object({
 
 export const attachmentIdWithPositionRequestSchema = z
   .object({
-    attachmentId: uuidSchema,
+    attachmentId: uuidv4(),
     position: z.number().int().nonnegative().nullable().optional().default(null)
   })
   .strict()

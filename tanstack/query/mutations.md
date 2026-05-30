@@ -14,7 +14,7 @@ function App() {
   const mutation = useMutation({
     mutationFn: (newTodo) => {
       return axios.post('/todos', newTodo)
-    },
+    }
   })
 
   return (
@@ -75,7 +75,7 @@ const CreateTodo = () => {
     mutationFn: (event) => {
       event.preventDefault()
       return fetch('/api', new FormData(event.target))
-    },
+    }
   })
 
   return <form onSubmit={mutation.mutate}>...</form>
@@ -86,7 +86,7 @@ const CreateTodo = () => {
   const mutation = useMutation({
     mutationFn: (formData) => {
       return fetch('/api', formData)
-    },
+    }
   })
   const onSubmit = (event) => {
     event.preventDefault()
@@ -158,7 +158,7 @@ useMutation({
   },
   onSettled: (data, error, variables, onMutateResult, context) => {
     // Error or success... doesn't matter!
-  },
+  }
 })
 ```
 
@@ -176,7 +176,7 @@ useMutation({
   },
   onSettled: async () => {
     console.log("I'm second!")
-  },
+  }
 })
 ```
 
@@ -197,7 +197,7 @@ useMutation({
   },
   onSettled: (data, error, variables, onMutateResult, context) => {
     // I will fire first
-  },
+  }
 })
 
 mutate(todo, {
@@ -209,7 +209,7 @@ mutate(todo, {
   },
   onSettled: (data, error, variables, onMutateResult, context) => {
     // I will fire second!
-  },
+  }
 })
 ```
 
@@ -228,7 +228,7 @@ useMutation({
   mutationFn: addTodo,
   onSuccess: (data, variables, onMutateResult, context) => {
     // Will be called 3 times
-  },
+  }
 })
 
 const todos = ['Todo 1', 'Todo 2', 'Todo 3']
@@ -237,7 +237,7 @@ todos.forEach((todo) => {
     onSuccess: (data, variables, onMutateResult, context) => {
       // Will execute only once, for the last mutation (Todo 3),
       // regardless which mutation resolves first
-    },
+    }
   })
 })
 ```
@@ -274,7 +274,7 @@ By default, TanStack Query will not retry a mutation on error, but it is possibl
 ```tsx
 const mutation = useMutation({
   mutationFn: addTodo,
-  retry: 3,
+  retry: 3
 })
 ```
 
@@ -311,17 +311,17 @@ queryClient.setMutationDefaults(['addTodo'], {
     // Replace optimistic todo in the todos list with the result
     context.client.setQueryData(['todos'], (old) =>
       old.map((todo) =>
-        todo.id === onMutateResult.optimisticTodo.id ? result : todo,
-      ),
+        todo.id === onMutateResult.optimisticTodo.id ? result : todo
+      )
     )
   },
   onError: (error, variables, onMutateResult, context) => {
     // Remove optimistic todo from the todos list
     context.client.setQueryData(['todos'], (old) =>
-      old.filter((todo) => todo.id !== onMutateResult.optimisticTodo.id),
+      old.filter((todo) => todo.id !== onMutateResult.optimisticTodo.id)
     )
   },
-  retry: 3,
+  retry: 3
 })
 
 // Start mutation in some component:
@@ -354,21 +354,21 @@ This is a technical limitation. When persisting to an external storage, only the
 
 ```tsx
 const persister = createSyncStoragePersister({
-  storage: window.localStorage,
+  storage: window.localStorage
 })
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      gcTime: 1000 * 60 * 60 * 24, // 24 hours
-    },
-  },
+      gcTime: 1000 * 60 * 60 * 24 // 24 hours
+    }
+  }
 })
 
 // we need a default mutation function so that paused mutations can resume after a page reload
 queryClient.setMutationDefaults(['todos'], {
   mutationFn: ({ id, data }) => {
     return api.updateTodo(id, data)
-  },
+  }
 })
 
 export default function App() {
@@ -404,8 +404,8 @@ Per default, all mutations run in parallel - even if you invoke `.mutate()` of t
 const mutation = useMutation({
   mutationFn: addTodo,
   scope: {
-    id: 'todo',
-  },
+    id: 'todo'
+  }
 })
 ```
 

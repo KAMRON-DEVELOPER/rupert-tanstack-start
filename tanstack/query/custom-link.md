@@ -29,7 +29,7 @@ const BasicLinkComponent = React.forwardRef<HTMLAnchorElement, BasicLinkProps>(
     return (
       <a ref={ref} {...props} className={'block px-3 py-2 text-blue-700'} />
     )
-  },
+  }
 )
 
 const CreatedLinkComponent = createLink(BasicLinkComponent)
@@ -46,7 +46,7 @@ import * as Solid from 'solid-js'
 import { createLink, LinkComponent } from '@tanstack/solid-router'
 
 export const Route = createRootRoute({
-  component: RootComponent,
+  component: RootComponent
 })
 
 type BasicLinkProps = Solid.JSX.IntrinsicElements['a'] & {
@@ -109,7 +109,7 @@ function MyLink(props: MyLinkProps) {
     <RACLink
       {...props}
       style={({ isHovered }) => ({
-        color: isHovered ? 'red' : 'blue',
+        color: isHovered ? 'red' : 'blue'
       })}
     />
   )
@@ -152,7 +152,7 @@ const ChakraLinkComponent = React.forwardRef<
 const CreatedLinkComponent = createLink(ChakraLinkComponent)
 
 export const CustomLink: LinkComponent<typeof ChakraLinkComponent> = (
-  props,
+  props
 ) => {
   return (
     <CreatedLinkComponent
@@ -207,7 +207,7 @@ interface MUILinkProps extends LinkProps {
 }
 
 const MUILinkComponent = React.forwardRef<HTMLAnchorElement, MUILinkProps>(
-  (props, ref) => <Link ref={ref} {...props} />,
+  (props, ref) => <Link ref={ref} {...props} />
 )
 
 const CreatedLinkComponent = createLink(MUILinkComponent)
@@ -246,7 +246,7 @@ const MUIButtonLinkComponent = React.forwardRef<
 const CreatedButtonLinkComponent = createLink(MUIButtonLinkComponent)
 
 export const CustomButtonLink: LinkComponent<typeof MUIButtonLinkComponent> = (
-  props,
+  props
 ) => {
   return <CreatedButtonLinkComponent preload={'intent'} {...props} />
 }
@@ -267,7 +267,7 @@ import { CustomLink } from './CustomLink'
 const StyledCustomLink = styled(CustomLink)(
   ({ theme }) => css`
     color: ${theme.palette.common.white};
-  `,
+  `
 )
 ```
 
@@ -302,7 +302,7 @@ const MantineLinkComponent = React.forwardRef<
 const CreatedLinkComponent = createLink(MantineLinkComponent)
 
 export const CustomLink: LinkComponent<typeof MantineLinkComponent> = (
-  props,
+  props
 ) => {
   return <CreatedLinkComponent preload="intent" {...props} />
 }

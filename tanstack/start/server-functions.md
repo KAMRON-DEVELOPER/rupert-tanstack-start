@@ -32,11 +32,11 @@ TanStack Start provides `createCsrfMiddleware()` to protect server functions fro
 import { createStart, createCsrfMiddleware } from '@tanstack/react-start'
 
 const csrfMiddleware = createCsrfMiddleware({
-  filter: (ctx) => ctx.handlerType === 'serverFn',
+  filter: (ctx) => ctx.handlerType === 'serverFn'
 })
 
 export const startInstance = createStart(() => ({
-  requestMiddleware: [csrfMiddleware],
+  requestMiddleware: [csrfMiddleware]
 }))
 ```
 
@@ -76,7 +76,7 @@ Call server functions from:
 ```tsx
 // In a route loader
 export const Route = createFileRoute('/posts')({
-  loader: () => getServerPosts(),
+  loader: () => getServerPosts()
 })
 
 // In a component
@@ -85,7 +85,7 @@ function PostList() {
 
   const { data } = useQuery({
     queryKey: ['posts'],
-    queryFn: () => getPosts(),
+    queryFn: () => getPosts()
   })
 }
 ```
@@ -139,7 +139,7 @@ import { getUser } from '~/utils/users.functions'
 function UserProfile({ id }) {
   const { data } = useQuery({
     queryKey: ['user', id],
-    queryFn: () => getUser({ data: { id } }),
+    queryFn: () => getUser({ data: { id } })
   })
 }
 ```
@@ -182,7 +182,7 @@ import { z } from 'zod'
 
 const UserSchema = z.object({
   name: z.string().min(1),
-  age: z.number().min(0),
+  age: z.number().min(0)
 })
 
 export const createUser = createServerFn({ method: 'POST' })
@@ -206,7 +206,7 @@ export const submitForm = createServerFn({ method: 'POST' })
 
     return {
       name: data.get('name')?.toString() || '',
-      email: data.get('email')?.toString() || '',
+      email: data.get('email')?.toString() || ''
     }
   })
   .handler(async ({ data }) => {
@@ -234,7 +234,7 @@ export const looseServerFn = createServerFn({ strict: false })
 
 // Disable only input serialization type checks
 export const looseInputServerFn = createServerFn({
-  strict: { input: false },
+  strict: { input: false }
 })
   .inputValidator((data: { value: unknown }) => data)
   .handler(async () => {
@@ -243,7 +243,7 @@ export const looseInputServerFn = createServerFn({
 
 // Disable only output serialization type checks
 export const looseOutputServerFn = createServerFn({
-  strict: { output: false },
+  strict: { output: false }
 }).handler(async () => {
   return getCustomSerializedValue()
 })
@@ -330,7 +330,7 @@ import {
   getRequest,
   getRequestHeader,
   setResponseHeaders,
-  setResponseStatus,
+  setResponseStatus
 } from '@tanstack/react-start/server'
 
 // Public, non-personalized data — safe to cache shared across users.
@@ -341,12 +341,12 @@ export const getPublicData = createServerFn({ method: 'GET' }).handler(
         // 'public' is correct ONLY when the response does not depend on identity.
         // For anything tied to a session/user/tenant, see the authenticated example below.
         'Cache-Control': 'public, max-age=300',
-        'CDN-Cache-Control': 'max-age=3600, stale-while-revalidate=600',
-      }),
+        'CDN-Cache-Control': 'max-age=3600, stale-while-revalidate=600'
+      })
     )
     setResponseStatus(200)
     return fetchPublicData()
-  },
+  }
 )
 ```
 
@@ -362,11 +362,11 @@ export const getMyOrders = createServerFn({ method: 'GET' }).handler(
         // 'private' = only the user-agent may cache. Vary by Cookie/Authorization
         // so any intermediary that does cache keys by identity, not URL alone.
         'Cache-Control': 'private, max-age=60',
-        Vary: 'Cookie, Authorization',
-      }),
+        Vary: 'Cookie, Authorization'
+      })
     )
     return db.orders.findMany({ where: { userId: session.userId } })
-  },
+  }
 )
 
 // For sensitive data, opt out entirely:
@@ -447,11 +447,11 @@ export default defineConfig({
 
           // If you return undefined, the default is used
           // return undefined
-        },
-      },
+        }
+      }
     }),
-    react(),
-  ],
+    react()
+  ]
 })
 ```
 

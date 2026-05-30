@@ -122,7 +122,7 @@ To achieve this, wrap your app in the `ReactQueryStreamedHydration` component:
 import {
   isServer,
   QueryClient,
-  QueryClientProvider,
+  QueryClientProvider
 } from '@tanstack/react-query'
 import * as React from 'react'
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental'
@@ -133,9 +133,9 @@ function makeQueryClient() {
       queries: {
         // With SSR, we usually want to set some default staleTime
         // above 0 to avoid refetching immediately on the client
-        staleTime: 60 * 1000,
-      },
-    },
+        staleTime: 60 * 1000
+      }
+    }
   })
 }
 
@@ -184,9 +184,9 @@ For more information, check out the [NextJs Suspense Streaming Example](../examp
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      experimental_prefetchInRender: true,
-    },
-  },
+      experimental_prefetchInRender: true
+    }
+  }
 })
 ```
 

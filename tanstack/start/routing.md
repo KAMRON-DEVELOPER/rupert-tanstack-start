@@ -29,7 +29,7 @@ import { routeTree } from './routeTree.gen'
 export function getRouter() {
   const router = createRouter({
     routeTree,
-    scrollRestoration: true,
+    scrollRestoration: true
   })
 
   return router
@@ -73,7 +73,7 @@ import {
   Outlet,
   createRootRoute,
   HeadContent,
-  Scripts,
+  Scripts
 } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 
@@ -81,18 +81,18 @@ export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
-        charSet: 'utf-8',
+        charSet: 'utf-8'
       },
       {
         name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
+        content: 'width=device-width, initial-scale=1'
       },
       {
-        title: 'TanStack Start Starter',
-      },
-    ],
+        title: 'TanStack Start Starter'
+      }
+    ]
   }),
-  component: RootComponent,
+  component: RootComponent
 })
 
 function RootComponent() {
@@ -221,7 +221,7 @@ Then, define the route like this:
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/posts/$postId')({
-  component: PostComponent,
+  component: PostComponent
 })
 ```
 
