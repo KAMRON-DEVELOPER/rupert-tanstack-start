@@ -39,8 +39,12 @@ export default AppSidebarFooter
 const AppSidebarFooterUnauthenticated = () => {
   return (
     <Link to="/auth" className="flex items-center gap-x-2">
-      <LogIn className="size-8" />
-      Sign in
+      <div>
+        <LogIn className="size-8" />
+      </div>
+      <div className="grid flex-1 text-left text-sm leading-tight">
+        <span className="truncate font-medium">Sign in</span>
+      </div>
     </Link>
   )
 }

@@ -1,21 +1,16 @@
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
   SidebarContent,
   SidebarGroup,
-  SidebarGroupAction,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuBadge,
   SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem
+  SidebarMenuItem
 } from '@/components/ui/sidebar'
 import { Link } from '@tanstack/react-router'
-import { ChevronDown, LucideLayoutDashboard, Plus } from 'lucide-react'
+import { ArrowLeftRight, BriefcaseBusiness, FileText, Rss, Send } from 'lucide-react'
 import { ComponentPropsWithoutRef } from 'react'
 import AppContentFooter from './AppContentFooter'
 
@@ -24,109 +19,53 @@ const AppSidebarContent = ({ ...props }: ComponentPropsWithoutRef<typeof Sidebar
     <SidebarContent>
       {/* Feed */}
       <SidebarGroup {...props}>
-        <SidebarGroupLabel>Feed</SidebarGroupLabel>
+        <SidebarGroupLabel>Platform</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            {/* Following */}
+            {/* Feed */}
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={false} tooltip="Following">
-                <Link to="/">
-                  <LucideLayoutDashboard className="size-4" />
-                  <span>Following</span>
+              <SidebarMenuButton asChild isActive={false} tooltip="Feed">
+                <Link to="/feeds">
+                  <Rss className="size-4" />
+                  <span>Feed</span>
                 </Link>
               </SidebarMenuButton>
-              <SidebarMenuAction></SidebarMenuAction>
-              <SidebarMenuBadge></SidebarMenuBadge>
+              <SidebarMenuBadge>0</SidebarMenuBadge>
             </SidebarMenuItem>
-            {/* Discover */}
+            {/* Post */}
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={false} tooltip="Discover">
-                <Link to="/">
-                  <LucideLayoutDashboard className="size-4" />
-                  <span>Discover</span>
+              <SidebarMenuButton asChild isActive={false} tooltip="Post">
+                <Link to="/posts">
+                  <FileText className="size-4" />
+                  <span>Post</span>
                 </Link>
               </SidebarMenuButton>
-              <SidebarMenuBadge>24</SidebarMenuBadge>
+              <SidebarMenuBadge>0</SidebarMenuBadge>
+            </SidebarMenuItem>
+            {/* Work */}
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={false} tooltip="Work">
+                <Link to="/work">
+                  <BriefcaseBusiness className="size-4" />
+                  <span>Work</span>
+                </Link>
+              </SidebarMenuButton>
+              <SidebarMenuAction>
+                <ArrowLeftRight />
+              </SidebarMenuAction>
+            </SidebarMenuItem>
+            {/* Message */}
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={false} tooltip="Message">
+                <Link to="/messages">
+                  <Send className="size-4" />
+                  <span>Message</span>
+                </Link>
+              </SidebarMenuButton>
+              <SidebarMenuBadge>0</SidebarMenuBadge>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroupContent>
-      </SidebarGroup>
-
-      {/* Collapsible */}
-      <Collapsible defaultOpen={false} className="group/collapsible">
-        <SidebarGroup>
-          <SidebarGroupLabel asChild>
-            <CollapsibleTrigger>
-              Collapsible
-              <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-            </CollapsibleTrigger>
-          </SidebarGroupLabel>
-          <CollapsibleContent>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton>
-                    <Link to="/">
-                      <span>A</span>
-                    </Link>
-                  </SidebarMenuButton>
-                  <SidebarMenuButton>
-                    <Link to="/">
-                      <span>B</span>
-                    </Link>
-                  </SidebarMenuButton>
-                  <SidebarMenuButton>
-                    <Link to="/">
-                      <span>C</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </CollapsibleContent>
-        </SidebarGroup>
-      </Collapsible>
-
-      {/* Sub */}
-      <SidebarGroup {...props}>
-        <SidebarGroupLabel>Sub</SidebarGroupLabel>
-        <SidebarGroupContent>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton>
-                <Link to="/">
-                  <span>R</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton>T</SidebarMenuButton>
-              <SidebarMenuSub>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link to="/">
-                      <span>Q</span>
-                    </Link>
-                  </SidebarMenuSubButton>
-                  <SidebarMenuSubButton asChild>
-                    <Link to="/">
-                      <span>X</span>
-                    </Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-              </SidebarMenuSub>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroupContent>
-      </SidebarGroup>
-
-      {/* Group Action */}
-      <SidebarGroup>
-        <SidebarGroupLabel>Group Action</SidebarGroupLabel>
-        <SidebarGroupAction>
-          <Plus />
-        </SidebarGroupAction>
-        <SidebarGroupContent></SidebarGroupContent>
       </SidebarGroup>
 
       <AppContentFooter className="mt-auto" />
