@@ -1,13 +1,12 @@
 import { AxiosRequestConfig } from 'axios'
 import {
   getRequestHeader,
-  setResponseHeaders
+  getResponseHeaders
 } from '@tanstack/react-start/server'
 import { createAxiosInstance, CreateApi } from './api'
 
 export function createServerApi(): CreateApi {
   const cookieHeader = getRequestHeader('cookie')
-  console.log(`[createServerApi] cookieHeader: ${cookieHeader}`)
 
   const headers: Record<string, string> = {}
 
@@ -24,11 +23,23 @@ export function createServerApi(): CreateApi {
     const res = await instance(url, config)
 
     const setCookie = res.headers['set-cookie']
-    if (setCookie?.length) {
-      console.log(`[createServerApi] setCookie: ${setCookie}`)
-      const headers = new Headers()
-      setCookie.forEach((h) => headers.append('set-cookie', h))
-      setResponseHeaders(headers)
+    const cookies = Array.isArray(setCookie)
+      ? setCookie
+      : setCookie
+        ? [setCookie]
+        : []
+
+    if (cookies.length) {
+      // getResponseHeaders() is enough because it returns the live response Headers object for
+      // the current TanStack/H3 request. Mutating it directly with .append(...) changes
+      // the response that will be sent to the browser.
+      const responseHeaders = getResponseHeaders()
+
+      // for (const cookie of cookies) {
+      //   responseHeaders.append('set-cookie', cookie)
+      // }
+
+      cookies.forEach((c) => responseHeaders.append('set-cookie', c))
     }
 
     return res.data
