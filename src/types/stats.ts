@@ -28,6 +28,7 @@ export interface CompanyTypeBucketSchema extends BucketBase {
 
 export interface DailyActiveUsersBucketSchema {
   count: number
+  anonymousCounts: number
   date: string // ISO date, e.g. "2026-04-18"
 }
 

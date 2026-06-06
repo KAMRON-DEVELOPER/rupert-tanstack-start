@@ -4,8 +4,6 @@ import RupertSvg from '@/assets/icons/RupertSvg'
 
 import clsx from 'clsx'
 import useScrollDirection from '@/hooks/useScrollDirection'
-import { NavbarLanguageSwitcherMenu } from './Navbar.NavbarLanguageSwitcherMenu'
-import { NavbarThemeSwitcherMenu } from './Navbar.NavbarThemeSwitcherMenu'
 import NavbarCTA from './Navbar.NavbarCTA'
 import NavbarMenu from './Navbar.NavbarMenu'
 
@@ -27,7 +25,7 @@ const Navbar = () => {
           Rupert
         </Link>
 
-        <div className="text-muted-foreground flex items-center gap-4">
+        <div className="text-muted-foreground hidden items-center gap-4 md:flex">
           <Link
             to="/feeds"
             disabled={true}
@@ -61,8 +59,6 @@ const Navbar = () => {
 
         {/* Right */}
         <div className="flex items-center gap-2">
-          <NavbarLanguageSwitcherMenu />
-          <NavbarThemeSwitcherMenu />
           <NavbarCTA />
           <NavbarMenu />
         </div>

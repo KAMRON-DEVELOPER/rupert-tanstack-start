@@ -10,7 +10,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { useUpdateProfileMutation } from '@/services/users/auth'
+import { useUpdateProfileMutation } from '@/api/users/auth'
 import { UserSchema, UserUpdateRequest } from '@/types/user'
 import { useState } from 'react'
 import { toast } from 'sonner'

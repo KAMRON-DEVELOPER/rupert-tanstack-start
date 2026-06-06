@@ -10,7 +10,7 @@ import {
   getVacancyFn
 } from './vacancies.functions'
 import { ApplicationSearch, VacancySearch } from '@/types/vacancy.schema'
-import type { CreateApi } from '@/services/api'
+import type { CreateApi } from '@/api/api'
 import type { MessageResponse } from '@/types/types'
 import type {
   ApplicationRequest,

@@ -6,7 +6,7 @@ import {
   useGetFollowingQueryOptions,
   useGetFollowRequestsQueryOptions,
   useUpdateFollowRequestMutation
-} from '@/services/users/users'
+} from '@/api/users/users'
 import type { FollowSchema, FollowUserSchema } from '@/types/user'
 import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'

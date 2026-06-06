@@ -1,5 +1,5 @@
 import CompanyPage from '@/pages/work/companies/CompanyPage'
-import { useGetCompanyQueryOptions } from '@/services/companies/companies'
+import { useGetCompanyQueryOptions } from '@/api/companies/companies'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(apps)/(work)/work/companies/$id')({

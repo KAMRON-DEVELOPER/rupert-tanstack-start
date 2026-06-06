@@ -1,8 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import {
-  useGetCountriesQueryOptions,
-  useGetCitiesQueryOptions
-} from '@/services/locations/locations'
+import { useGetCountriesQueryOptions, useGetCitiesQueryOptions } from '@/api/locations/locations'
 import {
   useCreateCountryMutation,
   useUpdateCountryMutation,
@@ -10,7 +7,7 @@ import {
   useUpdateCityMutation,
   useDeleteCountryMutation,
   useDeleteCityMutation
-} from '@/services/admin/admin'
+} from '@/api/admin/admin'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'

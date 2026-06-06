@@ -1,6 +1,6 @@
 import { getRouteApi } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { useGetCompaniesQueryOptions } from '@/services/companies/companies'
+import { useGetCompaniesQueryOptions } from '@/api/companies/companies'
 import CompanyCard from './CompanyCard'
 import EmptyState from '@/components/forms/EmptyState'
 

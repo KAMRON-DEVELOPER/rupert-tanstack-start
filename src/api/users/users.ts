@@ -115,7 +115,7 @@ export const useRevokeSessionsMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: { includeCurrent?: boolean }) =>
+    mutationFn: (data: { include_current?: boolean }) =>
       revokeSessionsFn({ data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['sessions'] })

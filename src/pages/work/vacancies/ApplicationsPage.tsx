@@ -1,5 +1,5 @@
 import EmptyState from '@/components/forms/EmptyState'
-import { useGetApplicationsQueryOptions } from '@/services/vacancies/vacancies'
+import { useGetApplicationsQueryOptions } from '@/api/vacancies/vacancies'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { getRouteApi } from '@tanstack/react-router'
 import ApplicationCard from './ApplicationCard'

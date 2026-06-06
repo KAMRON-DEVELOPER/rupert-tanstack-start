@@ -1,4 +1,4 @@
-import { useGetStatsQueryOptions } from '@/services/stats/stats'
+import { useGetStatsQueryOptions } from '@/api/stats/stats'
 import { useSuspenseQuery } from '@tanstack/react-query'
 
 import StatsDauChart from './Stats.DauChart'

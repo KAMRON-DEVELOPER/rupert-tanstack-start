@@ -18,7 +18,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { useCreateVacancyMutation, useUpdateVacancyMutation } from '@/services/vacancies/vacancies'
+import { useCreateVacancyMutation, useUpdateVacancyMutation } from '@/api/vacancies/vacancies'
 import { getErrorMessage } from '@/types/helper'
 import {
   EmploymentTypeList,

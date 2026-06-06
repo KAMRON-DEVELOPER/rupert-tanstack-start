@@ -8,9 +8,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'sonner'
-import { CreateApi } from '@/services/api'
+import { CreateApi } from '@/api/api'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import { authProbeFn } from '@/services/users/auth.functions'
+import { authProbeFn } from '@/api/users/auth.functions'
 
 export type RouterContext = {
   queryClient: QueryClient

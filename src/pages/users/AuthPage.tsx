@@ -1,7 +1,7 @@
 import { BASE_URL } from '@/consts'
 import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons'
 import { useState, type SubmitEvent } from 'react'
-import { useEmailAuthMutation } from '@/services/users/auth'
+import { useEmailAuthMutation } from '@/api/users/auth'
 import { Eye, EyeOff } from 'lucide-react'
 import { Link, useNavigate, useRouteContext } from '@tanstack/react-router'
 import { Input } from '@/components/ui/input'

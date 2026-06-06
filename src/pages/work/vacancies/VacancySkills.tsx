@@ -17,7 +17,7 @@ import {
   useAddVacancySkillMutation,
   useDeleteVacancySkillMutation,
   useUpdateVacancySkillMutation
-} from '@/services/vacancies/vacancies'
+} from '@/api/vacancies/vacancies'
 import { getErrorMessage } from '@/types/helper'
 import { ProficiencyLevelList, type ProficiencyLevel } from '@/types/literals'
 import type { VacancySchema } from '@/types/vacancy'

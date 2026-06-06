@@ -1,16 +1,15 @@
 import { createServerFn } from '@tanstack/react-start'
-import { createServerApi } from '@/services/api.server'
+import { createServerApi } from '@/api/api.server'
 import { ListResponse } from '@/types/types'
 import { CompanySearch } from '@/types/company.schema'
 import { CompanyCardSchema, CompanySchema } from '@/types/company'
-import { toApiParams } from '@/services/api-params'
 
 export const getCompaniesFn = createServerFn()
   .inputValidator((data: CompanySearch) => data)
   .handler(async ({ data: params }) => {
     const api = createServerApi()
     return api<ListResponse<CompanyCardSchema>>('companies/', {
-      params: toApiParams(params)
+      params
     })
   })
 

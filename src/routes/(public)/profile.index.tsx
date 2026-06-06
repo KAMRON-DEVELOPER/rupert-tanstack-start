@@ -1,5 +1,5 @@
 import ProfilePage from '@/pages/users/ProfilePage'
-import { useGetProfileQueryOptions } from '@/services/users/auth'
+import { useGetProfileQueryOptions } from '@/api/users/auth'
 import {
   useGetFollowersQueryOptions,
   useGetFollowingQueryOptions,
@@ -8,7 +8,7 @@ import {
   useGetSessionsQueryOptions,
   useGetUserSkillsQueryOptions,
   useGetWorkExperiencesQueryOptions
-} from '@/services/users/users'
+} from '@/api/users/users'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(public)/profile/')({

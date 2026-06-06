@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import { useGetSkillsQueryOptions } from '@/services/skills/skills'
+import { useGetSkillsQueryOptions } from '@/api/skills/skills'
 import {
   useCreateSkillMutation,
   useUpdateSkillMutation,
   useDeleteSkillMutation
-} from '@/services/admin/admin'
+} from '@/api/admin/admin'
 import { SkillList } from '@/components/admin/SkillList'
 import { SkillForm } from '@/components/admin/SkillForm'
 import { useState } from 'react'

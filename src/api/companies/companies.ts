@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query'
 import { getCompaniesFn, getCompanyFn } from './companies.functions'
 import { CompanySearch } from '@/types/company.schema'
-import type { CreateApi } from '@/services/api'
+import type { CreateApi } from '@/api/api'
 import type {
   CompanyCreateRequest,
   CompanyMemberInviteRequest,

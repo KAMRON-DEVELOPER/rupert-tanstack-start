@@ -35,7 +35,7 @@ import {
   useGetResumesQueryOptions,
   useUpdateResumeSkillMutation,
   useUpdateResumeMutation
-} from '@/services/users/users'
+} from '@/api/users/users'
 import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 

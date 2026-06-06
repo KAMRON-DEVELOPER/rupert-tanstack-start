@@ -1,6 +1,4 @@
 import { createServerFn } from '@tanstack/react-start'
-import { createServerApi } from '@/services/api.server'
-import { toApiParams } from '@/services/api-params'
 import { userSearchResponseSchema } from '@/types/chats.schema'
 import type { UserSearchResponse } from '@/types/chats.schema'
 import type { ListResponse, MessageResponse, Pagination } from '@/types/types'
@@ -19,41 +17,42 @@ import type {
   WorkExperienceSchema,
   WorkExperienceUpdateRequest
 } from '@/types/user'
+import { createServerApi } from '../api.server'
 
 export const getSessionsFn = createServerFn().handler(async () => {
-  const api = createServerApi()
-  return api<SessionSchema[]>('users/sessions')
+  const axios = createServerApi()
+  return axios<SessionSchema[]>('users/sessions', { method: 'PATCH' })
 })
 
 export const revokeSessionFn = createServerFn({ method: 'POST' })
   .inputValidator((data: { sessionId: string }) => data)
   .handler(async ({ data: { sessionId } }) => {
-    const api = createServerApi()
-    return api<MessageResponse>(`users/sessions/${sessionId}`, {
+    const axios = createServerApi()
+    return axios<MessageResponse>(`users/sessions/${sessionId}`, {
       method: 'DELETE'
     })
   })
 
 export const revokeSessionsFn = createServerFn({ method: 'POST' })
-  .inputValidator((data: { includeCurrent?: boolean }) => data)
-  .handler(async ({ data }) => {
-    const api = createServerApi()
-    return api<MessageResponse>('users/sessions', {
+  .inputValidator((data: { include_current?: boolean }) => data)
+  .handler(async ({ data: params }) => {
+    const axios = createServerApi()
+    return axios<MessageResponse>('users/sessions', {
       method: 'DELETE',
-      params: toApiParams(data)
+      params
     })
   })
 
 export const getUserSkillsFn = createServerFn().handler(async () => {
-  const api = createServerApi()
-  return api<UserSkillLinkSchema[]>('users/skills')
+  const axios = createServerApi()
+  return axios<UserSkillLinkSchema[]>('users/skills')
 })
 
 export const addUserSkillFn = createServerFn({ method: 'POST' })
   .inputValidator((data: SkillLinkRequest) => data)
   .handler(async ({ data }) => {
-    const api = createServerApi()
-    return api<UserSkillLinkSchema>('users/skills', { method: 'POST', data })
+    const axios = createServerApi()
+    return axios<UserSkillLinkSchema>('users/skills', { method: 'POST', data })
   })
 
 export const updateUserSkillFn = createServerFn({ method: 'POST' })
@@ -61,8 +60,8 @@ export const updateUserSkillFn = createServerFn({ method: 'POST' })
     (data: { skillLinkId: string; data: SkillLinkUpdateRequest }) => data
   )
   .handler(async ({ data: { skillLinkId, data } }) => {
-    const api = createServerApi()
-    return api<UserSkillLinkSchema>(`users/skills/${skillLinkId}`, {
+    const axios = createServerApi()
+    return axios<UserSkillLinkSchema>(`users/skills/${skillLinkId}`, {
       method: 'PATCH',
       data
     })
@@ -71,29 +70,29 @@ export const updateUserSkillFn = createServerFn({ method: 'POST' })
 export const deleteUserSkillFn = createServerFn({ method: 'POST' })
   .inputValidator((data: { skillLinkId: string }) => data)
   .handler(async ({ data: { skillLinkId } }) => {
-    const api = createServerApi()
-    return api<MessageResponse>(`users/skills/${skillLinkId}`, {
+    const axios = createServerApi()
+    return axios<MessageResponse>(`users/skills/${skillLinkId}`, {
       method: 'DELETE'
     })
   })
 
 export const getResumesFn = createServerFn().handler(async () => {
-  const api = createServerApi()
-  return api<ResumeSchema[]>('users/resumes')
+  const axios = createServerApi()
+  return axios<ResumeSchema[]>('users/resumes')
 })
 
 export const createResumeFn = createServerFn({ method: 'POST' })
   .inputValidator((data: ResumeRequest) => data)
   .handler(async ({ data }) => {
-    const api = createServerApi()
-    return api<ResumeSchema>('users/resumes', { method: 'POST', data })
+    const axios = createServerApi()
+    return axios<ResumeSchema>('users/resumes', { method: 'POST', data })
   })
 
 export const getResumeFn = createServerFn()
   .inputValidator((data: { resumeId: string }) => data)
   .handler(async ({ data: { resumeId } }) => {
-    const api = createServerApi()
-    return api<ResumeSchema>(`users/resumes/${resumeId}`)
+    const axios = createServerApi()
+    return axios<ResumeSchema>(`users/resumes/${resumeId}`)
   })
 
 export const updateResumeFn = createServerFn({ method: 'POST' })
@@ -101,8 +100,8 @@ export const updateResumeFn = createServerFn({ method: 'POST' })
     (data: { resumeId: string; data: ResumeUpdateRequest }) => data
   )
   .handler(async ({ data: { resumeId, data } }) => {
-    const api = createServerApi()
-    return api<ResumeSchema>(`users/resumes/${resumeId}`, {
+    const axios = createServerApi()
+    return axios<ResumeSchema>(`users/resumes/${resumeId}`, {
       method: 'PATCH',
       data
     })
@@ -111,8 +110,8 @@ export const updateResumeFn = createServerFn({ method: 'POST' })
 export const deleteResumeFn = createServerFn({ method: 'POST' })
   .inputValidator((data: { resumeId: string }) => data)
   .handler(async ({ data: { resumeId } }) => {
-    const api = createServerApi()
-    return api<MessageResponse>(`users/resumes/${resumeId}`, {
+    const axios = createServerApi()
+    return axios<MessageResponse>(`users/resumes/${resumeId}`, {
       method: 'DELETE'
     })
   })
@@ -120,8 +119,8 @@ export const deleteResumeFn = createServerFn({ method: 'POST' })
 export const addResumeSkillFn = createServerFn({ method: 'POST' })
   .inputValidator((data: { resumeId: string; data: SkillLinkRequest }) => data)
   .handler(async ({ data: { resumeId, data } }) => {
-    const api = createServerApi()
-    return api<ResumeSkillLinkSchema>(`users/resumes/${resumeId}/skills`, {
+    const axios = createServerApi()
+    return axios<ResumeSkillLinkSchema>(`users/resumes/${resumeId}/skills`, {
       method: 'POST',
       data
     })
@@ -136,8 +135,8 @@ export const updateResumeSkillFn = createServerFn({ method: 'POST' })
     }) => data
   )
   .handler(async ({ data: { resumeId, skillLinkId, data } }) => {
-    const api = createServerApi()
-    return api<ResumeSkillLinkSchema>(
+    const axios = createServerApi()
+    return axios<ResumeSkillLinkSchema>(
       `users/resumes/${resumeId}/skills/${skillLinkId}`,
       {
         method: 'PATCH',
@@ -149,8 +148,8 @@ export const updateResumeSkillFn = createServerFn({ method: 'POST' })
 export const deleteResumeSkillFn = createServerFn({ method: 'POST' })
   .inputValidator((data: { resumeId: string; skillLinkId: string }) => data)
   .handler(async ({ data: { resumeId, skillLinkId } }) => {
-    const api = createServerApi()
-    return api<MessageResponse>(
+    const axios = createServerApi()
+    return axios<MessageResponse>(
       `users/resumes/${resumeId}/skills/${skillLinkId}`,
       {
         method: 'DELETE'
@@ -159,15 +158,15 @@ export const deleteResumeSkillFn = createServerFn({ method: 'POST' })
   })
 
 export const getWorkExperiencesFn = createServerFn().handler(async () => {
-  const api = createServerApi()
-  return api<WorkExperienceSchema[]>('users/work-experiences')
+  const axios = createServerApi()
+  return axios<WorkExperienceSchema[]>('users/work-experiences')
 })
 
 export const createWorkExperienceFn = createServerFn({ method: 'POST' })
   .inputValidator((data: WorkExperienceRequest) => data)
   .handler(async ({ data }) => {
-    const api = createServerApi()
-    return api<WorkExperienceSchema>('users/work-experiences', {
+    const axios = createServerApi()
+    return axios<WorkExperienceSchema>('users/work-experiences', {
       method: 'POST',
       data
     })
@@ -179,8 +178,8 @@ export const updateWorkExperienceFn = createServerFn({ method: 'POST' })
       data
   )
   .handler(async ({ data: { workExperienceId, data } }) => {
-    const api = createServerApi()
-    return api<WorkExperienceSchema>(
+    const axios = createServerApi()
+    return axios<WorkExperienceSchema>(
       `users/work-experiences/${workExperienceId}`,
       {
         method: 'PATCH',
@@ -192,17 +191,20 @@ export const updateWorkExperienceFn = createServerFn({ method: 'POST' })
 export const deleteWorkExperienceFn = createServerFn({ method: 'POST' })
   .inputValidator((data: { workExperienceId: string }) => data)
   .handler(async ({ data: { workExperienceId } }) => {
-    const api = createServerApi()
-    return api<MessageResponse>(`users/work-experiences/${workExperienceId}`, {
-      method: 'DELETE'
-    })
+    const axios = createServerApi()
+    return axios<MessageResponse>(
+      `users/work-experiences/${workExperienceId}`,
+      {
+        method: 'DELETE'
+      }
+    )
   })
 
 export const followUserFn = createServerFn({ method: 'POST' })
   .inputValidator((data: { followingId: string }) => data)
   .handler(async ({ data: { followingId } }) => {
-    const api = createServerApi()
-    return api<FollowSchema>(`users/${followingId}/follow`, {
+    const axios = createServerApi()
+    return axios<FollowSchema>(`users/${followingId}/follow`, {
       method: 'POST'
     })
   })
@@ -210,8 +212,8 @@ export const followUserFn = createServerFn({ method: 'POST' })
 export const unfollowUserFn = createServerFn({ method: 'POST' })
   .inputValidator((data: { followingId: string }) => data)
   .handler(async ({ data: { followingId } }) => {
-    const api = createServerApi()
-    return api<MessageResponse>(`users/${followingId}/follow`, {
+    const axios = createServerApi()
+    return axios<MessageResponse>(`users/${followingId}/follow`, {
       method: 'DELETE'
     })
   })
@@ -219,27 +221,27 @@ export const unfollowUserFn = createServerFn({ method: 'POST' })
 export const getFollowersFn = createServerFn()
   .inputValidator((data: Partial<Pagination>) => data)
   .handler(async ({ data: params }) => {
-    const api = createServerApi()
-    return api<ListResponse<FollowSchema>>('users/followers', {
-      params: toApiParams(params)
+    const axios = createServerApi()
+    return axios<ListResponse<FollowSchema>>('users/followers', {
+      params
     })
   })
 
 export const getFollowingFn = createServerFn()
   .inputValidator((data: Partial<Pagination>) => data)
   .handler(async ({ data: params }) => {
-    const api = createServerApi()
-    return api<ListResponse<FollowSchema>>('users/following', {
-      params: toApiParams(params)
+    const axios = createServerApi()
+    return axios<ListResponse<FollowSchema>>('users/following', {
+      params
     })
   })
 
 export const getFollowRequestsFn = createServerFn()
   .inputValidator((data: Partial<Pagination>) => data)
   .handler(async ({ data: params }) => {
-    const api = createServerApi()
-    return api<ListResponse<FollowSchema>>('users/follow-requests', {
-      params: toApiParams(params)
+    const axios = createServerApi()
+    return axios<ListResponse<FollowSchema>>('users/follow-requests', {
+      params
     })
   })
 
@@ -248,8 +250,8 @@ export const updateFollowRequestFn = createServerFn({ method: 'POST' })
     (data: { followId: string; data: FollowUpdateRequest }) => data
   )
   .handler(async ({ data: { followId, data } }) => {
-    const api = createServerApi()
-    return api<FollowSchema>(`users/follow-requests/${followId}`, {
+    const axios = createServerApi()
+    return axios<FollowSchema>(`users/follow-requests/${followId}`, {
       method: 'PATCH',
       data
     })
@@ -260,9 +262,9 @@ export const searchUsersFn = createServerFn()
     (data: { q: string; offset?: number; limit?: number }) => data
   )
   .handler(async ({ data: { q, ...params } }) => {
-    const api = createServerApi()
-    const data = await api('users/search', {
-      params: toApiParams({ q, ...params })
+    const axios = createServerApi()
+    const data = await axios('users/search', {
+      params
     })
     return userSearchResponseSchema.parse(data) satisfies UserSearchResponse
   })

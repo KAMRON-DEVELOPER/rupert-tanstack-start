@@ -1,6 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { createServerApi } from '@/services/api.server'
-import { toApiParams } from '@/services/api-params'
+import { createServerApi } from '@/api/api.server'
 import { skillListResponseSchema } from '@/types/skill.schema'
 import type { PaginationSearch } from '@/types/types.schemas'
 
@@ -9,7 +8,7 @@ export const getSkillsFn = createServerFn()
   .handler(async ({ data: params }) => {
     const api = createServerApi()
     const data = await api('skills/', {
-      params: toApiParams(params)
+      params
     })
     return skillListResponseSchema.parse(data)
   })

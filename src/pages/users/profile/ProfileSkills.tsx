@@ -27,7 +27,7 @@ import {
   useDeleteUserSkillMutation,
   useGetUserSkillsQueryOptions,
   useUpdateUserSkillMutation
-} from '@/services/users/users'
+} from '@/api/users/users'
 import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 

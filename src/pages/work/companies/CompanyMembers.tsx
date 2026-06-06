@@ -16,7 +16,7 @@ import {
   useAddCompanyMemberMutation,
   useDeleteCompanyMemberMutation,
   useUpdateCompanyMemberMutation
-} from '@/services/companies/companies'
+} from '@/api/companies/companies'
 import type { CompanySchema } from '@/types/company'
 import { getErrorMessage } from '@/types/helper'
 import { CompanyMemberRoleList, type CompanyMemberRole } from '@/types/literals'

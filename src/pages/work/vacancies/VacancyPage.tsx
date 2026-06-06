@@ -4,7 +4,7 @@ import {
   useGetVacancyQueryOptions,
   useSaveVacancyMutation,
   useUnsaveVacancyMutation
-} from '@/services/vacancies/vacancies'
+} from '@/api/vacancies/vacancies'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useNavigate, useParams, useRouteContext } from '@tanstack/react-router'
 import { Bookmark, Pencil, Trash2 } from 'lucide-react'

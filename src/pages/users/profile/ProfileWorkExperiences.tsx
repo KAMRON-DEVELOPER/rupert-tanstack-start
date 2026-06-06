@@ -19,7 +19,7 @@ import {
   useDeleteWorkExperienceMutation,
   useGetWorkExperiencesQueryOptions,
   useUpdateWorkExperienceMutation
-} from '@/services/users/users'
+} from '@/api/users/users'
 import { getErrorMessage } from '@/types/helper'
 import type { WorkExperienceRequest, WorkExperienceSchema } from '@/types/user'
 import { useQuery } from '@tanstack/react-query'

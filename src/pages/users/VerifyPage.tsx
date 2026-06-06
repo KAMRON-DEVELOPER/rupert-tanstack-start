@@ -1,4 +1,4 @@
-import { useVerifyMutation } from '@/services/users/auth'
+import { useVerifyMutation } from '@/api/users/auth'
 import { getErrorMessage } from '@/types/helper'
 import { getRouteApi, useNavigate } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'

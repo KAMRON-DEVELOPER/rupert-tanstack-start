@@ -4,7 +4,6 @@ import {
   queryOptions
 } from '@tanstack/react-query'
 
-import { CreateApi } from '@/services/api'
 import type {
   EmailAuthRequest,
   PasswordSetupRequest,
@@ -18,6 +17,7 @@ import {
   logoutFn,
   updateProfileFn
 } from './auth.functions'
+import { CreateApi } from '@/api/api'
 
 const appendFormDataValue = (
   formData: FormData,

@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { createServerApi } from '@/services/api.server'
+import { createServerApi } from '@/api/api.server'
 import {
   CityRequestSchema,
   CountryCreateRequestSchema,

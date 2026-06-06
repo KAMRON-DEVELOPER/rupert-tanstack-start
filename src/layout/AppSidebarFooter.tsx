@@ -5,7 +5,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '@/components/ui/sidebar'
-import { useGetProfileQueryOptions } from '@/services/users/auth'
+import { useGetProfileQueryOptions } from '@/api/users/auth'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useRouteContext } from '@tanstack/react-router'
 import { LogIn } from 'lucide-react'

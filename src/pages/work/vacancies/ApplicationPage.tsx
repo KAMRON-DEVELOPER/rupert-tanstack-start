@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { useGetApplicationQueryOptions } from '@/services/vacancies/vacancies'
+import { useGetApplicationQueryOptions } from '@/api/vacancies/vacancies'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useParams } from '@tanstack/react-router'
 import ApplicationCard from './ApplicationCard'

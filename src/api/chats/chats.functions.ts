@@ -1,6 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { createServerApi } from '@/services/api.server'
-import { toApiParams } from '@/services/api-params'
+import { createServerApi } from '@/api/api.server'
 import {
   chatListResponseSchema,
   chatMessagesResponseSchema
@@ -16,7 +15,7 @@ export const getChatsFn = createServerFn()
   .handler(async ({ data: params }) => {
     const api = createServerApi()
     const data = await api('chats/', {
-      params: toApiParams(params)
+      params
     })
     const result = chatListResponseSchema.safeParse(data)
     if (!result.success) {
@@ -34,7 +33,7 @@ export const getChatMessagesFn = createServerFn()
   .handler(async ({ data: { chatId, ...params } }) => {
     const api = createServerApi()
     const data = await api(`chats/${chatId}/messages`, {
-      params: toApiParams(params)
+      params
     })
     return chatMessagesResponseSchema.parse(data) satisfies ChatMessagesResponse
   })

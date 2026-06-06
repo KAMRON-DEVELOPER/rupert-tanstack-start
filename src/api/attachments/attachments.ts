@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { CreateApi } from '@/services/api'
+import type { CreateApi } from '@/api/api'
 import {
   uploadAttachmentsResponseSchema,
   type UploadAttachmentsResponse

@@ -10,8 +10,8 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { useGetResumesQueryOptions } from '@/services/users/users'
-import { useCreateApplicationMutation } from '@/services/vacancies/vacancies'
+import { useGetResumesQueryOptions } from '@/api/users/users'
+import { useCreateApplicationMutation } from '@/api/vacancies/vacancies'
 import { getErrorMessage } from '@/types/helper'
 import type { VacancySchema } from '@/types/vacancy'
 import { useSuspenseQuery } from '@tanstack/react-query'

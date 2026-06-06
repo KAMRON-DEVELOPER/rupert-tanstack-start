@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { useDeleteCompanyMutation, useGetCompanyQueryOptions } from '@/services/companies/companies'
+import { useDeleteCompanyMutation, useGetCompanyQueryOptions } from '@/api/companies/companies'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useNavigate, useParams, useRouteContext } from '@tanstack/react-router'
 import { Pencil, Trash2 } from 'lucide-react'

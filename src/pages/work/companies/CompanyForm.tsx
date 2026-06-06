@@ -18,7 +18,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { useCreateCompanyMutation, useUpdateCompanyMutation } from '@/services/companies/companies'
+import { useCreateCompanyMutation, useUpdateCompanyMutation } from '@/api/companies/companies'
 import { getErrorMessage } from '@/types/helper'
 import { CompanyTypeList, type CompanyType } from '@/types/literals'
 import type { CompanyCreateRequest, CompanySchema, CompanyUpdateRequest } from '@/types/company'

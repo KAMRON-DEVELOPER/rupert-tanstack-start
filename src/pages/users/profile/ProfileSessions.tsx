@@ -5,7 +5,7 @@ import {
   useGetSessionsQueryOptions,
   useRevokeSessionMutation,
   useRevokeSessionsMutation
-} from '@/services/users/users'
+} from '@/api/users/users'
 import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
@@ -25,7 +25,7 @@ const ProfileSessions = () => {
 
   const revokeAll = async () => {
     try {
-      await revokeSessions.mutateAsync({ includeCurrent: false })
+      await revokeSessions.mutateAsync({ include_current: false })
       toast.success('Other sessions revoked')
     } catch {
       toast.error('Failed to revoke sessions')

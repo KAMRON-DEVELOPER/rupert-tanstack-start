@@ -1,5 +1,5 @@
 import CompaniesPage from '@/pages/work/companies/CompaniesPage'
-import { useGetCompaniesQueryOptions } from '@/services/companies/companies'
+import { useGetCompaniesQueryOptions } from '@/api/companies/companies'
 import { companySearch } from '@/types/company.schema'
 import { createFileRoute } from '@tanstack/react-router'
 

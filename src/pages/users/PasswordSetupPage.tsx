@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { usePasswordSetupMutation } from '@/services/users/auth'
+import { usePasswordSetupMutation } from '@/api/users/auth'
 import { getErrorMessage } from '@/types/helper'
 import { getRouteApi, useNavigate } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'

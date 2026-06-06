@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { useUpdateApplicationMutation } from '@/services/vacancies/vacancies'
+import { useUpdateApplicationMutation } from '@/api/vacancies/vacancies'
 import { ApplicationStatusList, type ApplicationStatus } from '@/types/literals'
 import type { ApplicationCardSchema, ApplicationSchema } from '@/types/vacancy'
 import { Link, useRouteContext } from '@tanstack/react-router'

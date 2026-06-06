@@ -1,6 +1,6 @@
 import { getRouteApi } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { useGetVacanciesQueryOptions } from '@/services/vacancies/vacancies'
+import { useGetVacanciesQueryOptions } from '@/api/vacancies/vacancies'
 import VacancyCard from './VacancyCard'
 import EmptyState from '@/components/forms/EmptyState'
 
