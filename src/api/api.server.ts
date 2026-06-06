@@ -7,6 +7,7 @@ import { createAxiosInstance, CreateApi } from './api'
 
 export function createServerApi(): CreateApi {
   const cookieHeader = getRequestHeader('cookie')
+  console.log(`[createServerApi] cookieHeader: ${cookieHeader}`)
 
   const headers: Record<string, string> = {}
 
@@ -24,6 +25,7 @@ export function createServerApi(): CreateApi {
 
     const setCookie = res.headers['set-cookie']
     if (setCookie?.length) {
+      console.log(`[createServerApi] setCookie: ${setCookie}`)
       const headers = new Headers()
       setCookie.forEach((h) => headers.append('set-cookie', h))
       setResponseHeaders(headers)
