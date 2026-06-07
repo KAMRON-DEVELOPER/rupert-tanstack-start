@@ -19,9 +19,13 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useCreateCompanyMutation, useUpdateCompanyMutation } from '@/api/companies/companies'
-import { getErrorMessage } from '@/types/helper'
-import { CompanyTypeList, type CompanyType } from '@/types/literals'
-import type { CompanyCreateRequest, CompanySchema, CompanyUpdateRequest } from '@/types/company'
+import { getErrorMessage } from '@/types/shared/helper'
+import { CompanyTypeList, type CompanyType } from '@/types/shared/literals'
+import type {
+  CompanyCreateRequest,
+  CompanySchema,
+  CompanyUpdateRequest
+} from '@/types/companies/company'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { useState, type FormEvent } from 'react'

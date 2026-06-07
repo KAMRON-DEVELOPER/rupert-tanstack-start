@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { UserSchema } from '@/types/user'
+import { UserSchema } from '@/types/users/user'
 import { locationLabel } from '@/lib/location-label'
 import { MapPin, Pencil } from 'lucide-react'
 import ProfileEditDialog from './ProfileEditDialog'

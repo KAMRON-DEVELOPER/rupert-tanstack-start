@@ -1,6 +1,6 @@
 import VacanciesPage from '@/pages/work/vacancies/VacanciesPage'
 import { useGetVacanciesQueryOptions } from '@/api/vacancies/vacancies'
-import { vacancySearch } from '@/types/vacancy.schema'
+import { vacancySearch } from '@/types/vacancies/vacancy.schema'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(apps)/(work)/work/vacancies/')({

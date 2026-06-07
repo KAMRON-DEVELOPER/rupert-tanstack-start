@@ -1,4 +1,7 @@
-import type { CitySchema, CountrySchema } from '@/types/location.schema'
+import type {
+  CitySchema,
+  CountrySchema
+} from '@/types/location/location.schema'
 
 export const locationLabel = (
   country: CountrySchema | null,

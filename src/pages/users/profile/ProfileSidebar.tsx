@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { UserSchema } from '@/types/user'
+import { UserSchema } from '@/types/users/user'
 import { SiGithub } from '@icons-pack/react-simple-icons'
 import { Globe, Mail, Phone } from 'lucide-react'
 import { FaLinkedin } from 'react-icons/fa'

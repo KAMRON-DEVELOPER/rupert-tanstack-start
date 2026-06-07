@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { AuthProbeSchema, UserSchema } from '@/types/user'
+import { AuthProbeSchema, UserSchema } from '@/types/users/user'
 import { createServerApi } from '@/api/api.server'
 
 export const authProbeFn = createServerFn().handler(

@@ -1,4 +1,4 @@
-import { ErrorResponse } from '@/types/types'
+import { ErrorResponse } from '@/types/shared/types'
 
 export function isErrorResponse(data: unknown): data is ErrorResponse {
   if (typeof data !== 'object' || data === null || !('details' in data)) {

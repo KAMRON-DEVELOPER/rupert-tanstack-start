@@ -9,9 +9,12 @@ import {
   getVacanciesFn,
   getVacancyFn
 } from './vacancies.functions'
-import { ApplicationSearch, VacancySearch } from '@/types/vacancy.schema'
+import {
+  ApplicationSearch,
+  VacancySearch
+} from '@/types/vacancies/vacancy.schema'
 import type { CreateApi } from '@/api/api'
-import type { MessageResponse } from '@/types/types'
+import type { MessageResponse } from '@/types/shared/types'
 import type {
   ApplicationRequest,
   ApplicationSchema,
@@ -22,7 +25,7 @@ import type {
   VacancySkillLinkSchema,
   VacancySkillLinkUpdateRequest,
   VacancyUpdateRequest
-} from '@/types/vacancy'
+} from '@/types/vacancies/vacancy'
 
 export const useGetVacanciesQueryOptions = (data: VacancySearch) =>
   queryOptions({

@@ -1,5 +1,8 @@
-import { CompanyCardSchema } from '@/types/company'
-import type { CitySchema, CountrySchema } from '@/types/location.schema'
+import { CompanyCardSchema } from '@/types/companies/company'
+import type {
+  CitySchema,
+  CountrySchema
+} from '@/types/location/location.schema'
 import {
   ApplicationStatus,
   EmploymentType,
@@ -10,14 +13,14 @@ import {
   SubmissionType,
   VacancyStatus,
   WorkFormat
-} from '@/types/literals'
-import { UUID } from '@/types/primitives'
-import { Id, Skill } from '@/types/types'
-import { ResumeCardSchema, UserCardSchema } from '@/types/user'
+} from '@/types/shared/literals'
+import { UUID } from '@/types/shared/primitives'
+import { Id } from '@/types/shared/types'
+import { ResumeCardSchema, UserCardSchema } from '@/types/users/user'
 
 export interface VacancySkillLinkSchema extends Id {
   vacancyId: UUID
-  skill: Skill
+  skill: SkillS
   proficiency: ProficiencyLevel
   yearsOfExperienceMin: number | null
   isRequired: boolean

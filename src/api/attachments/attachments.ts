@@ -3,8 +3,8 @@ import type { CreateApi } from '@/api/api'
 import {
   uploadAttachmentsResponseSchema,
   type UploadAttachmentsResponse
-} from '@/types/attachment.schema'
-import type { MessageResponse } from '@/types/types'
+} from '@/types/attachment/attachment.schema'
+import type { MessageResponse } from '@/types/shared/types'
 
 export const useUploadAttachmentsMutation = (api: CreateApi) => {
   return useMutation({

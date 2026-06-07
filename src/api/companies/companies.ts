@@ -4,7 +4,7 @@ import {
   useQueryClient
 } from '@tanstack/react-query'
 import { getCompaniesFn, getCompanyFn } from './companies.functions'
-import { CompanySearch } from '@/types/company.schema'
+import { CompanySearch } from '@/types/companies/company.schema'
 import type { CreateApi } from '@/api/api'
 import type {
   CompanyCreateRequest,
@@ -13,8 +13,8 @@ import type {
   CompanyMemberSchema,
   CompanySchema,
   CompanyUpdateRequest
-} from '@/types/company'
-import type { MessageResponse } from '@/types/types'
+} from '@/types/companies/company'
+import type { MessageResponse } from '@/types/shared/types'
 
 export const useGetCompaniesQueryOptions = (data: CompanySearch) =>
   queryOptions({

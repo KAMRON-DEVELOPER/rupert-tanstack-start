@@ -3,12 +3,12 @@ import { createServerApi } from '@/api/api.server'
 import {
   chatListResponseSchema,
   chatMessagesResponseSchema
-} from '@/types/chats.schema'
+} from '@/types/chats/chats.schema'
 import type {
   ChatListResponse,
   ChatMessagesResponse
-} from '@/types/chats.schema'
-import type { PaginationSearch } from '@/types/types.schemas'
+} from '@/types/chats/chats.schema'
+import type { PaginationSearch } from '@/types/shared/types.schemas'
 
 export const getChatsFn = createServerFn()
   .inputValidator((data: PaginationSearch) => data)

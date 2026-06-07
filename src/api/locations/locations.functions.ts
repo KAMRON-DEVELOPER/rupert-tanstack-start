@@ -3,8 +3,8 @@ import { createServerApi } from '@/api/api.server'
 import {
   cityListResponseSchema,
   countryListResponseSchema
-} from '@/types/location.schema'
-import type { PaginationSearch } from '@/types/types.schemas'
+} from '@/types/location/location.schema'
+import type { PaginationSearch } from '@/types/shared/types.schemas'
 
 export const getCountriesFn = createServerFn()
   .inputValidator((data: PaginationSearch) => data)

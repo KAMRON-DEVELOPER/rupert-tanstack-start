@@ -18,8 +18,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { ProficiencyLevel, ProficiencyLevelList } from '@/types/literals'
-import { UserSchema } from '@/types/user'
+import { ProficiencyLevel, ProficiencyLevelList } from '@/types/shared/literals'
+import { UserSchema } from '@/types/users/user'
 import { Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import {

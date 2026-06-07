@@ -8,8 +8,8 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { useUpdateApplicationMutation } from '@/api/vacancies/vacancies'
-import { ApplicationStatusList, type ApplicationStatus } from '@/types/literals'
-import type { ApplicationCardSchema, ApplicationSchema } from '@/types/vacancy'
+import { ApplicationStatusList, type ApplicationStatus } from '@/types/shared/literals'
+import type { ApplicationCardSchema, ApplicationSchema } from '@/types/vacancies/vacancy'
 import { Link, useRouteContext } from '@tanstack/react-router'
 import { toast } from 'sonner'
 

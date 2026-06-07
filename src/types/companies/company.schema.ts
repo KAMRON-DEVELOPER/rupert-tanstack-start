@@ -1,6 +1,6 @@
 import z, { uuidv4 } from 'zod'
-import { paginationSchema } from './types.schemas'
-import { CompanyStatusList, CompanyTypeList } from './literals'
+import { paginationSchema } from '../shared/types.schemas'
+import { CompanyStatusList, CompanyTypeList } from '../shared/literals'
 
 const queryBooleanSchema = z.preprocess((value) => {
   if (value === 'true') return true

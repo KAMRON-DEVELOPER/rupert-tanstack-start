@@ -1,4 +1,4 @@
-import type { CompanyCardSchema } from '@/types/company'
+import type { CompanyCardSchema } from '@/types/companies/company'
 import { Link } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'

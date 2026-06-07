@@ -3,7 +3,7 @@ import {
   JobSearchStatus,
   Specialization,
   VacancyStatus
-} from '@/types/literals'
+} from '@/types/shared/literals'
 
 export interface BucketBase {
   count: number

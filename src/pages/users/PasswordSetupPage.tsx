@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { usePasswordSetupMutation } from '@/api/users/auth'
-import { getErrorMessage } from '@/types/helper'
+import { getErrorMessage } from '@/types/shared/helper'
 import { getRouteApi, useNavigate } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { Eye, EyeOff } from 'lucide-react'

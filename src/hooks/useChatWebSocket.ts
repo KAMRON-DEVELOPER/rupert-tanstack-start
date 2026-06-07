@@ -13,7 +13,7 @@ import {
   type ChatMessageResponse,
   type ChatWsInboundPayload,
   type ChatWsOutboundPayload
-} from '@/types/chats.schema'
+} from '@/types/chats/chats.schema'
 
 type ChatSocketStatus = 'idle' | 'connecting' | 'open' | 'closed' | 'error'
 

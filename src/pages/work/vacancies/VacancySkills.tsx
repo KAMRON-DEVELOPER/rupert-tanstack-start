@@ -18,9 +18,9 @@ import {
   useDeleteVacancySkillMutation,
   useUpdateVacancySkillMutation
 } from '@/api/vacancies/vacancies'
-import { getErrorMessage } from '@/types/helper'
-import { ProficiencyLevelList, type ProficiencyLevel } from '@/types/literals'
-import type { VacancySchema } from '@/types/vacancy'
+import { getErrorMessage } from '@/types/shared/helper'
+import { ProficiencyLevelList, type ProficiencyLevel } from '@/types/shared/literals'
+import type { VacancySchema } from '@/types/vacancies/vacancy'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { Trash2 } from 'lucide-react'

@@ -16,7 +16,7 @@ import {
   type DeleteCountryVariables,
   type DeleteCityVariables,
   type DeleteSkillVariables
-} from '@/types/admin.schema'
+} from '@/types/admin/admin.schema'
 
 export const createCountryFn = createServerFn({ method: 'POST' })
   .inputValidator((data: CountryCreateRequest) =>

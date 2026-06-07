@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 import { getSkillsFn } from './skills.functions'
-import type { PaginationSearch } from '@/types/types.schemas'
+import type { PaginationSearch } from '@/types/shared/types.schemas'
 
 export const useGetSkillsQueryOptions = (data: PaginationSearch = {}) =>
   queryOptions({

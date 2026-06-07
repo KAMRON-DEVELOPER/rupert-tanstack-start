@@ -1,10 +1,4 @@
 import { IsoDateTime, UUID } from './primitives'
-import type { SkillSchema } from './skill.schema'
-
-export interface Pagination {
-  limit: number
-  offset: number
-}
 
 export interface ListResponse<T> {
   data: T[]
@@ -22,8 +16,6 @@ export interface ErrorResponse {
 export interface Tag {
   name: string
 }
-
-export type Skill = SkillSchema
 
 export interface Id {
   id: UUID

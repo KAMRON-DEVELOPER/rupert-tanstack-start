@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useCreateVacancyMutation, useUpdateVacancyMutation } from '@/api/vacancies/vacancies'
-import { getErrorMessage } from '@/types/helper'
+import { getErrorMessage } from '@/types/shared/helper'
 import {
   EmploymentTypeList,
   PaymentFrequencyList,
@@ -35,8 +35,8 @@ import {
   type SubmissionType,
   type VacancyStatus,
   type WorkFormat
-} from '@/types/literals'
-import type { VacancyRequest, VacancySchema } from '@/types/vacancy'
+} from '@/types/shared/literals'
+import type { VacancyRequest, VacancySchema } from '@/types/vacancies/vacancy'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { useState, type FormEvent } from 'react'

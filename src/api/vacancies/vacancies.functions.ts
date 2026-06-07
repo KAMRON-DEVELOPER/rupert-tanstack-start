@@ -5,9 +5,12 @@ import {
   ApplicationSchema,
   VacancyCardSchema,
   VacancySchema
-} from '@/types/vacancy'
-import { ListResponse } from '@/types/types'
-import { ApplicationSearch, VacancySearch } from '@/types/vacancy.schema'
+} from '@/types/vacancies/vacancy'
+import { ListResponse } from '@/types/shared/types'
+import {
+  ApplicationSearch,
+  VacancySearch
+} from '@/types/vacancies/vacancy.schema'
 
 export const getVacanciesFn = createServerFn()
   .inputValidator((data: VacancySearch) => data)

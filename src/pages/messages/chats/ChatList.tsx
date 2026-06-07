@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useGetChatsQueryOptions } from '@/api/chats/chats'
 import { useSearchUsersQueryOptions } from '@/api/users/users'
-import type { ChatListItemResponse, ChatListUserResponse } from '@/types/chats.schema'
+import type { ChatListItemResponse, ChatListUserResponse } from '@/types/chats/chats.schema'
 
 const PAGE_SIZE = 20
 

@@ -1,7 +1,11 @@
 import { createServerFn } from '@tanstack/react-start'
-import { userSearchResponseSchema } from '@/types/chats.schema'
-import type { UserSearchResponse } from '@/types/chats.schema'
-import type { ListResponse, MessageResponse, Pagination } from '@/types/types'
+import { userSearchResponseSchema } from '@/types/chats/chats.schema'
+import type { UserSearchResponse } from '@/types/chats/chats.schema'
+import type {
+  ListResponse,
+  MessageResponse,
+  Pagination
+} from '@/types/shared/types'
 import type {
   FollowSchema,
   FollowUpdateRequest,
@@ -16,7 +20,7 @@ import type {
   WorkExperienceRequest,
   WorkExperienceSchema,
   WorkExperienceUpdateRequest
-} from '@/types/user'
+} from '@/types/users/user'
 import { createServerApi } from '../api.server'
 
 export const getSessionsFn = createServerFn().handler(async () => {

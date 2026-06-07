@@ -20,8 +20,8 @@ import {
   useGetWorkExperiencesQueryOptions,
   useUpdateWorkExperienceMutation
 } from '@/api/users/users'
-import { getErrorMessage } from '@/types/helper'
-import type { WorkExperienceRequest, WorkExperienceSchema } from '@/types/user'
+import { getErrorMessage } from '@/types/shared/helper'
+import type { WorkExperienceRequest, WorkExperienceSchema } from '@/types/users/user'
 import { useQuery } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import { Pencil, Plus, Trash2 } from 'lucide-react'

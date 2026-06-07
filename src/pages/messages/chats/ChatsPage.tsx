@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { useGetChatsQueryOptions } from '@/api/chats/chats'
 import ChatList from './ChatList'
 import ChatDetails from './ChatDetails'
-import type { ChatListItemResponse } from '@/types/chats.schema'
+import type { ChatListItemResponse } from '@/types/chats/chats.schema'
 
 const ChatsPage = () => {
   const [selectedChat, setSelectedChat] = useState<ChatListItemResponse | null>(null)

@@ -1,4 +1,4 @@
-import type { VacancyCardSchema } from '@/types/vacancy'
+import type { VacancyCardSchema } from '@/types/vacancies/vacancy'
 import { Link } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'

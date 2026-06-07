@@ -7,8 +7,8 @@ import {
   SubmissionTypeList,
   VacancyStatusList,
   WorkFormatList
-} from '@/types/literals'
-import { paginationSchema } from '@/types/types.schemas'
+} from '@/types/shared/literals'
+import { paginationSchema } from '@/types/shared/types.schemas'
 
 export const VacancySearchSchema = z.object({
   companyId: uuidv4().optional(),

@@ -3,7 +3,7 @@ import {
   useMutation,
   useQueryClient
 } from '@tanstack/react-query'
-import type { Pagination } from '@/types/types'
+import type { Pagination } from '@/types/shared/types'
 import type {
   FollowUpdateRequest,
   ResumeRequest,
@@ -12,7 +12,7 @@ import type {
   SkillLinkUpdateRequest,
   WorkExperienceRequest,
   WorkExperienceUpdateRequest
-} from '@/types/user'
+} from '@/types/users/user'
 import {
   addResumeSkillFn,
   addUserSkillFn,

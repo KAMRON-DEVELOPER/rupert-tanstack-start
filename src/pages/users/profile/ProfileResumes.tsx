@@ -22,8 +22,8 @@ import {
   ProficiencyLevelList,
   Specialization,
   SpecializationList
-} from '@/types/literals'
-import type { ResumeRequest, UserSchema } from '@/types/user'
+} from '@/types/shared/literals'
+import type { ResumeRequest, UserSchema } from '@/types/users/user'
 import { locationLabel } from '@/lib/location-label'
 import { FileText, Pencil, Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'

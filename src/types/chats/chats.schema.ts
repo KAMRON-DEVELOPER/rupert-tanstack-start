@@ -2,7 +2,7 @@ import z, { uuidv4 } from 'zod'
 import {
   attachmentIdWithPositionRequestSchema,
   attachmentWithPositionResponseSchema
-} from './attachment.schema'
+} from '../attachment/attachment.schema'
 
 export const ChatEventList = [
   'ping',

@@ -1,5 +1,8 @@
 import { uuidv4, z } from 'zod'
-import { cityResponseSchema, countryResponseSchema } from './location.schema'
+import {
+  cityResponseSchema,
+  countryResponseSchema
+} from '../location/location.schema'
 
 export const CityRequestSchema = z
   .object({

@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { locationLabel } from '@/lib/location-label'
-import type { CompanySchema } from '@/types/company'
+import type { CompanySchema } from '@/types/companies/company'
 import { Building2, Globe, Mail, MapPin, Phone } from 'lucide-react'
 
 const formatLabel = (value: string) => value.replace(/_/g, ' ')

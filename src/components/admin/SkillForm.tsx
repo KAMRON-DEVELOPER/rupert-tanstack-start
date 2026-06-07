@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogFooter
 } from '@/components/ui/dialog'
-import type { SkillRequest } from '@/types/admin.schema'
+import type { SkillRequest } from '@/types/admin/admin.schema'
 
 type SkillFormProps = {
   initialData?: { name: string }

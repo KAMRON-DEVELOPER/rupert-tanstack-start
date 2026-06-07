@@ -7,7 +7,7 @@ import {
   ChartTooltipContent,
   type ChartConfig
 } from '@/components/ui/chart'
-import { DailyActiveUsersBucketSchema } from '@/types/stats'
+import { DailyActiveUsersBucketSchema } from '@/types/stats/stats'
 
 const chartConfig = {
   count: {

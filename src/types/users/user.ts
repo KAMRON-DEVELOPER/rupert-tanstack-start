@@ -1,6 +1,9 @@
-import type { IsoDate, IsoDateTime, UUID } from '@/types/primitives'
-import type { CitySchema, CountrySchema } from '@/types/location.schema'
-import { Id, Skill } from '@/types/types'
+import type { IsoDate, IsoDateTime, UUID } from '@/types/shared/primitives'
+import type {
+  CitySchema,
+  CountrySchema
+} from '@/types/location/location.schema'
+import { Id, Skill } from '@/types/shared/types'
 import {
   EmploymentType,
   FollowPolicy,
@@ -12,7 +15,7 @@ import {
   UserRole,
   UserStatus,
   WorkFormat
-} from '@/types/literals'
+} from '@/types/shared/literals'
 
 export interface AuthProbeSchema {
   isAuthenticated: boolean

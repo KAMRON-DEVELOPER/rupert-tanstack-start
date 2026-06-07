@@ -6,7 +6,7 @@ import { Eye, EyeOff } from 'lucide-react'
 import { Link, useNavigate, useRouteContext } from '@tanstack/react-router'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { getErrorMessage } from '@/types/helper'
+import { getErrorMessage } from '@/types/shared/helper'
 import { isAxiosError } from 'axios'
 import { toast } from 'sonner'
 

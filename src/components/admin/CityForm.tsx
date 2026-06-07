@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogFooter
 } from '@/components/ui/dialog'
-import type { CityRequest } from '@/types/admin.schema'
+import type { CityRequest } from '@/types/admin/admin.schema'
 
 type CityFormProps = {
   initialData?: { name: string }

@@ -17,9 +17,9 @@ import {
   useDeleteCompanyMemberMutation,
   useUpdateCompanyMemberMutation
 } from '@/api/companies/companies'
-import type { CompanySchema } from '@/types/company'
-import { getErrorMessage } from '@/types/helper'
-import { CompanyMemberRoleList, type CompanyMemberRole } from '@/types/literals'
+import type { CompanySchema } from '@/types/companies/company'
+import { getErrorMessage } from '@/types/shared/helper'
+import { CompanyMemberRoleList, type CompanyMemberRole } from '@/types/shared/literals'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { Trash2 } from 'lucide-react'

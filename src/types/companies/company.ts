@@ -1,8 +1,15 @@
-import { CompanyMemberRole, CompanyStatus, CompanyType } from '@/types/literals'
-import type { CitySchema, CountrySchema } from '@/types/location.schema'
-import { UUID } from '@/types/primitives'
-import { UserCardSchema } from '@/types/user'
-import { Id } from '@/types/types'
+import {
+  CompanyMemberRole,
+  CompanyStatus,
+  CompanyType
+} from '@/types/shared/literals'
+import type {
+  CitySchema,
+  CountrySchema
+} from '@/types/location/location.schema'
+import { UUID } from '@/types/shared/primitives'
+import { UserCardSchema } from '@/types/users/user'
+import { Id } from '@/types/shared/types'
 
 export interface CompanyCardSchema extends Id {
   name: string

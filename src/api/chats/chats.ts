@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 import { getChatMessagesFn, getChatsFn } from './chats.functions'
-import type { PaginationSearch } from '@/types/types.schemas'
+import type { PaginationSearch } from '@/types/shared/types.schemas'
 
 export const useGetChatsQueryOptions = (data: PaginationSearch = {}) =>
   queryOptions({

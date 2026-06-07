@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 import { getCitiesFn, getCountriesFn } from './locations.functions'
-import type { PaginationSearch } from '@/types/types.schemas'
+import type { PaginationSearch } from '@/types/shared/types.schemas'
 
 export const useGetCountriesQueryOptions = (data: PaginationSearch = {}) =>
   queryOptions({

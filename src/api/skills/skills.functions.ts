@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { createServerApi } from '@/api/api.server'
-import { skillListResponseSchema } from '@/types/skill.schema'
-import type { PaginationSearch } from '@/types/types.schemas'
+import { skillListResponseSchema } from '@/types/skills/skill.schema'
+import type { PaginationSearch } from '@/types/shared/types.schemas'
 
 export const getSkillsFn = createServerFn()
   .inputValidator((data: PaginationSearch) => data)

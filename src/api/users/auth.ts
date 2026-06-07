@@ -9,8 +9,8 @@ import type {
   PasswordSetupRequest,
   UserSchema,
   UserUpdateRequest
-} from '@/types/user'
-import type { MessageResponse } from '@/types/types'
+} from '@/types/users/user'
+import type { MessageResponse } from '@/types/shared/types'
 import {
   deleteProfileFn,
   getProfileFn,
