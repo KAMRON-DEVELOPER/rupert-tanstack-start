@@ -17,7 +17,7 @@ import {
   useDeleteCompanyMemberMutation,
   useUpdateCompanyMemberMutation
 } from '@/api/companies/companies'
-import type { CompanySchema } from '@/types/companies/company'
+import type { CompanyDetailResponse } from '@/types/companies/company'
 import { getErrorMessage } from '@/types/shared/helper'
 import { CompanyMemberRoleList, type CompanyMemberRole } from '@/types/shared/literals'
 import { useRouteContext } from '@tanstack/react-router'
@@ -26,7 +26,7 @@ import { Trash2 } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { toast } from 'sonner'
 
-const CompanyMembers = ({ company }: { company: CompanySchema }) => {
+const CompanyMembers = ({ company }: { company: CompanyDetailResponse }) => {
   const { api } = useRouteContext({ from: '__root__' })
   const addMember = useAddCompanyMemberMutation(api)
   const updateMember = useUpdateCompanyMemberMutation(api)

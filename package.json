@@ -9,6 +9,7 @@
     "type-check": "tsc --noEmit",
     "format": "NODE_OPTIONS='--experimental-strip-types' prettier . --write",
     "format:check": "NODE_OPTIONS='--experimental-strip-types' prettier . --check",
+    "codegen": "orval",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -51,10 +52,15 @@
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
+    "orval": "^8.15.0",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "^6.0.3",
     "vite": "^8.0.14",
     "vite-tsconfig-paths": "^6.1.1"
+  },
+  "allowScripts": {
+    "esbuild@0.28.0": true,
+    "msw@2.12.14": true
   }
 }

@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogFooter
 } from '@/components/ui/dialog'
-import type { CountryCreateRequest } from '@/types/admin/admin.schema'
+import type { CountryCreateRequest } from '@/types/admin/admin'
 
 type CountryFormProps = {
   initialData?: { code: string; name: string }

@@ -1,17 +1,7 @@
-import { ErrorResponse } from '@/types/shared/types'
+import { ErrorResponse, errorResponseSchema } from '@/types/shared/types'
 
 export function isErrorResponse(data: unknown): data is ErrorResponse {
-  if (typeof data !== 'object' || data === null || !('details' in data)) {
-    return false
-  }
-
-  const details = data.details
-
-  return (
-    typeof details === 'string' ||
-    (Array.isArray(details) &&
-      details.every((item: unknown) => typeof item === 'string'))
-  )
+  return errorResponseSchema.safeParse(data).success
 }
 
 export function getErrorMessage(
@@ -21,4 +11,15 @@ export function getErrorMessage(
   if (!isErrorResponse(data)) return fallback
 
   return Array.isArray(data.details) ? data.details.join('\n') : data.details
+}
+
+export function snakeToCamelObj(
+  obj: Record<string, unknown>
+): Record<string, unknown> {
+  const result: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(obj)) {
+    const camelKey = key.replace(/_([a-z])/g, (_, l) => l.toUpperCase())
+    result[camelKey] = value
+  }
+  return result
 }

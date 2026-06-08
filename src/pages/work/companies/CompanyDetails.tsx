@@ -2,12 +2,12 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { locationLabel } from '@/lib/location-label'
-import type { CompanySchema } from '@/types/companies/company'
+import type { CompanyDetailResponse } from '@/types/companies/company'
 import { Building2, Globe, Mail, MapPin, Phone } from 'lucide-react'
 
 const formatLabel = (value: string) => value.replace(/_/g, ' ')
 
-const CompanyDetails = ({ company }: { company: CompanySchema }) => {
+const CompanyDetails = ({ company }: { company: CompanyDetailResponse }) => {
   return (
     <Card>
       <CardHeader>

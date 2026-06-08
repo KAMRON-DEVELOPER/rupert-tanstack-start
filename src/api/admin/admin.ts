@@ -20,7 +20,7 @@ import type {
   DeleteCountryVariables,
   DeleteCityVariables,
   DeleteSkillVariables
-} from '@/types/admin/admin.schema'
+} from '@/types/admin/admin'
 
 export const useCreateCountryMutation = () => {
   const queryClient = useQueryClient()

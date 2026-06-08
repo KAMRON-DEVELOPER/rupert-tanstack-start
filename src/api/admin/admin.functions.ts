@@ -7,6 +7,7 @@ import {
   SkillRequestSchema,
   AdminCountrySchema,
   AdminCitySchema,
+  AdminSkillSchema,
   type CountryCreateRequest,
   type CreateCityVariables,
   type UpdateCityVariables,
@@ -16,7 +17,7 @@ import {
   type DeleteCountryVariables,
   type DeleteCityVariables,
   type DeleteSkillVariables
-} from '@/types/admin/admin.schema'
+} from '@/types/admin/admin'
 
 export const createCountryFn = createServerFn({ method: 'POST' })
   .inputValidator((data: CountryCreateRequest) =>
@@ -28,7 +29,17 @@ export const createCountryFn = createServerFn({ method: 'POST' })
       method: 'POST',
       data
     })
-    return AdminCountrySchema.parse(response)
+    const result = AdminCountrySchema.safeParse(response)
+    if (!result.success) {
+      console.error(
+        '[AdminCountrySchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[AdminCountrySchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const updateCountryFn = createServerFn({ method: 'POST' })
@@ -55,7 +66,14 @@ export const createCityFn = createServerFn({ method: 'POST' })
       method: 'POST',
       data: data.data
     })
-    return AdminCitySchema.parse(response)
+    const result = AdminCitySchema.safeParse(response)
+    if (!result.success) {
+      console.error('[AdminCitySchema] parse failed:', result.error.flatten())
+      throw new Error(
+        '[AdminCitySchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const updateCityFn = createServerFn({ method: 'POST' })
@@ -80,7 +98,14 @@ export const createSkillFn = createServerFn({ method: 'POST' })
       method: 'POST',
       data
     })
-    response
+    const result = AdminSkillSchema.safeParse(response)
+    if (!result.success) {
+      console.error('[AdminSkillSchema] parse failed:', result.error.flatten())
+      throw new Error(
+        '[AdminSkillSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const updateSkillFn = createServerFn({ method: 'POST' })

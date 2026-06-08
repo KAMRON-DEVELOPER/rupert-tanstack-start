@@ -20,14 +20,14 @@ import {
 } from '@/api/vacancies/vacancies'
 import { getErrorMessage } from '@/types/shared/helper'
 import { ProficiencyLevelList, type ProficiencyLevel } from '@/types/shared/literals'
-import type { VacancySchema } from '@/types/vacancies/vacancy'
+import type { VacancyDetailResponse } from '@/types/vacancies/vacancy'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { Trash2 } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { toast } from 'sonner'
 
-const VacancySkills = ({ vacancy }: { vacancy: VacancySchema }) => {
+const VacancySkills = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
   const { api } = useRouteContext({ from: '__root__' })
   const addSkill = useAddVacancySkillMutation(api)
   const updateSkill = useUpdateVacancySkillMutation(api)

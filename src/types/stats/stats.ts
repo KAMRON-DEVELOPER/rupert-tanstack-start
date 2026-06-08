@@ -1,66 +1,75 @@
+import z from 'zod'
+import { isoDate } from '@/types/shared/primitives'
 import {
-  CompanyType,
-  JobSearchStatus,
-  Specialization,
-  VacancyStatus
+  CompanyTypeList,
+  JobSearchStatusList,
+  SpecializationList,
+  VacancyStatusList
 } from '@/types/shared/literals'
 
-export interface BucketBase {
-  count: number
-  percentage: number
-}
+// --- Buckets
+const bucketBaseSchema = z.object({
+  count: z.number().int(),
+  percentage: z.number()
+})
 
-export interface JobSearchStatusBucketSchema extends BucketBase {
-  key: JobSearchStatus
-}
+export const jobSearchStatusBucketSchema = bucketBaseSchema.extend({
+  key: z.enum(JobSearchStatusList)
+})
 
-export interface SpecializationBucketSchema extends BucketBase {
-  key: Specialization
-}
+export const specializationBucketSchema = bucketBaseSchema.extend({
+  key: z.enum(SpecializationList)
+})
 
-export interface VacancyStatusBucketSchema extends BucketBase {
-  key: VacancyStatus
-}
+export const vacancyStatusBucketSchema = bucketBaseSchema.extend({
+  key: z.enum(VacancyStatusList)
+})
 
-export interface CompanyTypeBucketSchema extends BucketBase {
-  key: CompanyType
-}
+export const companyTypeBucketSchema = bucketBaseSchema.extend({
+  key: z.enum(CompanyTypeList)
+})
 
-export interface DailyActiveUsersBucketSchema {
-  count: number
-  anonymousCounts: number
-  date: string // ISO date, e.g. "2026-04-18"
-}
+export const dailyActiveUsersBucketSchema = z.object({
+  count: z.number().int(),
+  anonymousCount: z.number().int(),
+  date: isoDate
+})
 
-export interface UsersStatsSchema {
-  total: number
+export const usersStatsSchema = z.object({
+  total: z.number().int(),
+  lookingForJobCount: z.number().int(),
+  lookingForJobPercentage: z.number(),
+  dauChart: z.array(dailyActiveUsersBucketSchema),
+  byJobSearchStatus: z.array(jobSearchStatusBucketSchema),
+  bySpecialization: z.array(specializationBucketSchema)
+})
 
-  lookingForJobCount: number
-  lookingForJobPercentage: number
+export const vacanciesStatsSchema = z.object({
+  total: z.number().int(),
+  open: z.number().int(),
+  byStatus: z.array(vacancyStatusBucketSchema),
+  bySpecialization: z.array(specializationBucketSchema)
+})
 
-  dauChart: DailyActiveUsersBucketSchema[]
+export const companiesStatsSchema = z.object({
+  total: z.number().int(),
+  byType: z.array(companyTypeBucketSchema)
+})
 
-  byJobSearchStatus: JobSearchStatusBucketSchema[]
-  bySpecialization: SpecializationBucketSchema[]
-}
+export const statsSchema = z.object({
+  users: usersStatsSchema,
+  vacancies: vacanciesStatsSchema,
+  companies: companiesStatsSchema
+})
 
-export interface VacanciesStatsSchema {
-  total: number
-
-  open: number
-
-  byStatus: VacancyStatusBucketSchema[]
-  bySpecialization: SpecializationBucketSchema[]
-}
-
-export interface CompaniesStatsSchema {
-  total: number
-
-  byType: CompanyTypeBucketSchema[]
-}
-
-export interface StatsSchema {
-  users: UsersStatsSchema
-  vacancies: VacanciesStatsSchema
-  companies: CompaniesStatsSchema
-}
+export type JobSearchStatusBucket = z.infer<typeof jobSearchStatusBucketSchema>
+export type SpecializationBucket = z.infer<typeof specializationBucketSchema>
+export type VacancyStatusBucket = z.infer<typeof vacancyStatusBucketSchema>
+export type CompanyTypeBucket = z.infer<typeof companyTypeBucketSchema>
+export type DailyActiveUsersBucket = z.infer<
+  typeof dailyActiveUsersBucketSchema
+>
+export type UsersStats = z.infer<typeof usersStatsSchema>
+export type VacanciesStats = z.infer<typeof vacanciesStatsSchema>
+export type CompaniesStats = z.infer<typeof companiesStatsSchema>
+export type Stats = z.infer<typeof statsSchema>

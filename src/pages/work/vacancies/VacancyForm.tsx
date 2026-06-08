@@ -36,14 +36,14 @@ import {
   type VacancyStatus,
   type WorkFormat
 } from '@/types/shared/literals'
-import type { VacancyRequest, VacancySchema } from '@/types/vacancies/vacancy'
+import type { VacancyCreateRequest, VacancyDetailResponse } from '@/types/vacancies/vacancy'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { useState, type FormEvent } from 'react'
 import { toast } from 'sonner'
 
 interface VacancyFormProps {
-  vacancy?: VacancySchema
+  vacancy?: VacancyDetailResponse
   open: boolean
   onOpenChange: (open: boolean) => void
 }
@@ -104,7 +104,7 @@ const VacancyForm = ({ vacancy, open, onOpenChange }: VacancyFormProps) => {
     event.preventDefault()
     setError(null)
 
-    const payload: VacancyRequest = {
+    const payload: VacancyCreateRequest = {
       title: title.trim(),
       description: description.trim(),
       countryId: countryId.trim(),

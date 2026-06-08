@@ -1,8 +1,9 @@
-import { uuidv4, z } from 'zod'
+import { z } from 'zod'
+import { uuid, isoDateTime } from '@/types/shared/primitives'
 import {
   cityResponseSchema,
   countryResponseSchema
-} from '../location/location.schema'
+} from '@/types/shared/location'
 
 export const CityRequestSchema = z
   .object({
@@ -53,9 +54,9 @@ export const AdminCitySchema = cityResponseSchema
 export type AdminCity = z.infer<typeof AdminCitySchema>
 
 export const AdminSkillSchema = SkillRequestSchema.extend({
-  id: uuidv4(),
-  created_at: z.iso.datetime(),
-  updated_at: z.iso.datetime()
+  id: uuid,
+  created_at: isoDateTime,
+  updated_at: isoDateTime
 }).transform(({ created_at, updated_at, ...rest }) => ({
   ...rest,
   createdAt: created_at,

@@ -13,14 +13,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { useGetResumesQueryOptions } from '@/api/users/users'
 import { useCreateApplicationMutation } from '@/api/vacancies/vacancies'
 import { getErrorMessage } from '@/types/shared/helper'
-import type { VacancySchema } from '@/types/vacancies/vacancy'
+import type { VacancyDetailResponse } from '@/types/vacancies/vacancy'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { useState, type FormEvent } from 'react'
 import { toast } from 'sonner'
 
-const ApplicationForm = ({ vacancy }: { vacancy: VacancySchema }) => {
+const ApplicationForm = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
   const { api } = useRouteContext({ from: '__root__' })
   const { data: resumes } = useSuspenseQuery(useGetResumesQueryOptions())
   const createApplication = useCreateApplicationMutation(api)

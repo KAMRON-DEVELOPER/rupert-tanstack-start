@@ -1,11 +1,11 @@
 import EmptyState from '@/components/forms/EmptyState'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useGetApplicationsQueryOptions } from '@/api/vacancies/vacancies'
-import type { VacancySchema } from '@/types/vacancies/vacancy'
+import type { VacancyDetailResponse } from '@/types/vacancies/vacancy'
 import { useQuery } from '@tanstack/react-query'
 import ApplicationCard from './ApplicationCard'
 
-const VacancyApplications = ({ vacancy }: { vacancy: VacancySchema }) => {
+const VacancyApplications = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
   const { data, isPending, isError } = useQuery(
     useGetApplicationsQueryOptions({
       vacancyId: vacancy.id,

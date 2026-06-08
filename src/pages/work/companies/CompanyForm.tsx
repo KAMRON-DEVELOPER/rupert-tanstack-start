@@ -23,7 +23,7 @@ import { getErrorMessage } from '@/types/shared/helper'
 import { CompanyTypeList, type CompanyType } from '@/types/shared/literals'
 import type {
   CompanyCreateRequest,
-  CompanySchema,
+  CompanyDetailResponse,
   CompanyUpdateRequest
 } from '@/types/companies/company'
 import { useRouteContext } from '@tanstack/react-router'
@@ -32,7 +32,7 @@ import { useState, type FormEvent } from 'react'
 import { toast } from 'sonner'
 
 interface CompanyFormProps {
-  company?: CompanySchema
+  company?: CompanyDetailResponse
   open: boolean
   onOpenChange: (open: boolean) => void
 }

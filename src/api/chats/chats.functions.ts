@@ -3,11 +3,8 @@ import { createServerApi } from '@/api/api.server'
 import {
   chatListResponseSchema,
   chatMessagesResponseSchema
-} from '@/types/chats/chats.schema'
-import type {
-  ChatListResponse,
-  ChatMessagesResponse
-} from '@/types/chats/chats.schema'
+} from '@/types/chats/chat'
+import type { ChatListResponse, ChatMessagesResponse } from '@/types/chats/chat'
 import type { PaginationSearch } from '@/types/shared/types.schemas'
 
 export const getChatsFn = createServerFn()
@@ -19,10 +16,12 @@ export const getChatsFn = createServerFn()
     })
     const result = chatListResponseSchema.safeParse(data)
     if (!result.success) {
-      console.error('[getChatsFn] schema parse failed:', result.error.issues)
-      console.error('[getChatsFn] raw data:', JSON.stringify(data, null, 2))
+      console.error(
+        '[chatListResponseSchema] parse failed:',
+        result.error.flatten()
+      )
       throw new Error(
-        `Chat list schema validation failed: ${result.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join(', ')}`
+        '[chatListResponseSchema] Unexpected response shape from backend'
       )
     }
     return result.data satisfies ChatListResponse
@@ -35,5 +34,15 @@ export const getChatMessagesFn = createServerFn()
     const data = await api(`chats/${chatId}/messages`, {
       params
     })
-    return chatMessagesResponseSchema.parse(data) satisfies ChatMessagesResponse
+    const result = chatMessagesResponseSchema.safeParse(data)
+    if (!result.success) {
+      console.error(
+        '[chatMessagesResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[chatMessagesResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data satisfies ChatMessagesResponse
   })

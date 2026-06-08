@@ -1,4 +1,4 @@
-import { CompanySearch } from '@/types/companies/company.schema'
+import type { CompanyListParams } from '@/types/companies/company'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -18,7 +18,7 @@ const CompanyLeftSidebar = () => {
   const navigate = useNavigate({ from: '/work/companies/' })
   const search = useSearch({ from: '/(apps)/(work)/work/companies/' })
 
-  const updateFilter = (newFilter: Partial<CompanySearch>) => {
+  const updateFilter = (newFilter: Partial<CompanyListParams>) => {
     navigate({
       search: (prev) => ({ ...prev, ...newFilter, page: 1 })
     })

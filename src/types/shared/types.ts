@@ -1,24 +1,17 @@
-import { IsoDateTime, UUID } from './primitives'
+import z from 'zod'
 
-export interface ListResponse<T> {
-  data: T[]
-  total: number
-}
+export const messageResponseSchema = z.object({
+  message: z.string()
+})
 
-export interface MessageResponse {
-  message: string
-}
+export const errorResponseSchema = z.object({
+  details: z.union([z.string(), z.array(z.string())])
+})
 
-export interface ErrorResponse {
-  details: string | string[]
-}
+export const tagSchema = z.object({
+  name: z.string()
+})
 
-export interface Tag {
-  name: string
-}
-
-export interface Id {
-  id: UUID
-  createdAt: IsoDateTime
-  updatedAt: IsoDateTime
-}
+export type MessageResponse = z.infer<typeof messageResponseSchema>
+export type ErrorResponse = z.infer<typeof errorResponseSchema>
+export type Tag = z.infer<typeof tagSchema>

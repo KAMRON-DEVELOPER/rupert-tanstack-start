@@ -14,8 +14,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Plus, Edit, ChevronRight, MapPin, Trash2 } from 'lucide-react'
 import { CountryForm } from '@/components/admin/CountryForm'
 import { CityForm } from '@/components/admin/CityForm'
-import type { CitySchema, CountrySchema } from '@/types/location/location.schema'
-import type { CountryCreateRequest, CountryUpdateRequest } from '@/types/admin/admin.schema'
+import type {
+  CityResponse as CitySchema,
+  CountryResponse as CountrySchema
+} from '@/types/shared/location'
+import type { CountryCreateRequest, CountryUpdateRequest } from '@/types/admin/admin'
 import { getErrorMessage } from '@/types/shared/helper'
 import { isAxiosError } from 'axios'
 import { toast } from 'sonner'

@@ -1,10 +1,10 @@
 import VacanciesPage from '@/pages/work/vacancies/VacanciesPage'
 import { useGetVacanciesQueryOptions } from '@/api/vacancies/vacancies'
-import { vacancySearch } from '@/types/vacancies/vacancy.schema'
+import { vacancyListParamsSchema } from '@/types/vacancies/vacancy'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(apps)/(work)/work/vacancies/')({
-  validateSearch: vacancySearch,
+  validateSearch: vacancyListParamsSchema,
   loaderDeps: ({ search }) => search,
   loader: async ({ context: { queryClient }, deps }) => {
     await Promise.all([queryClient.ensureQueryData(useGetVacanciesQueryOptions(deps))])

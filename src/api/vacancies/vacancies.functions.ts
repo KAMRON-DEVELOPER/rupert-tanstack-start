@@ -1,45 +1,84 @@
 import { createServerFn } from '@tanstack/react-start'
 import { createServerApi } from '@/api/api.server'
 import {
-  ApplicationCardSchema,
-  ApplicationSchema,
-  VacancyCardSchema,
-  VacancySchema
+  applicationListResponseSchema,
+  applicationDetailResponseSchema,
+  vacancyListResponseSchema,
+  vacancyDetailResponseSchema
 } from '@/types/vacancies/vacancy'
-import { ListResponse } from '@/types/shared/types'
-import {
-  ApplicationSearch,
-  VacancySearch
-} from '@/types/vacancies/vacancy.schema'
+import type {
+  ApplicationListParams,
+  VacancyListParams
+} from '@/types/vacancies/vacancy'
 
 export const getVacanciesFn = createServerFn()
-  .inputValidator((data: VacancySearch) => data)
+  .inputValidator((data: VacancyListParams) => data)
   .handler(async ({ data: params }) => {
     const api = createServerApi()
-    return api<ListResponse<VacancyCardSchema>>('vacancies/', {
-      params
-    })
+    const data = await api('vacancies/', { params })
+    const result = vacancyListResponseSchema.safeParse(data)
+    if (!result.success) {
+      console.error(
+        '[vacancyListResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[vacancyListResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const getVacancyFn = createServerFn()
   .inputValidator((data: { id: string }) => data)
   .handler(async ({ data: { id } }) => {
     const api = createServerApi()
-    return api<VacancySchema>(`vacancies/${id}`)
+    const data = await api(`vacancies/${id}`)
+    const result = vacancyDetailResponseSchema.safeParse(data)
+    if (!result.success) {
+      console.error(
+        '[vacancyDetailResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[vacancyDetailResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const getApplicationsFn = createServerFn()
-  .inputValidator((data: ApplicationSearch) => data)
+  .inputValidator((data: ApplicationListParams) => data)
   .handler(async ({ data: params }) => {
     const api = createServerApi()
-    return api<ListResponse<ApplicationCardSchema>>('vacancies/applications', {
-      params
-    })
+    const data = await api('vacancies/applications', { params })
+    const result = applicationListResponseSchema.safeParse(data)
+    if (!result.success) {
+      console.error(
+        '[applicationListResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[applicationListResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const getApplicationFn = createServerFn()
   .inputValidator((data: { id: string }) => data)
   .handler(async ({ data: { id } }) => {
     const api = createServerApi()
-    return api<ApplicationSchema>(`vacancies/applications/${id}`)
+    const data = await api(`vacancies/applications/${id}`)
+    const result = applicationDetailResponseSchema.safeParse(data)
+    if (!result.success) {
+      console.error(
+        '[applicationDetailResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[applicationDetailResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })

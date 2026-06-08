@@ -2,13 +2,13 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { locationLabel } from '@/lib/location-label'
-import type { VacancySchema } from '@/types/vacancies/vacancy'
+import type { VacancyDetailResponse } from '@/types/vacancies/vacancy'
 import { Link } from '@tanstack/react-router'
 import { Banknote, Building2, Clock, MapPin } from 'lucide-react'
 
 const formatLabel = (value: string) => value.replace(/_/g, ' ')
 
-const VacancyDetails = ({ vacancy }: { vacancy: VacancySchema }) => {
+const VacancyDetails = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
   return (
     <Card>
       <CardHeader>

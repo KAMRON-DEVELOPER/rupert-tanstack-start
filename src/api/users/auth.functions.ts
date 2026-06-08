@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { AuthProbeSchema, UserSchema } from '@/types/users/user'
+import { authProbeResponseSchema, userResponseSchema } from '@/types/users/user'
 import { createServerApi } from '@/api/api.server'
 
 export const authProbeFn = createServerFn().handler(
@@ -7,8 +7,18 @@ export const authProbeFn = createServerFn().handler(
     const axios = createServerApi()
 
     try {
-      const res = await axios<AuthProbeSchema>('users/auth/probe')
-      return res.isAuthenticated
+      const data = await axios('users/auth/probe')
+      const result = authProbeResponseSchema.safeParse(data)
+      if (!result.success) {
+        console.error(
+          '[authProbeResponseSchema] parse failed:',
+          result.error.flatten()
+        )
+        throw new Error(
+          '[authProbeResponseSchema] Unexpected response shape from backend'
+        )
+      }
+      return result.data.isAuthenticated
     } catch (err) {
       console.error(`🚨 Failed authProbeFn`, err)
       throw err
@@ -18,7 +28,15 @@ export const authProbeFn = createServerFn().handler(
 
 export const getProfileFn = createServerFn().handler(async () => {
   const axios = createServerApi()
-  return axios<UserSchema>('users/')
+  const data = await axios('users/')
+  const result = userResponseSchema.safeParse(data)
+  if (!result.success) {
+    console.error('[userResponseSchema] parse failed:', result.error.flatten())
+    throw new Error(
+      '[userResponseSchema] Unexpected response shape from backend'
+    )
+  }
+  return result.data
 })
 
 export const updateProfileFn = createServerFn({ method: 'POST' })

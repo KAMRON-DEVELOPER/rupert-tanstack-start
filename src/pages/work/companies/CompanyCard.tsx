@@ -1,4 +1,4 @@
-import type { CompanyCardSchema } from '@/types/companies/company'
+import type { CompanySummaryResponse } from '@/types/companies/company'
 import { Link } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { locationLabel } from '@/lib/location-label'
 import { Building2, MapPin, Briefcase } from 'lucide-react'
 
-const CompanyCard = ({ c }: { c: CompanyCardSchema }) => {
+const CompanyCard = ({ c }: { c: CompanySummaryResponse }) => {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center gap-4 space-y-0">

@@ -1,4 +1,4 @@
-import { VacancySearch } from '@/types/vacancies/vacancy.schema'
+import type { VacancyListParams } from '@/types/vacancies/vacancy'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -22,7 +22,7 @@ const VacancyLeftSidebar = () => {
   const navigate = useNavigate({ from: '/work/vacancies/' })
   const search = useSearch({ from: '/(apps)/(work)/work/vacancies/' })
 
-  const updateFilter = (newFilter: Partial<VacancySearch>) => {
+  const updateFilter = (newFilter: Partial<VacancyListParams>) => {
     navigate({
       search: (prev) => ({ ...prev, ...newFilter })
     })

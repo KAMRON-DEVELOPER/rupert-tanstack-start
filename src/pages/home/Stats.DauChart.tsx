@@ -22,7 +22,7 @@ const chartConfig = {
 
 const StatsDauChart = ({ data }: { data: DailyActiveUsersBucketSchema[] }) => {
   const totalRegistered = data.reduce((acc, d) => acc + d.count, 0)
-  const totalAnonymous = data.reduce((acc, d) => acc + d.anonymousCounts, 0)
+  const totalAnonymous = data.reduce((acc, d) => acc + d.anonymousCount, 0)
 
   return (
     <div className="bg-card rounded-lg border">

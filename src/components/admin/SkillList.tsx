@@ -2,8 +2,8 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Pencil, Trash2, Check, X } from 'lucide-react'
-import type { SkillSchema } from '@/types/skills/skill.schema'
-import { AdminSkillSchema, type AdminSkill } from '@/types/admin/admin.schema'
+import type { SkillResponse } from '@/types/skills/skill'
+import { AdminSkillSchema, type AdminSkill } from '@/types/admin/admin'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,12 +18,12 @@ import {
 import { useState } from 'react'
 
 type SkillListProps = {
-  skills: SkillSchema[]
+  skills: SkillResponse[]
   onRename: (skill: AdminSkill, newName: string) => void
   onDelete: (skill: AdminSkill) => void
 }
 
-const isEditableSkill = (skill: SkillSchema): skill is AdminSkill =>
+const isEditableSkill = (skill: SkillResponse): skill is AdminSkill =>
   AdminSkillSchema.safeParse(skill).success
 
 export function SkillList({ skills, onRename, onDelete }: SkillListProps) {

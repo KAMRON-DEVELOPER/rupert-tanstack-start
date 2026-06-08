@@ -1,7 +1,7 @@
 import type {
-  CitySchema,
-  CountrySchema
-} from '@/types/location/location.schema'
+  CityResponse as CitySchema,
+  CountryResponse as CountrySchema
+} from '@/types/shared/location'
 
 export const locationLabel = (
   country: CountrySchema | null,

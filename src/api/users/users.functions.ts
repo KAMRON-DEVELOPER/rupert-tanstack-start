@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
-import { userSearchResponseSchema } from '@/types/chats/chats.schema'
-import type { UserSearchResponse } from '@/types/chats/chats.schema'
+import { userSearchResponseSchema } from '@/types/chats/chat'
+import type { UserSearchResponse } from '@/types/chats/chat'
 import type {
   ListResponse,
   MessageResponse,
@@ -10,22 +10,36 @@ import type {
   FollowSchema,
   FollowUpdateRequest,
   ResumeRequest,
-  ResumeSchema,
-  ResumeSkillLinkSchema,
   ResumeUpdateRequest,
-  SessionSchema,
   SkillLinkRequest,
   SkillLinkUpdateRequest,
-  UserSkillLinkSchema,
   WorkExperienceRequest,
-  WorkExperienceSchema,
   WorkExperienceUpdateRequest
 } from '@/types/users/user'
 import { createServerApi } from '../api.server'
+import {
+  followResponseSchema,
+  resumeResponseSchema,
+  resumeSkillLinkResponseSchema,
+  sessionResponseSchema,
+  userSkillLinkResponseSchema,
+  workExperienceResponseSchema
+} from '@/types/users/user.schema'
 
 export const getSessionsFn = createServerFn().handler(async () => {
   const axios = createServerApi()
-  return axios<SessionSchema[]>('users/sessions', { method: 'PATCH' })
+  const data = await axios('users/sessions')
+  const result = sessionResponseSchema.array().safeParse(data)
+  if (!result.success) {
+    console.error(
+      '[sessionResponseSchema] parse failed:',
+      result.error.flatten()
+    )
+    throw new Error(
+      '[sessionResponseSchema] Unexpected response shape from backend'
+    )
+  }
+  return result.data
 })
 
 export const revokeSessionFn = createServerFn({ method: 'POST' })
@@ -49,14 +63,36 @@ export const revokeSessionsFn = createServerFn({ method: 'POST' })
 
 export const getUserSkillsFn = createServerFn().handler(async () => {
   const axios = createServerApi()
-  return axios<UserSkillLinkSchema[]>('users/skills')
+  const data = await axios('users/skills')
+  const result = userSkillLinkResponseSchema.array().safeParse(data)
+  if (!result.success) {
+    console.error(
+      '[userSkillLinkResponseSchema] parse failed:',
+      result.error.flatten()
+    )
+    throw new Error(
+      '[userSkillLinkResponseSchema] Unexpected response shape from backend'
+    )
+  }
+  return result.data
 })
 
 export const addUserSkillFn = createServerFn({ method: 'POST' })
   .inputValidator((data: SkillLinkRequest) => data)
   .handler(async ({ data }) => {
     const axios = createServerApi()
-    return axios<UserSkillLinkSchema>('users/skills', { method: 'POST', data })
+    const responseData = await axios('users/skills', { method: 'POST', data })
+    const result = userSkillLinkResponseSchema.safeParse(responseData)
+    if (!result.success) {
+      console.error(
+        '[userSkillLinkResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[userSkillLinkResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const updateUserSkillFn = createServerFn({ method: 'POST' })
@@ -65,10 +101,21 @@ export const updateUserSkillFn = createServerFn({ method: 'POST' })
   )
   .handler(async ({ data: { skillLinkId, data } }) => {
     const axios = createServerApi()
-    return axios<UserSkillLinkSchema>(`users/skills/${skillLinkId}`, {
+    const responseData = await axios(`users/skills/${skillLinkId}`, {
       method: 'PATCH',
       data
     })
+    const result = userSkillLinkResponseSchema.safeParse(responseData)
+    if (!result.success) {
+      console.error(
+        '[userSkillLinkResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[userSkillLinkResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const deleteUserSkillFn = createServerFn({ method: 'POST' })
@@ -82,21 +129,54 @@ export const deleteUserSkillFn = createServerFn({ method: 'POST' })
 
 export const getResumesFn = createServerFn().handler(async () => {
   const axios = createServerApi()
-  return axios<ResumeSchema[]>('users/resumes')
+  const data = await axios('users/resumes')
+  const result = resumeResponseSchema.array().safeParse(data)
+  if (!result.success) {
+    console.error(
+      '[resumeResponseSchema] parse failed:',
+      result.error.flatten()
+    )
+    throw new Error(
+      '[resumeResponseSchema] Unexpected response shape from backend'
+    )
+  }
+  return result.data
 })
 
 export const createResumeFn = createServerFn({ method: 'POST' })
   .inputValidator((data: ResumeRequest) => data)
   .handler(async ({ data }) => {
     const axios = createServerApi()
-    return axios<ResumeSchema>('users/resumes', { method: 'POST', data })
+    const responseData = await axios('users/resumes', { method: 'POST', data })
+    const result = resumeResponseSchema.safeParse(responseData)
+    if (!result.success) {
+      console.error(
+        '[resumeResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[resumeResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const getResumeFn = createServerFn()
   .inputValidator((data: { resumeId: string }) => data)
   .handler(async ({ data: { resumeId } }) => {
     const axios = createServerApi()
-    return axios<ResumeSchema>(`users/resumes/${resumeId}`)
+    const data = await axios(`users/resumes/${resumeId}`)
+    const result = resumeResponseSchema.safeParse(data)
+    if (!result.success) {
+      console.error(
+        '[resumeResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[resumeResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const updateResumeFn = createServerFn({ method: 'POST' })
@@ -105,10 +185,21 @@ export const updateResumeFn = createServerFn({ method: 'POST' })
   )
   .handler(async ({ data: { resumeId, data } }) => {
     const axios = createServerApi()
-    return axios<ResumeSchema>(`users/resumes/${resumeId}`, {
+    const responseData = await axios(`users/resumes/${resumeId}`, {
       method: 'PATCH',
       data
     })
+    const result = resumeResponseSchema.safeParse(responseData)
+    if (!result.success) {
+      console.error(
+        '[resumeResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[resumeResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const deleteResumeFn = createServerFn({ method: 'POST' })
@@ -124,10 +215,21 @@ export const addResumeSkillFn = createServerFn({ method: 'POST' })
   .inputValidator((data: { resumeId: string; data: SkillLinkRequest }) => data)
   .handler(async ({ data: { resumeId, data } }) => {
     const axios = createServerApi()
-    return axios<ResumeSkillLinkSchema>(`users/resumes/${resumeId}/skills`, {
+    const responseData = await axios(`users/resumes/${resumeId}/skills`, {
       method: 'POST',
       data
     })
+    const result = resumeSkillLinkResponseSchema.safeParse(responseData)
+    if (!result.success) {
+      console.error(
+        '[resumeSkillLinkResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[resumeSkillLinkResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const updateResumeSkillFn = createServerFn({ method: 'POST' })
@@ -140,13 +242,24 @@ export const updateResumeSkillFn = createServerFn({ method: 'POST' })
   )
   .handler(async ({ data: { resumeId, skillLinkId, data } }) => {
     const axios = createServerApi()
-    return axios<ResumeSkillLinkSchema>(
+    const responseData = await axios(
       `users/resumes/${resumeId}/skills/${skillLinkId}`,
       {
         method: 'PATCH',
         data
       }
     )
+    const result = resumeSkillLinkResponseSchema.safeParse(responseData)
+    if (!result.success) {
+      console.error(
+        '[resumeSkillLinkResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[resumeSkillLinkResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const deleteResumeSkillFn = createServerFn({ method: 'POST' })
@@ -163,17 +276,39 @@ export const deleteResumeSkillFn = createServerFn({ method: 'POST' })
 
 export const getWorkExperiencesFn = createServerFn().handler(async () => {
   const axios = createServerApi()
-  return axios<WorkExperienceSchema[]>('users/work-experiences')
+  const data = await axios('users/work-experiences')
+  const result = workExperienceResponseSchema.array().safeParse(data)
+  if (!result.success) {
+    console.error(
+      '[workExperienceResponseSchema] parse failed:',
+      result.error.flatten()
+    )
+    throw new Error(
+      '[workExperienceResponseSchema] Unexpected response shape from backend'
+    )
+  }
+  return result.data
 })
 
 export const createWorkExperienceFn = createServerFn({ method: 'POST' })
   .inputValidator((data: WorkExperienceRequest) => data)
   .handler(async ({ data }) => {
     const axios = createServerApi()
-    return axios<WorkExperienceSchema>('users/work-experiences', {
+    const responseData = await axios('users/work-experiences', {
       method: 'POST',
       data
     })
+    const result = workExperienceResponseSchema.safeParse(responseData)
+    if (!result.success) {
+      console.error(
+        '[workExperienceResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[workExperienceResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const updateWorkExperienceFn = createServerFn({ method: 'POST' })
@@ -183,13 +318,24 @@ export const updateWorkExperienceFn = createServerFn({ method: 'POST' })
   )
   .handler(async ({ data: { workExperienceId, data } }) => {
     const axios = createServerApi()
-    return axios<WorkExperienceSchema>(
+    const responseData = await axios(
       `users/work-experiences/${workExperienceId}`,
       {
         method: 'PATCH',
         data
       }
     )
+    const result = workExperienceResponseSchema.safeParse(responseData)
+    if (!result.success) {
+      console.error(
+        '[workExperienceResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[workExperienceResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const deleteWorkExperienceFn = createServerFn({ method: 'POST' })
@@ -208,9 +354,20 @@ export const followUserFn = createServerFn({ method: 'POST' })
   .inputValidator((data: { followingId: string }) => data)
   .handler(async ({ data: { followingId } }) => {
     const axios = createServerApi()
-    return axios<FollowSchema>(`users/${followingId}/follow`, {
+    const data = await axios(`users/${followingId}/follow`, {
       method: 'POST'
     })
+    const result = followResponseSchema.safeParse(data)
+    if (!result.success) {
+      console.error(
+        '[followResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[followResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const unfollowUserFn = createServerFn({ method: 'POST' })
@@ -226,27 +383,72 @@ export const getFollowersFn = createServerFn()
   .inputValidator((data: Partial<Pagination>) => data)
   .handler(async ({ data: params }) => {
     const axios = createServerApi()
-    return axios<ListResponse<FollowSchema>>('users/followers', {
-      params
-    })
+    const data = await axios('users/followers', { params })
+    const result = followResponseSchema
+      .array()
+      .safeParse((data as ListResponse<FollowSchema>).data ?? data)
+    // If data is already paginated, return as-is with parse
+    const listResult =
+      typeof data === 'object' && data !== null && 'data' in data
+        ? (data as { data: unknown[]; total: number })
+        : { data: [data], total: 1 }
+    if (!result.success) {
+      console.error(
+        '[followResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[followResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return {
+      data: result.data,
+      total: listResult.total
+    } as ListResponse<FollowSchema>
   })
 
 export const getFollowingFn = createServerFn()
   .inputValidator((data: Partial<Pagination>) => data)
   .handler(async ({ data: params }) => {
     const axios = createServerApi()
-    return axios<ListResponse<FollowSchema>>('users/following', {
-      params
-    })
+    const data = await axios('users/following', { params })
+    const listResult = data as { data: unknown[]; total: number }
+    const result = followResponseSchema.array().safeParse(listResult.data)
+    if (!result.success) {
+      console.error(
+        '[followResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[followResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return {
+      data: result.data,
+      total: listResult.total
+    } as ListResponse<FollowSchema>
   })
 
 export const getFollowRequestsFn = createServerFn()
   .inputValidator((data: Partial<Pagination>) => data)
   .handler(async ({ data: params }) => {
     const axios = createServerApi()
-    return axios<ListResponse<FollowSchema>>('users/follow-requests', {
-      params
-    })
+    const data = await axios('users/follow-requests', { params })
+    const listResult = data as { data: unknown[]; total: number }
+    const result = followResponseSchema.array().safeParse(listResult.data)
+    if (!result.success) {
+      console.error(
+        '[followResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[followResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return {
+      data: result.data,
+      total: listResult.total
+    } as ListResponse<FollowSchema>
   })
 
 export const updateFollowRequestFn = createServerFn({ method: 'POST' })
@@ -255,10 +457,21 @@ export const updateFollowRequestFn = createServerFn({ method: 'POST' })
   )
   .handler(async ({ data: { followId, data } }) => {
     const axios = createServerApi()
-    return axios<FollowSchema>(`users/follow-requests/${followId}`, {
+    const responseData = await axios(`users/follow-requests/${followId}`, {
       method: 'PATCH',
       data
     })
+    const result = followResponseSchema.safeParse(responseData)
+    if (!result.success) {
+      console.error(
+        '[followResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[followResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data
   })
 
 export const searchUsersFn = createServerFn()
@@ -270,5 +483,15 @@ export const searchUsersFn = createServerFn()
     const data = await axios('users/search', {
       params
     })
-    return userSearchResponseSchema.parse(data) satisfies UserSearchResponse
+    const result = userSearchResponseSchema.safeParse(data)
+    if (!result.success) {
+      console.error(
+        '[userSearchResponseSchema] parse failed:',
+        result.error.flatten()
+      )
+      throw new Error(
+        '[userSearchResponseSchema] Unexpected response shape from backend'
+      )
+    }
+    return result.data satisfies UserSearchResponse
   })

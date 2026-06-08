@@ -9,25 +9,25 @@ import {
   getVacanciesFn,
   getVacancyFn
 } from './vacancies.functions'
-import {
-  ApplicationSearch,
-  VacancySearch
-} from '@/types/vacancies/vacancy.schema'
+import type {
+  ApplicationListParams,
+  VacancyListParams
+} from '@/types/vacancies/vacancy'
 import type { CreateApi } from '@/api/api'
 import type { MessageResponse } from '@/types/shared/types'
 import type {
   ApplicationRequest,
-  ApplicationSchema,
+  ApplicationDetailResponse,
   ApplicationStatusUpdateRequest,
-  VacancyRequest,
-  VacancySchema,
+  VacancyCreateRequest,
+  VacancyDetailResponse,
   VacancySkillLinkRequest,
-  VacancySkillLinkSchema,
+  VacancySkillLinkResponse,
   VacancySkillLinkUpdateRequest,
   VacancyUpdateRequest
 } from '@/types/vacancies/vacancy'
 
-export const useGetVacanciesQueryOptions = (data: VacancySearch) =>
+export const useGetVacanciesQueryOptions = (data: VacancyListParams) =>
   queryOptions({
     queryKey: ['vacancies', data],
     queryFn: () => getVacanciesFn({ data })
@@ -39,7 +39,7 @@ export const useGetVacancyQueryOptions = (data: { id: string }) =>
     queryFn: () => getVacancyFn({ data })
   })
 
-export const useGetApplicationsQueryOptions = (data: ApplicationSearch) =>
+export const useGetApplicationsQueryOptions = (data: ApplicationListParams) =>
   queryOptions({
     queryKey: ['applications', data],
     queryFn: () => getApplicationsFn({ data })
@@ -60,9 +60,9 @@ export const useCreateVacancyMutation = (api: CreateApi) => {
       data
     }: {
       companyId: string
-      data: VacancyRequest
+      data: VacancyCreateRequest
     }) =>
-      api<VacancySchema>(`vacancies/companies/${companyId}`, {
+      api<VacancyDetailResponse>(`vacancies/companies/${companyId}`, {
         method: 'POST',
         data
       }),
@@ -77,7 +77,7 @@ export const useUpdateVacancyMutation = (api: CreateApi) => {
 
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: VacancyUpdateRequest }) =>
-      api<VacancySchema>(`vacancies/${id}`, { method: 'PATCH', data }),
+      api<VacancyDetailResponse>(`vacancies/${id}`, { method: 'PATCH', data }),
     onSuccess: (vacancy) => {
       queryClient.invalidateQueries({ queryKey: ['vacancies'] })
       queryClient.invalidateQueries({
@@ -110,7 +110,7 @@ export const useAddVacancySkillMutation = (api: CreateApi) => {
       vacancyId: string
       data: VacancySkillLinkRequest
     }) =>
-      api<VacancySkillLinkSchema>(`vacancies/${vacancyId}/skills`, {
+      api<VacancySkillLinkResponse>(`vacancies/${vacancyId}/skills`, {
         method: 'POST',
         data
       }),
@@ -136,7 +136,7 @@ export const useUpdateVacancySkillMutation = (api: CreateApi) => {
       skillLinkId: string
       data: VacancySkillLinkUpdateRequest
     }) =>
-      api<VacancySkillLinkSchema>(
+      api<VacancySkillLinkResponse>(
         `vacancies/${vacancyId}/skills/${skillLinkId}`,
         {
           method: 'PATCH',
@@ -204,7 +204,7 @@ export const useCreateApplicationMutation = (api: CreateApi) => {
 
   return useMutation({
     mutationFn: (data: ApplicationRequest) =>
-      api<ApplicationSchema>('vacancies/applications', {
+      api<ApplicationDetailResponse>('vacancies/applications', {
         method: 'POST',
         data
       }),
@@ -228,7 +228,7 @@ export const useUpdateApplicationMutation = (api: CreateApi) => {
       id: string
       data: ApplicationStatusUpdateRequest
     }) =>
-      api<ApplicationSchema>(`vacancies/applications/${id}`, {
+      api<ApplicationDetailResponse>(`vacancies/applications/${id}`, {
         method: 'PATCH',
         data
       }),

@@ -9,12 +9,15 @@ import {
 } from '@/components/ui/select'
 import { useUpdateApplicationMutation } from '@/api/vacancies/vacancies'
 import { ApplicationStatusList, type ApplicationStatus } from '@/types/shared/literals'
-import type { ApplicationCardSchema, ApplicationSchema } from '@/types/vacancies/vacancy'
+import type {
+  ApplicationSummaryResponse,
+  ApplicationDetailResponse
+} from '@/types/vacancies/vacancy'
 import { Link, useRouteContext } from '@tanstack/react-router'
 import { toast } from 'sonner'
 
 interface ApplicationCardProps {
-  application: ApplicationCardSchema | ApplicationSchema
+  application: ApplicationSummaryResponse | ApplicationDetailResponse
 }
 
 const ApplicationCard = ({ application }: ApplicationCardProps) => {

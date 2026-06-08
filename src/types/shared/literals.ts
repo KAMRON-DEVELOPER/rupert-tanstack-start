@@ -136,3 +136,37 @@ export const SalaryCurrencyList = [
   'TRY'
 ] as const
 export type SalaryCurrency = (typeof SalaryCurrencyList)[number]
+
+export const ChatEventList = [
+  'ping',
+  'join_chat',
+  'leave_chat',
+  'typing_start',
+  'typing_stop',
+  'create_chat',
+  'delete_chat',
+  'clear_chat',
+  'read_chat',
+  'send_message',
+  'update_message',
+  'delete_message',
+  'update_chat_settings',
+  'pong',
+  'error',
+  'chat_joined',
+  'chat_left',
+  'chat_created',
+  'chat_read',
+  'chat_cleared',
+  'chat_deleted',
+  'user_online',
+  'user_offline',
+  'message_created',
+  'message_updated',
+  'message_deleted',
+  'chat_settings_updated'
+] as const
+export type ChatEvent = (typeof ChatEventList)[number]
+
+export const AttachmentStatusList = ['pending', 'ready'] as const
+export type AttachmentStatus = (typeof AttachmentStatusList)[number]

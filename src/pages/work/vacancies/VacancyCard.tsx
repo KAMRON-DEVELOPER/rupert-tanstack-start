@@ -1,4 +1,4 @@
-import type { VacancyCardSchema } from '@/types/vacancies/vacancy'
+import type { VacancySummaryResponse } from '@/types/vacancies/vacancy'
 import { Link } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { locationLabel } from '@/lib/location-label'
 import { Building2, MapPin, Clock, Banknote } from 'lucide-react'
 
-const VacancyCard = ({ v }: { v: VacancyCardSchema }) => {
+const VacancyCard = ({ v }: { v: VacancySummaryResponse }) => {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center gap-4 space-y-0">

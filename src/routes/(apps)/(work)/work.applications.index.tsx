@@ -1,10 +1,10 @@
 import ApplicationsPage from '@/pages/work/vacancies/ApplicationsPage'
 import { useGetApplicationsQueryOptions } from '@/api/vacancies/vacancies'
-import { applicationSearch } from '@/types/vacancies/vacancy.schema'
+import { applicationListParamsSchema } from '@/types/vacancies/vacancy'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(apps)/(work)/work/applications/')({
-  validateSearch: applicationSearch,
+  validateSearch: applicationListParamsSchema,
   loaderDeps: ({ search }) => search,
   loader: async ({ context: { queryClient }, deps }) => {
     await queryClient.ensureQueryData(useGetApplicationsQueryOptions(deps))

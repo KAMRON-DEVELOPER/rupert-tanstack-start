@@ -4,19 +4,19 @@ import {
   useQueryClient
 } from '@tanstack/react-query'
 import { getCompaniesFn, getCompanyFn } from './companies.functions'
-import { CompanySearch } from '@/types/companies/company.schema'
 import type { CreateApi } from '@/api/api'
 import type {
   CompanyCreateRequest,
+  CompanyDetailResponse,
+  CompanyListParams,
   CompanyMemberInviteRequest,
+  CompanyMemberResponse,
   CompanyMemberRoleUpdateRequest,
-  CompanyMemberSchema,
-  CompanySchema,
   CompanyUpdateRequest
 } from '@/types/companies/company'
 import type { MessageResponse } from '@/types/shared/types'
 
-export const useGetCompaniesQueryOptions = (data: CompanySearch) =>
+export const useGetCompaniesQueryOptions = (data: CompanyListParams) =>
   queryOptions({
     queryKey: ['companies', data],
     queryFn: () => getCompaniesFn({ data })
@@ -33,7 +33,7 @@ export const useCreateCompanyMutation = (api: CreateApi) => {
 
   return useMutation({
     mutationFn: (data: CompanyCreateRequest) =>
-      api<CompanySchema>('companies/', { method: 'POST', data }),
+      api<CompanyDetailResponse>('companies/', { method: 'POST', data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['companies'] })
     }
@@ -45,7 +45,7 @@ export const useUpdateCompanyMutation = (api: CreateApi) => {
 
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: CompanyUpdateRequest }) =>
-      api<CompanySchema>(`companies/${id}`, { method: 'PATCH', data }),
+      api<CompanyDetailResponse>(`companies/${id}`, { method: 'PATCH', data }),
     onSuccess: (company) => {
       queryClient.invalidateQueries({ queryKey: ['companies'] })
       queryClient.invalidateQueries({
@@ -78,7 +78,7 @@ export const useAddCompanyMemberMutation = (api: CreateApi) => {
       companyId: string
       data: CompanyMemberInviteRequest
     }) =>
-      api<CompanyMemberSchema>(`companies/${companyId}/members`, {
+      api<CompanyMemberResponse>(`companies/${companyId}/members`, {
         method: 'POST',
         data
       }),
@@ -103,7 +103,7 @@ export const useUpdateCompanyMemberMutation = (api: CreateApi) => {
       memberId: string
       data: CompanyMemberRoleUpdateRequest
     }) =>
-      api<CompanyMemberSchema>(`companies/${companyId}/members/${memberId}`, {
+      api<CompanyMemberResponse>(`companies/${companyId}/members/${memberId}`, {
         method: 'PATCH',
         data
       }),
