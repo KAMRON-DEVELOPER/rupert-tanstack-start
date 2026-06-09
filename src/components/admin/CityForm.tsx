@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogFooter
 } from '@/components/ui/dialog'
-import type { CityRequest } from '@/types/admin/admin'
+import { CityRequest } from '@/types/shared/location'
 
 type CityFormProps = {
   initialData?: { name: string }
@@ -22,7 +22,7 @@ type CityFormProps = {
 export function CityForm({ initialData, onSubmit, onCancel, isLoading, title }: CityFormProps) {
   const [name, setName] = useState(initialData?.name || '')
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     onSubmit({ name: name.trim() })
   }

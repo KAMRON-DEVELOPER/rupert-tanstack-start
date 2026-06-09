@@ -1,14 +1,14 @@
-import ProfilePage from '@/pages/users/ProfilePage'
-import { useGetProfileQueryOptions } from '@/api/users/auth'
 import {
   useGetFollowersQueryOptions,
   useGetFollowingQueryOptions,
-  useGetFollowRequestsQueryOptions,
-  useGetResumesQueryOptions,
-  useGetSessionsQueryOptions,
-  useGetUserSkillsQueryOptions,
-  useGetWorkExperiencesQueryOptions
-} from '@/api/users/users'
+  useGetFollowRequestsQueryOptions
+} from '@/api/users/follow'
+import { useGetResumesQueryOptions } from '@/api/users/resume'
+import { useGetSessionsQueryOptions } from '@/api/users/session'
+import { useGetUserSkillsQueryOptions } from '@/api/users/user-skill'
+import { useGetProfileQueryOptions } from '@/api/users/users'
+import { useGetWorkExperiencesQueryOptions } from '@/api/users/work-experience'
+import ProfilePage from '@/pages/users/ProfilePage'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(public)/profile/')({

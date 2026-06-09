@@ -1,9 +1,3 @@
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Pencil, Trash2, Check, X } from 'lucide-react'
-import type { SkillResponse } from '@/types/skills/skill'
-import { AdminSkillSchema, type AdminSkill } from '@/types/admin/admin'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,22 +9,27 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { SkillResponse, skillResponseSchema } from '@/types/shared/skill'
+import { Check, Pencil, Trash2, X } from 'lucide-react'
 import { useState } from 'react'
 
 type SkillListProps = {
   skills: SkillResponse[]
-  onRename: (skill: AdminSkill, newName: string) => void
-  onDelete: (skill: AdminSkill) => void
+  onRename: (skill: SkillResponse, newName: string) => void
+  onDelete: (skill: SkillResponse) => void
 }
 
-const isEditableSkill = (skill: SkillResponse): skill is AdminSkill =>
-  AdminSkillSchema.safeParse(skill).success
+const isEditableSkill = (skill: SkillResponse): skill is SkillResponse =>
+  skillResponseSchema.safeParse(skill).success
 
 export function SkillList({ skills, onRename, onDelete }: SkillListProps) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editValue, setEditValue] = useState('')
 
-  const startRename = (skill: AdminSkill) => {
+  const startRename = (skill: SkillResponse) => {
     setEditingId(skill.id)
     setEditValue(skill.name)
   }
@@ -40,7 +39,7 @@ export function SkillList({ skills, onRename, onDelete }: SkillListProps) {
     setEditValue('')
   }
 
-  const submitRename = (skill: AdminSkill) => {
+  const submitRename = (skill: SkillResponse) => {
     const trimmed = editValue.trim()
     if (trimmed && trimmed !== skill.name) {
       onRename(skill, trimmed)

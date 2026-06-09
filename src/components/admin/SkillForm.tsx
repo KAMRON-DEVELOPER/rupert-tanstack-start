@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogFooter
 } from '@/components/ui/dialog'
-import type { SkillRequest } from '@/types/admin/admin'
+import { SkillRequest } from '@/types/shared/skill'
 
 type SkillFormProps = {
   initialData?: { name: string }
@@ -22,7 +22,7 @@ type SkillFormProps = {
 export function SkillForm({ initialData, onSubmit, onCancel, isLoading, title }: SkillFormProps) {
   const [name, setName] = useState(initialData?.name || '')
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     onSubmit({ name: name.trim() })
   }

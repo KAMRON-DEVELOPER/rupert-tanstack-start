@@ -1,3 +1,4 @@
+import { useGetProfileQueryOptions } from '@/api/users/users'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   SidebarFooter,
@@ -5,7 +6,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '@/components/ui/sidebar'
-import { useGetProfileQueryOptions } from '@/api/users/auth'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useRouteContext } from '@tanstack/react-router'
 import { LogIn } from 'lucide-react'

@@ -2,7 +2,9 @@ import { queryOptions } from '@tanstack/react-query'
 import { getChatMessagesFn, getChatsFn } from './chats.functions'
 import { PaginationQuery } from '@/types/shared/pagination'
 
-export const useGetChatsQueryOptions = (data: PaginationQuery) =>
+export const useGetChatsQueryOptions = (
+  data: PaginationQuery = { offset: 0, limit: 20 }
+) =>
   queryOptions({
     queryKey:
       Object.keys(data).length > 0

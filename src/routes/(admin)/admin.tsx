@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { AdminLayout } from '@/pages/admin/AdminLayout'
-import { useGetProfileQueryOptions } from '@/api/users/auth'
+import { useGetProfileQueryOptions } from '@/api/users/users'
 
 export const Route = createFileRoute('/(admin)/admin')({
   beforeLoad: async ({ context }) => {

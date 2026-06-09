@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogFooter
 } from '@/components/ui/dialog'
-import type { CountryCreateRequest } from '@/types/admin/admin'
+import { CountryCreateRequest } from '@/types/shared/location'
 
 type CountryFormProps = {
   initialData?: { code: string; name: string }
@@ -29,7 +29,7 @@ export function CountryForm({
   const [code, setCode] = useState(initialData?.code || '')
   const [name, setName] = useState(initialData?.name || '')
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     onSubmit({ code: code.trim().toUpperCase(), name: name.trim() })
   }
