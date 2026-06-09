@@ -15,17 +15,26 @@ export const nullableLocationRequestSchema = z.object({
 })
 
 export const countryCreateRequestSchema = z.object({
-  code: z.string().max(2),
-  name: z.string().max(56)
+  code: z
+    .string()
+    .trim()
+    .length(2)
+    .transform((code) => code.toUpperCase()),
+  name: z.string().trim().min(1).max(56)
 })
 
 export const countryUpdateRequestSchema = z.object({
-  code: z.string().max(2).optional(),
-  name: z.string().max(56).optional()
+  code: z
+    .string()
+    .trim()
+    .length(2)
+    .transform((code) => code.toUpperCase())
+    .optional(),
+  name: z.string().trim().min(1).max(56).optional()
 })
 
 export const cityRequestSchema = z.object({
-  name: z.string().max(168)
+  name: z.string().trim().min(1).max(168)
 })
 
 // --- Responses ---

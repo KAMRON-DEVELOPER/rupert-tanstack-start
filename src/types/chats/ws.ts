@@ -4,7 +4,7 @@ import { PaginatedResponseSchema } from '@/types/shared/pagination'
 import { chatListUserResponseSchema } from './chat-participant'
 import { chatMessageResponseSchema } from './chat-message'
 import { isoDateTime, uuid } from '@/types/shared/primitives'
-import { attachmentIdWithPositionRequestSchema } from '../attachments/attachment'
+import { attachmentIdWithPositionRequestSchema } from '@/types/shared/attachment'
 
 export const userSearchResponseSchema = PaginatedResponseSchema(
   chatListUserResponseSchema
@@ -14,35 +14,27 @@ export const chatMessagesResponseSchema = PaginatedResponseSchema(
   chatMessageResponseSchema
 )
 
-export const createChatSchema = z
-  .object({
-    participantId: uuid
-  })
-  .strict()
+export const createChatSchema = z.object({
+  participantId: uuid
+})
 
-export const chatRoomActionRequestSchema = z
-  .object({
-    chatId: uuid
-  })
-  .strict()
+export const chatRoomActionRequestSchema = z.object({
+  chatId: uuid
+})
 
-export const scopedChatActionRequestSchema = chatRoomActionRequestSchema
-  .extend({
+export const scopedChatActionRequestSchema = chatRoomActionRequestSchema.extend(
+  {
     forParticipant: z.boolean().optional().default(false)
-  })
-  .strict()
+  }
+)
 
-export const messageActionRequestSchema = chatRoomActionRequestSchema
-  .extend({
-    messageId: uuid
-  })
-  .strict()
+export const messageActionRequestSchema = chatRoomActionRequestSchema.extend({
+  messageId: uuid
+})
 
-export const readChatRequestSchema = chatRoomActionRequestSchema
-  .extend({
-    lastSeenAt: isoDateTime.optional()
-  })
-  .strict()
+export const readChatRequestSchema = chatRoomActionRequestSchema.extend({
+  lastSeenAt: isoDateTime.optional()
+})
 
 export const createChatMessageRequestSchema = z
   .object({
@@ -55,7 +47,6 @@ export const createChatMessageRequestSchema = z
       .optional()
       .default([])
   })
-  .strict()
   .superRefine((value, context) => {
     const hasMessage = Boolean(value.message?.trim())
     const hasAttachments = value.attachments.length > 0
@@ -91,7 +82,6 @@ export const updateMessageActionRequestSchema = messageActionRequestSchema
       .optional()
       .optional()
   })
-  .strict()
   .superRefine((value, context) => {
     if (value.message === null && value.attachments === null) {
       context.addIssue({
@@ -115,7 +105,6 @@ export const updateChatSettingsActionRequestSchema = chatRoomActionRequestSchema
     isMuted: z.boolean().optional(),
     isArchived: z.boolean().optional()
   })
-  .strict()
   .superRefine((value, context) => {
     if (
       value.isPinned === null &&
@@ -130,39 +119,24 @@ export const updateChatSettingsActionRequestSchema = chatRoomActionRequestSchema
   })
 
 // --- WS Outbound Payload ---
-
 export const chatWsOutboundPayloadSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('ping') }).strict(),
   chatRoomActionRequestSchema.extend({ type: z.literal('join_chat') }).strict(),
-  chatRoomActionRequestSchema
-    .extend({ type: z.literal('leave_chat') })
-    .strict(),
-  chatRoomActionRequestSchema
-    .extend({ type: z.literal('typing_start') })
-    .strict(),
-  chatRoomActionRequestSchema
-    .extend({ type: z.literal('typing_stop') })
-    .strict(),
+  chatRoomActionRequestSchema.extend({ type: z.literal('leave_chat') }),
+  chatRoomActionRequestSchema.extend({ type: z.literal('typing_start') }),
+  chatRoomActionRequestSchema.extend({ type: z.literal('typing_stop') }),
   createChatSchema.extend({ type: z.literal('create_chat') }).strict(),
-  createChatMessageRequestSchema
-    .extend({ type: z.literal('send_message') })
-    .strict(),
-  updateMessageActionRequestSchema
-    .extend({ type: z.literal('update_message') })
-    .strict(),
-  messageActionRequestSchema
-    .extend({ type: z.literal('delete_message') })
-    .strict(),
+  createChatMessageRequestSchema.extend({ type: z.literal('send_message') }),
+  updateMessageActionRequestSchema.extend({
+    type: z.literal('update_message')
+  }),
+  messageActionRequestSchema.extend({ type: z.literal('delete_message') }),
   readChatRequestSchema.extend({ type: z.literal('read_chat') }).strict(),
-  scopedChatActionRequestSchema
-    .extend({ type: z.literal('clear_chat') })
-    .strict(),
-  scopedChatActionRequestSchema
-    .extend({ type: z.literal('delete_chat') })
-    .strict(),
-  updateChatSettingsActionRequestSchema
-    .extend({ type: z.literal('update_chat_settings') })
-    .strict()
+  scopedChatActionRequestSchema.extend({ type: z.literal('clear_chat') }),
+  scopedChatActionRequestSchema.extend({ type: z.literal('delete_chat') }),
+  updateChatSettingsActionRequestSchema.extend({
+    type: z.literal('update_chat_settings')
+  })
 ])
 
 // --- WS Inbound Payload ---─

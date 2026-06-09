@@ -1,8 +1,10 @@
-import { attachmentWithPositionResponseSchema } from '@/types/attachments/attachment'
 import { baseSchema } from '@/types/shared/base'
 import { uuid } from '@/types/shared/primitives'
 import z from 'zod'
-import { attachmentIdWithPositionRequestSchema } from '../shared/attachment'
+import {
+  attachmentIdWithPositionRequestSchema,
+  attachmentWithPositionResponseSchema
+} from '@/types/shared/attachment'
 
 // --- Requests ---
 export const chatMessageCreateRequestSchema = z.object({

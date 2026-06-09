@@ -137,36 +137,58 @@ export const SalaryCurrencyList = [
 ] as const
 export type SalaryCurrency = (typeof SalaryCurrencyList)[number]
 
-export const ChatEventList = [
+export const IncomingEventList = [
   'ping',
+
   'join_chat',
   'leave_chat',
+
   'typing_start',
   'typing_stop',
+
+  'read_chat',
   'create_chat',
   'delete_chat',
   'clear_chat',
-  'read_chat',
+
+  'update_chat_settings',
+
   'send_message',
   'update_message',
-  'delete_message',
-  'update_chat_settings',
+  'delete_message'
+
+  // groups domain
+  // ...
+  // feeds domain
+  // ...
+] as const
+export type IncomingEvent = (typeof IncomingEventList)[number]
+
+export const OutgoingEventList = [
   'pong',
   'error',
+
   'chat_joined',
   'chat_left',
-  'chat_created',
+
+  'typing_start',
+  'typing_stop',
+
   'chat_read',
+  'chat_created',
   'chat_cleared',
   'chat_deleted',
+
   'user_online',
   'user_offline',
+
   'message_created',
   'message_updated',
   'message_deleted',
+
   'chat_settings_updated'
 ] as const
-export type ChatEvent = (typeof ChatEventList)[number]
+export type OutgoingEvent = (typeof OutgoingEventList)[number]
 
 export const AttachmentStatusList = ['pending', 'ready'] as const
 export type AttachmentStatus = (typeof AttachmentStatusList)[number]

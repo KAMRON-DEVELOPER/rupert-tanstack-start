@@ -24,7 +24,7 @@ import { uuid } from '@/types/shared/primitives'
 import { companySummaryResponseSchema } from '@/types/companies/company'
 import { resumeSummaryResponseSchema } from '@/types/users/resume'
 import { userSummaryResponseSchema } from '@/types/users/user'
-import { skillResponseSchema } from '@/types/skills/skill'
+import { skillResponseSchema } from '@/types/shared/skill'
 
 // --- Vacancy Skill Link ---
 export const vacancySkillLinkRequestSchema = z.object({
