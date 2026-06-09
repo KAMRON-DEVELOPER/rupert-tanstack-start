@@ -1,7 +1,6 @@
 import { z } from 'zod'
 import { uuid } from './primitives'
 import { baseSchema } from './base'
-import { PaginatedResponseSchema } from './pagination'
 
 // --- Requests ---
 export const locationRequestSchema = z.object({
@@ -57,14 +56,6 @@ export const baseNullableLocationResponseSchema = baseSchema.extend({
   country: countryResponseSchema.optional(),
   city: cityResponseSchema.optional()
 })
-
-// --- List Responses ---
-export const countryListResponseSchema = PaginatedResponseSchema(
-  countryResponseSchema
-)
-
-export const cityListResponseSchema =
-  PaginatedResponseSchema(cityResponseSchema)
 
 // ---- Types ----
 export type LocationRequest = z.infer<typeof locationRequestSchema>

@@ -7,7 +7,7 @@ import {
   useUpdateCityMutation,
   useDeleteCountryMutation,
   useDeleteCityMutation
-} from '@/api/admin/admin'
+} from '@/api/admin/city'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'

@@ -9,11 +9,16 @@ import { baseNullableLocationResponseSchema } from '@/types/shared/location'
 import { isoDate } from '@/types/shared/primitives'
 import z from 'zod'
 
-export const authProbeSchema = z.object({
+export const authProbeResponseSchema = z.object({
   isAuthenticated: z.boolean()
 })
 
-export type AuthProbe = z.infer<typeof authProbeSchema>
+export const emailAuthRequestSchema = z.object({
+  email: z.email(),
+  password: z.string().min(8).max(24),
+  firstName: z.string().min(8).max(24).optional(),
+  lastName: z.string().min(8).max(24).optional()
+})
 
 const emailAuthSuccessResponseSchema =
   baseNullableLocationResponseSchema.extend({
@@ -55,6 +60,8 @@ export const emailAuthResponseSchema = z.discriminatedUnion('type', [
   emailAuthSuccessSchema
 ])
 
+export type AuthProbeResponse = z.infer<typeof authProbeResponseSchema>
+export type EmailAuthRequest = z.infer<typeof emailAuthRequestSchema>
 export type EmailAuthNewUser = z.infer<typeof emailAuthNewUserSchema>
 export type EmailAuthSetupPassword = z.infer<
   typeof emailAuthSetupPasswordSchema

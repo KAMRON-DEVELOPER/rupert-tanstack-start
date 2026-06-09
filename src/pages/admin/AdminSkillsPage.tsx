@@ -4,7 +4,7 @@ import {
   useCreateSkillMutation,
   useUpdateSkillMutation,
   useDeleteSkillMutation
-} from '@/api/admin/admin'
+} from '@/api/admin/city'
 import { SkillList } from '@/components/admin/SkillList'
 import { SkillForm } from '@/components/admin/SkillForm'
 import { useState } from 'react'

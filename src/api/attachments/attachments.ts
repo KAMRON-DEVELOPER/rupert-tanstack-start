@@ -1,10 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { CreateApi } from '@/api/api'
-import {
-  uploadAttachmentsResponseSchema,
-  type UploadAttachmentsResponse
-} from '@/types/attachments/attachment'
 import type { MessageResponse } from '@/types/shared/types'
+import { uploadAttachmentsResponseSchema } from '@/types/shared/attachment'
 
 export const useUploadAttachmentsMutation = (api: CreateApi) => {
   return useMutation({
@@ -17,9 +14,19 @@ export const useUploadAttachmentsMutation = (api: CreateApi) => {
         data: formData
       })
 
-      return uploadAttachmentsResponseSchema.parse(
-        data
-      ) satisfies UploadAttachmentsResponse
+      const result = uploadAttachmentsResponseSchema.safeParse(data)
+
+      if (!result.success) {
+        console.error(
+          '[uploadAttachmentsResponseSchema] parse failed:',
+          result.error.message
+        )
+        throw new Error(
+          '[uploadAttachmentsResponseSchema] Unexpected response shape from backend'
+        )
+      }
+
+      return result.data
     }
   })
 }

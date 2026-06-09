@@ -9,11 +9,11 @@ import z from 'zod'
 import { FollowStatusList } from '@/types/shared/literals'
 import { uuid } from '@/types/shared/primitives'
 
-const followUpdateRequestSchema = z.object({
+export const followUpdateRequestSchema = z.object({
   status: z.enum(FollowStatusList)
 })
 
-const followUserResponseSchema = baseSchema.extend({
+export const followUserResponseSchema = baseSchema.extend({
   firstName: z.string(),
   lastName: z.string().optional(),
   headline: z.string().optional(),
@@ -25,7 +25,7 @@ const followUserResponseSchema = baseSchema.extend({
   followingsCount: z.number().int()
 })
 
-const followResponseSchema = baseSchema.extend({
+export const followResponseSchema = baseSchema.extend({
   followerId: uuid,
   followingId: uuid,
   status: z.enum(FollowStatusList),

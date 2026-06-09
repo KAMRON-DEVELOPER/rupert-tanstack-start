@@ -28,8 +28,8 @@ export const userUpdateRequestSchema = nullableLocationRequestSchema.extend({
   telegramUsername: z.string().optional(),
   followPolicy: z.enum(FollowPolicyList).optional(),
   jobSearchStatus: z.enum(JobSearchStatusList).optional(),
-  deleteAvatar: z.boolean().optional(),
-  deleteBanner: z.boolean().optional()
+  deleteAvatarKey: z.string().optional(),
+  deleteBannerKey: z.string().optional()
 })
 
 // --- Responses ---

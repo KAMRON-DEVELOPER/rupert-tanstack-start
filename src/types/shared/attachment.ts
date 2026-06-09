@@ -30,10 +30,18 @@ export const attachmentWithPositionableResponseSchema =
     isPositionable: z.boolean()
   })
 
+export const uploadAttachmentsResponseSchema = z.object({
+  attachments: z.array(attachmentWithPositionableResponseSchema),
+  failed: z.array(z.string())
+})
+
 export type AttachmentIdWithPositionRequest = z.infer<
   typeof attachmentIdWithPositionRequestSchema
 >
 export type AttachmentResponse = z.infer<typeof attachmentResponseSchema>
 export type AttachmentWithPositionableResponse = z.infer<
   typeof attachmentWithPositionableResponseSchema
+>
+export type UploadAttachmentsResponse = z.infer<
+  typeof uploadAttachmentsResponseSchema
 >

@@ -35,7 +35,7 @@ export const dailyActiveUsersBucketSchema = z.object({
   date: isoDate
 })
 
-export const usersStatsSchema = z.object({
+export const usersStatsResponseSchema = z.object({
   total: z.number().int(),
   lookingForJobCount: z.number().int(),
   lookingForJobPercentage: z.number(),
@@ -44,22 +44,22 @@ export const usersStatsSchema = z.object({
   bySpecialization: z.array(specializationBucketSchema)
 })
 
-export const vacanciesStatsSchema = z.object({
+export const vacanciesStatsResponseSchema = z.object({
   total: z.number().int(),
   open: z.number().int(),
   byStatus: z.array(vacancyStatusBucketSchema),
   bySpecialization: z.array(specializationBucketSchema)
 })
 
-export const companiesStatsSchema = z.object({
+export const companiesStatsResponseSchema = z.object({
   total: z.number().int(),
   byType: z.array(companyTypeBucketSchema)
 })
 
-export const statsSchema = z.object({
-  users: usersStatsSchema,
-  vacancies: vacanciesStatsSchema,
-  companies: companiesStatsSchema
+export const statsResponseSchema = z.object({
+  users: usersStatsResponseSchema,
+  vacancies: vacanciesStatsResponseSchema,
+  companies: companiesStatsResponseSchema
 })
 
 export type JobSearchStatusBucket = z.infer<typeof jobSearchStatusBucketSchema>
@@ -69,7 +69,11 @@ export type CompanyTypeBucket = z.infer<typeof companyTypeBucketSchema>
 export type DailyActiveUsersBucket = z.infer<
   typeof dailyActiveUsersBucketSchema
 >
-export type UsersStats = z.infer<typeof usersStatsSchema>
-export type VacanciesStats = z.infer<typeof vacanciesStatsSchema>
-export type CompaniesStats = z.infer<typeof companiesStatsSchema>
-export type Stats = z.infer<typeof statsSchema>
+export type UsersResponseStats = z.infer<typeof usersStatsResponseSchema>
+export type VacanciesResponseStats = z.infer<
+  typeof vacanciesStatsResponseSchema
+>
+export type CompaniesResponseStats = z.infer<
+  typeof companiesStatsResponseSchema
+>
+export type StatsResponse = z.infer<typeof statsResponseSchema>

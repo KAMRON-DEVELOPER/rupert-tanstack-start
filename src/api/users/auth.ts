@@ -1,61 +1,19 @@
-import {
-  useMutation,
-  useQueryClient,
-  queryOptions
-} from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import type {
-  EmailAuthRequest,
-  PasswordSetupRequest,
-  UserSchema,
-  UserUpdateRequest
-} from '@/types/users/user'
-import type { MessageResponse } from '@/types/shared/types'
-import {
-  deleteProfileFn,
-  getProfileFn,
-  logoutFn,
-  updateProfileFn
-} from './auth.functions'
 import { CreateApi } from '@/api/api'
-
-const appendFormDataValue = (
-  formData: FormData,
-  key: string,
-  value: unknown
-) => {
-  if (value === undefined || value === null) return
-
-  if (typeof File !== 'undefined' && value instanceof File) {
-    formData.append(key, value)
-    return
-  }
-
-  formData.append(key, String(value))
-}
-
-const toUserUpdateFormData = (data: UserUpdateRequest) => {
-  const formData = new FormData()
-
-  Object.entries(data).forEach(([key, value]) => {
-    appendFormDataValue(formData, key, value)
-  })
-
-  return formData
-}
-
-export const useGetProfileQueryOptions = () =>
-  queryOptions({
-    queryKey: ['profile'],
-    queryFn: () => getProfileFn()
-  })
+import {
+  EmailAuthRequest,
+  EmailAuthResponse,
+  PasswordSetupRequest
+} from '@/types/users/auth'
+import { logoutFn } from './auth.functions'
 
 export const useEmailAuthMutation = (api: CreateApi) => {
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: (data: EmailAuthRequest) =>
-      api<UserSchema | MessageResponse>('users/auth/email', {
+      api<EmailAuthResponse>('users/auth/email', {
         method: 'POST',
         data
       }),
@@ -83,29 +41,6 @@ export const useVerifyMutation = (api: CreateApi) => {
   return useMutation({
     mutationFn: (params: { token: string }) =>
       api('users/auth/verify', { method: 'POST', params })
-  })
-}
-
-export const useUpdateProfileMutation = () => {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: (data: UserUpdateRequest) =>
-      updateProfileFn({ data: toUserUpdateFormData(data) }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['profile'] })
-    }
-  })
-}
-
-export const useDeleteProfileMutation = () => {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: () => deleteProfileFn(),
-    onSuccess: () => {
-      queryClient.clear()
-    }
   })
 }
 

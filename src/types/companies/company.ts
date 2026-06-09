@@ -1,20 +1,17 @@
-import z from 'zod'
 import { baseSchema } from '@/types/shared/base'
-import {
-  cityResponseSchema,
-  countryResponseSchema
-} from '@/types/shared/location'
 import {
   CompanyMemberRoleList,
   CompanyStatusList,
   CompanyTypeList
 } from '@/types/shared/literals'
 import {
-  PaginatedResponseSchema,
-  paginationQuerySchema
-} from '@/types/shared/pagination'
+  cityResponseSchema,
+  countryResponseSchema
+} from '@/types/shared/location'
+import { paginationQuerySchema } from '@/types/shared/pagination'
 import { uuid } from '@/types/shared/primitives'
 import { userSummaryResponseSchema } from '@/types/users/user'
+import z from 'zod'
 
 const queryBooleanSchema = z.preprocess((value) => {
   if (value === 'true') return true
@@ -83,10 +80,6 @@ export const companyDetailResponseSchema = companySummaryResponseSchema.extend({
   memberCount: z.number().int().optional(),
   members: z.array(z.lazy(() => companyMemberResponseSchema)).default([])
 })
-
-export const companyListResponseSchema = PaginatedResponseSchema(
-  companySummaryResponseSchema
-)
 
 // --- Company Member Requests ---
 export const companyMemberInviteRequestSchema = z.object({

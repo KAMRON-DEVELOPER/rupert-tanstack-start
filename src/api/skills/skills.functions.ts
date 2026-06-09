@@ -1,22 +1,26 @@
 import { createServerFn } from '@tanstack/react-start'
 import { createServerApi } from '@/api/api.server'
-import { skillListResponseSchema } from '@/types/skills/skill'
-import type { PaginationSearch } from '@/types/shared/types.schemas'
+import {
+  paginatedResponseSchema,
+  paginationQuerySchema
+} from '@/types/shared/pagination'
+import { skillResponseSchema } from '@/types/shared/skill'
 
 export const getSkillsFn = createServerFn()
-  .inputValidator((data: PaginationSearch) => data)
+  .inputValidator(paginationQuerySchema)
   .handler(async ({ data: params }) => {
     const api = createServerApi()
+
     const data = await api('skills/', { params })
-    const result = skillListResponseSchema.safeParse(data)
+
+    const result = paginatedResponseSchema(skillResponseSchema).safeParse(data)
+
     if (!result.success) {
-      console.error(
-        '[skillListResponseSchema] parse failed:',
-        result.error.flatten()
-      )
+      console.error('[skillResponseSchema] parse failed:', result.error.message)
       throw new Error(
-        '[skillListResponseSchema] Unexpected response shape from backend'
+        '[skillResponseSchema] Unexpected response shape from backend'
       )
     }
+
     return result.data
   })

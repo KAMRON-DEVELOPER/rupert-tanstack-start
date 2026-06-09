@@ -1,45 +1,56 @@
 import { createServerFn } from '@tanstack/react-start'
 import { createServerApi } from '@/api/api.server'
 import {
-  cityListResponseSchema,
-  countryListResponseSchema
+  cityResponseSchema,
+  countryResponseSchema
 } from '@/types/shared/location'
-import type { PaginationSearch } from '@/types/shared/types.schemas'
+import {
+  paginatedResponseSchema,
+  paginationQuerySchema
+} from '@/types/shared/pagination'
+import z from 'zod'
 
 export const getCountriesFn = createServerFn()
-  .inputValidator((data: PaginationSearch) => data)
+  .inputValidator(paginationQuerySchema)
   .handler(async ({ data: params }) => {
     const api = createServerApi()
+
     const data = await api('locations/countries', { params })
-    const result = countryListResponseSchema.safeParse(data)
+
+    const result = paginatedResponseSchema(countryResponseSchema).safeParse(
+      data
+    )
+
     if (!result.success) {
       console.error(
-        '[countryListResponseSchema] parse failed:',
-        result.error.flatten()
+        '[countryResponseSchema] parse failed:',
+        result.error.message
       )
       throw new Error(
-        '[countryListResponseSchema] Unexpected response shape from backend'
+        '[countryResponseSchema] Unexpected response shape from backend'
       )
     }
+
     return result.data
   })
 
 export const getCitiesFn = createServerFn()
-  .inputValidator((data: PaginationSearch & { countryId: string }) => data)
+  .inputValidator(paginationQuerySchema.extend({ countryId: z.string() }))
   .handler(async ({ data: { countryId, ...params } }) => {
     const api = createServerApi()
+
     const data = await api(`locations/countries/${countryId}/cities`, {
       params
     })
-    const result = cityListResponseSchema.safeParse(data)
+
+    const result = paginatedResponseSchema(cityResponseSchema).safeParse(data)
+
     if (!result.success) {
-      console.error(
-        '[cityListResponseSchema] parse failed:',
-        result.error.flatten()
-      )
+      console.error('[cityResponseSchema] parse failed:', result.error.message)
       throw new Error(
-        '[cityListResponseSchema] Unexpected response shape from backend'
+        '[cityResponseSchema] Unexpected response shape from backend'
       )
     }
+
     return result.data
   })

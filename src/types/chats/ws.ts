@@ -1,16 +1,16 @@
 import z from 'zod'
 import { chatListItemResponseSchema } from './chat'
-import { PaginatedResponseSchema } from '@/types/shared/pagination'
+import { paginatedResponseSchema } from '@/types/shared/pagination'
 import { chatListUserResponseSchema } from './chat-participant'
 import { chatMessageResponseSchema } from './chat-message'
 import { isoDateTime, uuid } from '@/types/shared/primitives'
 import { attachmentIdWithPositionRequestSchema } from '@/types/shared/attachment'
 
-export const userSearchResponseSchema = PaginatedResponseSchema(
+export const userSearchResponseSchema = paginatedResponseSchema(
   chatListUserResponseSchema
 )
 
-export const chatMessagesResponseSchema = PaginatedResponseSchema(
+export const chatMessagesResponseSchema = paginatedResponseSchema(
   chatMessageResponseSchema
 )
 

@@ -17,7 +17,7 @@ import {
   nullableLocationRequestSchema
 } from '@/types/shared/location'
 import {
-  PaginatedResponseSchema,
+  paginatedResponseSchema,
   paginationQuerySchema
 } from '@/types/shared/pagination'
 import { uuid } from '@/types/shared/primitives'
@@ -127,7 +127,7 @@ export const vacancyDetailResponseSchema = vacancySummaryResponseSchema.extend({
   skillLinks: z.array(vacancySkillLinkResponseSchema)
 })
 
-export const vacancyListResponseSchema = PaginatedResponseSchema(
+export const vacancyListResponseSchema = paginatedResponseSchema(
   vacancySummaryResponseSchema
 )
 
@@ -165,7 +165,7 @@ export const applicationDetailResponseSchema =
     recruiterNote: z.string().optional()
   })
 
-export const applicationListResponseSchema = PaginatedResponseSchema(
+export const applicationListResponseSchema = paginatedResponseSchema(
   applicationSummaryResponseSchema
 )
 

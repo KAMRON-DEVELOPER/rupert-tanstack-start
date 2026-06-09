@@ -1,48 +1,59 @@
 import { createServerFn } from '@tanstack/react-start'
 import { createServerApi } from '@/api/api.server'
 import {
-  chatListResponseSchema,
-  chatMessagesResponseSchema
-} from '@/types/chats/chat'
-import type { ChatListResponse, ChatMessagesResponse } from '@/types/chats/chat'
-import type { PaginationSearch } from '@/types/shared/types.schemas'
+  paginatedResponseSchema,
+  paginationQuerySchema
+} from '@/types/shared/pagination'
+import { chatListItemResponseSchema } from '@/types/chats/chat'
+import z from 'zod'
+import { chatMessagesResponseSchema } from '@/types/chats/ws'
 
 export const getChatsFn = createServerFn()
-  .inputValidator((data: PaginationSearch) => data)
+  .inputValidator(paginationQuerySchema)
   .handler(async ({ data: params }) => {
     const api = createServerApi()
+
     const data = await api('chats/', {
       params
     })
-    const result = chatListResponseSchema.safeParse(data)
+
+    const result = paginatedResponseSchema(
+      chatListItemResponseSchema
+    ).safeParse(data)
+
     if (!result.success) {
       console.error(
-        '[chatListResponseSchema] parse failed:',
-        result.error.flatten()
+        '[chatListItemResponseSchema] parse failed:',
+        result.error.message
       )
       throw new Error(
-        '[chatListResponseSchema] Unexpected response shape from backend'
+        '[chatListItemResponseSchema] Unexpected response shape from backend'
       )
     }
-    return result.data satisfies ChatListResponse
+
+    return result.data
   })
 
 export const getChatMessagesFn = createServerFn()
-  .inputValidator((data: PaginationSearch & { chatId: string }) => data)
+  .inputValidator(paginationQuerySchema.extend({ chatId: z.string() }))
   .handler(async ({ data: { chatId, ...params } }) => {
     const api = createServerApi()
+
     const data = await api(`chats/${chatId}/messages`, {
       params
     })
+
     const result = chatMessagesResponseSchema.safeParse(data)
+
     if (!result.success) {
       console.error(
         '[chatMessagesResponseSchema] parse failed:',
-        result.error.flatten()
+        result.error.message
       )
       throw new Error(
         '[chatMessagesResponseSchema] Unexpected response shape from backend'
       )
     }
-    return result.data satisfies ChatMessagesResponse
+
+    return result.data
   })

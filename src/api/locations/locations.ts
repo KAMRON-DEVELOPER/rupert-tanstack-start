@@ -1,8 +1,8 @@
 import { queryOptions } from '@tanstack/react-query'
 import { getCitiesFn, getCountriesFn } from './locations.functions'
-import type { PaginationSearch } from '@/types/shared/types.schemas'
+import { PaginationQuery } from '@/types/shared/pagination'
 
-export const useGetCountriesQueryOptions = (data: PaginationSearch = {}) =>
+export const useGetCountriesQueryOptions = (data: PaginationQuery) =>
   queryOptions({
     queryKey:
       Object.keys(data).length > 0
@@ -12,7 +12,7 @@ export const useGetCountriesQueryOptions = (data: PaginationSearch = {}) =>
   })
 
 export const useGetCitiesQueryOptions = (
-  data: PaginationSearch & { countryId: string }
+  data: PaginationQuery & { countryId: string }
 ) =>
   queryOptions({
     queryKey: ['countries', data.countryId, 'cities', data] as const,
