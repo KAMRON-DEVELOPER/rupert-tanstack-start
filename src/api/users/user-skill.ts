@@ -4,7 +4,7 @@ import {
   useQueryClient
 } from '@tanstack/react-query'
 import {
-  addUserSkillFn,
+  createUserSkillFn,
   deleteUserSkillFn,
   getUserSkillsFn,
   updateUserSkillFn
@@ -24,7 +24,7 @@ export const useAddUserSkillMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: SkillLinkCreateRequest) => addUserSkillFn({ data }),
+    mutationFn: (data: SkillLinkCreateRequest) => createUserSkillFn({ data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] })
       queryClient.invalidateQueries({ queryKey: ['user-skills'] })
@@ -36,13 +36,8 @@ export const useUpdateUserSkillMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({
-      skillLinkId,
-      data
-    }: {
-      skillLinkId: string
-      data: SkillLinkUpdateRequest
-    }) => updateUserSkillFn({ data: { skillLinkId, ...data } }),
+    mutationFn: (data: SkillLinkUpdateRequest & { skillLinkId: string }) =>
+      updateUserSkillFn({ data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] })
       queryClient.invalidateQueries({ queryKey: ['user-skills'] })

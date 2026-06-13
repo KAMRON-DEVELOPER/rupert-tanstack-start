@@ -5,12 +5,12 @@ import { baseSchema } from './base'
 // --- Requests ---
 export const locationRequestSchema = z.object({
   countryId: uuid,
-  cityId: uuid.optional()
+  cityId: uuid.nullish()
 })
 
 export const nullableLocationRequestSchema = z.object({
-  countryId: uuid.optional(),
-  cityId: uuid.optional()
+  countryId: uuid.nullish(),
+  cityId: uuid.nullish()
 })
 
 export const countryCreateRequestSchema = z.object({
@@ -28,8 +28,8 @@ export const countryUpdateRequestSchema = z.object({
     .trim()
     .length(2)
     .transform((code) => code.toUpperCase())
-    .optional(),
-  name: z.string().trim().min(1).max(56).optional()
+    .nullish(),
+  name: z.string().trim().min(1).max(56).nullish()
 })
 
 export const cityRequestSchema = z.object({
@@ -49,12 +49,12 @@ export const cityResponseSchema = baseSchema.extend({
 
 export const baseLocationResponseSchema = baseSchema.extend({
   country: countryResponseSchema,
-  city: cityResponseSchema.optional()
+  city: cityResponseSchema.nullish()
 })
 
 export const baseNullableLocationResponseSchema = baseSchema.extend({
-  country: countryResponseSchema.optional(),
-  city: cityResponseSchema.optional()
+  country: countryResponseSchema.nullish(),
+  city: cityResponseSchema.nullish()
 })
 
 // ---- Types ----

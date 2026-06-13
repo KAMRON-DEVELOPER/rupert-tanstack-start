@@ -5,71 +5,50 @@ import {
   WorkFormatList
 } from '@/types/shared/literals'
 import { uuid } from '@/types/shared/primitives'
-import { baseSchema } from '@/types/shared/base'
 import z from 'zod'
 import {
   baseLocationResponseSchema,
   locationRequestSchema,
   nullableLocationRequestSchema
 } from '@/types/shared/location'
-import {
-  skillLinkCreateRequestSchema,
-  skillLinkResponseSchema,
-  skillLinkUpdateRequestSchema
-} from '@/types/shared/skill'
 
 // --- Requests ---
 export const resumeCreateRequestSchema = locationRequestSchema.extend({
   title: z.string().max(128),
-  summary: z.string().optional(),
+  summary: z.string().nullish(),
   specialization: z.enum(SpecializationList),
-  salaryExpectationMin: z.number().int().positive().optional(),
-  salaryExpectationMax: z.number().int().positive().optional(),
-  salaryCurrency: z.enum(SalaryCurrencyList).optional(),
-  workFormat: z.enum(WorkFormatList).optional(),
-  employmentType: z.enum(EmploymentTypeList).optional(),
-  skills: z.array(skillLinkCreateRequestSchema)
+  salaryExpectationMin: z.number().int().positive().nullish(),
+  salaryExpectationMax: z.number().int().positive().nullish(),
+  salaryCurrency: z.enum(SalaryCurrencyList).nullish(),
+  workFormat: z.enum(WorkFormatList).nullish(),
+  employmentType: z.enum(EmploymentTypeList).nullish()
 })
 
 export const resumeUpdateRequestSchema = nullableLocationRequestSchema.extend({
-  title: z.string().max(128),
-  summary: z.string().optional(),
-  specialization: z.enum(SpecializationList),
-  salaryExpectationMin: z.number().int().positive().optional(),
-  salaryExpectationMax: z.number().int().positive().optional(),
-  salaryCurrency: z.enum(SalaryCurrencyList).optional(),
-  workFormat: z.enum(WorkFormatList).optional(),
-  employmentType: z.enum(EmploymentTypeList).optional(),
-  skills: z.array(skillLinkUpdateRequestSchema)
+  title: z.string().max(128).nullish(),
+  summary: z.string().nullish(),
+  specialization: z.enum(SpecializationList).nullish(),
+  salaryExpectationMin: z.number().int().positive().nullish(),
+  salaryExpectationMax: z.number().int().positive().nullish(),
+  salaryCurrency: z.enum(SalaryCurrencyList).nullish(),
+  workFormat: z.enum(WorkFormatList).nullish(),
+  employmentType: z.enum(EmploymentTypeList).nullish()
 })
 
 // --- Responses ---
-export const resumeDetailResponseSchema = baseSchema.extend({
+export const resumeResponseSchema = baseLocationResponseSchema.extend({
   user_id: uuid,
   title: z.string(),
-  summary: z.string().optional(),
+  summary: z.string().nullish(),
   specialization: z.enum(SpecializationList),
-  salaryExpectationMin: z.number().int().positive().optional(),
-  salaryExpectationMax: z.number().int().positive().optional(),
-  salaryCurrency: z.enum(SalaryCurrencyList).optional(),
-  workFormat: z.enum(WorkFormatList).optional(),
-  employmentType: z.enum(EmploymentTypeList).optional(),
-  skills: z.array(skillLinkResponseSchema)
-})
-
-export const resumeSummaryResponseSchema = baseLocationResponseSchema.extend({
-  user_id: uuid,
-  title: z.string(),
-  specialization: z.enum(SpecializationList),
-  salaryExpectationMin: z.number().int().optional(),
-  salaryExpectationMax: z.number().int().optional(),
-  salaryCurrency: z.enum(SalaryCurrencyList).optional(),
-  workFormat: z.enum(WorkFormatList).optional(),
-  employmentType: z.enum(EmploymentTypeList).optional()
+  salaryExpectationMin: z.number().int().positive().nullish(),
+  salaryExpectationMax: z.number().int().positive().nullish(),
+  salaryCurrency: z.enum(SalaryCurrencyList).nullish(),
+  workFormat: z.enum(WorkFormatList).nullish(),
+  employmentType: z.enum(EmploymentTypeList).nullish()
 })
 
 // --- Types ---
 export type ResumeCreateRequest = z.infer<typeof resumeCreateRequestSchema>
 export type ResumeUpdateRequest = z.infer<typeof resumeUpdateRequestSchema>
-export type ResumeDetail = z.infer<typeof resumeDetailResponseSchema>
-export type ResumeSummary = z.infer<typeof resumeSummaryResponseSchema>
+export type ResumeDetail = z.infer<typeof resumeResponseSchema>

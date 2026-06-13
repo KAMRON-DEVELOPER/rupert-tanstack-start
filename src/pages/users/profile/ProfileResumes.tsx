@@ -23,27 +23,31 @@ import {
   Specialization,
   SpecializationList
 } from '@/types/shared/literals'
-import type { ResumeRequest, UserSchema } from '@/types/users/user'
 import { locationLabel } from '@/lib/location-label'
 import { FileText, Pencil, Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
-import {
-  useAddResumeSkillMutation,
-  useCreateResumeMutation,
-  useDeleteResumeMutation,
-  useDeleteResumeSkillMutation,
-  useGetResumesQueryOptions,
-  useUpdateResumeSkillMutation,
-  useUpdateResumeMutation
-} from '@/api/users/users'
+
 import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
+import { ResumeCreateRequest } from '@/types/users/resume'
+import { UserDetailResponse } from '@/types/users/user'
+import {
+  useCreateResumeMutation,
+  useDeleteResumeMutation,
+  useGetResumesQueryOptions,
+  useUpdateResumeMutation
+} from '@/api/users/resume'
+import {
+  useCreateResumesSkillMutation,
+  useDeleteResumeSkillMutation,
+  useUpdateResumesSkillMutation
+} from '@/api/users/resume-skill'
 
 interface ProfileResumesProps {
-  user: UserSchema
+  user: UserDetailResponse
 }
 
-type ResumeFormState = Partial<Omit<ResumeRequest, 'countryId' | 'cityId'>> & {
+type ResumeFormState = Partial<Omit<ResumeCreateRequest, 'countryId' | 'cityId'>> & {
   countryId: string
   cityId: string
 }
@@ -63,22 +67,21 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
   const createResumeMutation = useCreateResumeMutation()
   const updateResumeMutation = useUpdateResumeMutation()
   const deleteResumeMutation = useDeleteResumeMutation()
-  const addResumeSkillMutation = useAddResumeSkillMutation()
-  const updateResumeSkillMutation = useUpdateResumeSkillMutation()
+  const addResumeSkillMutation = useCreateResumesSkillMutation()
+  const updateResumeSkillMutation = useUpdateResumesSkillMutation()
   const deleteResumeSkillMutation = useDeleteResumeSkillMutation()
   const { data: resumesData } = useQuery(useGetResumesQueryOptions())
-  const resumes = resumesData ?? user.resumes
+  const resumes = resumesData ?? []
   const editingResume = resumes.find((resume) => resume.id === editingResumeId)
 
   const handleAddResume = async () => {
     if (!newResume.title || !newResume.specialization) return
 
-    const resumeToAdd: ResumeRequest = {
+    const resumeToAdd: ResumeCreateRequest = {
       title: newResume.title,
       specialization: newResume.specialization,
       countryId: newResume.countryId,
-      cityId: newResume.cityId || null,
-      skills: []
+      cityId: newResume.cityId
     }
 
     try {
@@ -108,16 +111,15 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
   const handleUpdateResume = async () => {
     if (!editingResumeId || !newResume.title || !newResume.specialization) return
 
+    // TODO skills are missing
     try {
       await updateResumeMutation.mutateAsync({
         resumeId: editingResumeId,
-        data: {
-          title: newResume.title,
-          summary: newResume.summary ?? null,
-          specialization: newResume.specialization,
-          countryId: newResume.countryId,
-          cityId: newResume.cityId || null
-        }
+        title: newResume.title,
+        summary: newResume.summary ?? undefined,
+        specialization: newResume.specialization,
+        countryId: newResume.countryId,
+        cityId: newResume.cityId || undefined
       })
       toast.success('Resume updated')
       setEditingResumeId(null)
@@ -156,11 +158,9 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
     try {
       await addResumeSkillMutation.mutateAsync({
         resumeId: skillResumeId,
-        data: {
-          skillId: skillId.trim(),
-          proficiency: skillProficiency,
-          lastUsedAt: null
-        }
+        skillId: skillId.trim(),
+        proficiency: skillProficiency,
+        lastUsedAt: undefined
       })
       setSkillResumeId(null)
       setSkillId('')

@@ -3,23 +3,21 @@ import {
   SkillLinkUpdateRequest
 } from '@/types/shared/skill'
 import {
-  addResumeSkillFn,
+  createResumeSkillFn,
   deleteResumeSkillFn,
   updateResumeSkillFn
 } from './resume-skill.function'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-export const useAddResumeSkillMutation = () => {
+export const useCreateResumesSkillMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: ({
       resumeId,
-      data
-    }: {
-      resumeId: string
-      data: SkillLinkCreateRequest
-    }) => addResumeSkillFn({ data: { resumeId, data } }),
+      ...data
+    }: SkillLinkCreateRequest & { resumeId: string }) =>
+      createResumeSkillFn({ data: { resumeId, ...data } }),
     onSuccess: (_, { resumeId }) => {
       queryClient.invalidateQueries({ queryKey: ['profile'] })
       queryClient.invalidateQueries({ queryKey: ['resumes', { resumeId }] })
@@ -27,19 +25,16 @@ export const useAddResumeSkillMutation = () => {
   })
 }
 
-export const useUpdateResumeSkillMutation = () => {
+export const useUpdateResumesSkillMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: ({
       resumeId,
       skillLinkId,
-      data
-    }: {
-      resumeId: string
-      skillLinkId: string
-      data: SkillLinkUpdateRequest
-    }) => updateResumeSkillFn({ data: { resumeId, skillLinkId, ...data } }),
+      ...data
+    }: SkillLinkUpdateRequest & { resumeId: string; skillLinkId: string }) =>
+      updateResumeSkillFn({ data: { resumeId, skillLinkId, ...data } }),
     onSuccess: (_, { resumeId }) => {
       queryClient.invalidateQueries({ queryKey: ['profile'] })
       queryClient.invalidateQueries({ queryKey: ['resumes', { resumeId }] })

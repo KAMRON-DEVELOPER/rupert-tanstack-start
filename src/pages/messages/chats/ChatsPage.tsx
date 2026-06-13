@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { AlertCircle, MessageSquare } from 'lucide-react'
-import { useChatWebSocket } from '@/hooks/useChatWebSocket'
 import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { useGetChatsQueryOptions } from '@/api/chats/chats'

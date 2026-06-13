@@ -24,7 +24,7 @@ import type { VacancyDetailResponse } from '@/types/vacancies/vacancy'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { Trash2 } from 'lucide-react'
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { toast } from 'sonner'
 
 const VacancySkills = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
@@ -38,7 +38,7 @@ const VacancySkills = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
   const [isRequired, setIsRequired] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const submit = async (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError(null)
 
@@ -48,7 +48,7 @@ const VacancySkills = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
         data: {
           skillId: skillId.trim(),
           proficiency,
-          yearsOfExperienceMin: years ? Number(years) : null,
+          yearsOfExperienceMin: years ? Number(years) : undefined,
           isRequired
         }
       })

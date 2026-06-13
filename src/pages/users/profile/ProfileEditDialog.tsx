@@ -1,3 +1,4 @@
+import { useUpdateProfileMutation } from '@/api/users/users'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -10,8 +11,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { useUpdateProfileMutation } from '@/api/users/auth'
-import { UserSchema, UserUpdateRequest } from '@/types/users/user'
+import { UserDetailResponse, UserUpdateRequest } from '@/types/users/user'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -34,7 +34,7 @@ type ProfileEditForm = Pick<
 }
 
 interface ProfileEditDialogProps {
-  user: UserSchema
+  user: UserDetailResponse
   open: boolean
   onOpenChange: (open: boolean) => void
 }
@@ -77,8 +77,8 @@ const ProfileEditDialog = ({ user, open, onOpenChange }: ProfileEditDialogProps)
         telegramUsername: formData.telegramUsername,
         followPolicy: formData.followPolicy,
         jobSearchStatus: formData.jobSearchStatus,
-        countryId: formData.countryId || null,
-        cityId: formData.cityId || null
+        countryId: formData.countryId || undefined,
+        cityId: formData.cityId || undefined
       }
 
       await updateMutation.mutateAsync(payload)
@@ -105,7 +105,7 @@ const ProfileEditDialog = ({ user, open, onOpenChange }: ProfileEditDialogProps)
               <Input
                 id="firstName"
                 name="firstName"
-                value={formData.firstName}
+                value={formData.firstName ?? ''}
                 onChange={handleChange}
                 required
               />

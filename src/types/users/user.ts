@@ -12,67 +12,65 @@ import {
   UserStatusList
 } from '@/types/shared/literals'
 import { workExperienceResponseSchema } from './work-experience'
-import { resumeSummaryResponseSchema } from './resume'
+import { resumeResponseSchema } from './resume'
 import { skillLinkResponseSchema } from '@/types/shared/skill'
 
 // --- Requests ---
 export const userUpdateRequestSchema = nullableLocationRequestSchema.extend({
-  firstName: z.string().max(64).optional(),
-  lastName: z.string().max(64).optional(),
-  headline: z.string().max(120).optional(),
-  birthdate: isoDate.optional(),
-  bio: z.string().optional(),
-  specialization: z.enum(SpecializationList).optional(),
-  phoneNumber: z.string().max(32).optional(),
-  githubUrl: z.string().optional(),
-  telegramUsername: z.string().optional(),
-  followPolicy: z.enum(FollowPolicyList).optional(),
-  jobSearchStatus: z.enum(JobSearchStatusList).optional(),
-  deleteAvatarKey: z.string().optional(),
-  deleteBannerKey: z.string().optional()
+  firstName: z.string().max(64).nullish(),
+  lastName: z.string().max(64).nullish(),
+  headline: z.string().max(120).nullish(),
+  birthdate: isoDate.nullish(),
+  bio: z.string().nullish(),
+  specialization: z.enum(SpecializationList).nullish(),
+  phoneNumber: z.string().max(32).nullish(),
+  githubUrl: z.string().nullish(),
+  telegramUsername: z.string().nullish(),
+  followPolicy: z.enum(FollowPolicyList).nullish(),
+  jobSearchStatus: z.enum(JobSearchStatusList).nullish(),
+  deleteAvatarKey: z.string().nullish(),
+  deleteBannerKey: z.string().nullish()
 })
 
 // --- Responses ---
-export const userSummaryResponseSchema =
-  baseNullableLocationResponseSchema.extend({
-    firstName: z.string(),
-    lastName: z.string().optional(),
-    headline: z.string().optional(),
-    avatarUrl: z.string().optional(),
-    specialization: z.enum(SpecializationList).optional(),
-    jobSearchStatus: z.enum(JobSearchStatusList).optional(),
+export const userSummaryResponseSchema = baseNullableLocationResponseSchema.extend({
+  firstName: z.string(),
+  lastName: z.string().nullish(),
+  headline: z.string().nullish(),
+  avatarUrl: z.string().nullish(),
+  specialization: z.enum(SpecializationList).nullish(),
+  jobSearchStatus: z.enum(JobSearchStatusList).nullish(),
 
-    followersCount: z.number().int(),
-    followingsCount: z.number().int()
-  })
+  followersCount: z.number().int(),
+  followingsCount: z.number().int()
+})
 
-export const userDetailResponseSchema =
-  baseNullableLocationResponseSchema.extend({
-    email: z.string(),
-    emailVerified: z.boolean(),
-    firstName: z.string(),
-    lastName: z.string().optional(),
-    headline: z.string().optional(),
-    birthdate: isoDate.optional(),
-    bio: z.string().optional(),
-    avatarUrl: z.string().optional(),
-    bannerUrl: z.string().optional(),
-    specialization: z.enum(SpecializationList).optional(),
-    phoneNumber: z.string().optional(),
-    githubUrl: z.string().optional(),
-    telegramUsername: z.string().optional(),
-    role: z.enum(UserRoleList),
-    status: z.enum(UserStatusList),
-    followPolicy: z.enum(FollowPolicyList).optional(),
-    jobSearchStatus: z.enum(JobSearchStatusList).optional(),
+export const userDetailResponseSchema = baseNullableLocationResponseSchema.extend({
+  email: z.string(),
+  emailVerified: z.boolean(),
+  firstName: z.string(),
+  lastName: z.string().nullish(),
+  headline: z.string().nullish(),
+  birthdate: isoDate.nullish(),
+  bio: z.string().nullish(),
+  avatarUrl: z.string().nullish(),
+  bannerUrl: z.string().nullish(),
+  specialization: z.enum(SpecializationList).nullish(),
+  phoneNumber: z.string().nullish(),
+  githubUrl: z.string().nullish(),
+  telegramUsername: z.string().nullish(),
+  role: z.enum(UserRoleList),
+  status: z.enum(UserStatusList),
+  followPolicy: z.enum(FollowPolicyList),
+  jobSearchStatus: z.enum(JobSearchStatusList),
 
-    resumes: z.array(resumeSummaryResponseSchema),
-    skills: z.array(skillLinkResponseSchema),
-    workExperiences: z.array(workExperienceResponseSchema),
+  resumes: z.array(resumeResponseSchema),
+  skills: z.array(skillLinkResponseSchema),
+  workExperiences: z.array(workExperienceResponseSchema),
 
-    followersCount: z.number().int(),
-    followingsCount: z.number().int()
-  })
+  followersCount: z.number().int(),
+  followingsCount: z.number().int()
+})
 
 // --- Types ---
 export type UserUpdateRequest = z.infer<typeof userUpdateRequestSchema>

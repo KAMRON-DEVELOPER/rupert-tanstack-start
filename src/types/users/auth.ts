@@ -16,8 +16,8 @@ export const authProbeResponseSchema = z.object({
 export const emailAuthRequestSchema = z.object({
   email: z.email(),
   password: z.string().min(8).max(24),
-  firstName: z.string().min(8).max(24).optional(),
-  lastName: z.string().min(8).max(24).optional()
+  firstName: z.string().min(8).max(24).nullish(),
+  lastName: z.string().min(8).max(24).nullish()
 })
 
 const emailAuthSuccessResponseSchema =
@@ -25,16 +25,16 @@ const emailAuthSuccessResponseSchema =
     email: z.string(),
     emailVerified: z.boolean(),
     firstName: z.string(),
-    lastName: z.string().optional(),
-    headline: z.string().optional(),
-    birthdate: isoDate.optional(),
-    bio: z.string().optional(),
-    avatarUrl: z.string().optional(),
-    bannerUrl: z.string().optional(),
-    specialization: z.enum(SpecializationList).optional(),
-    phoneNumber: z.string().optional(),
-    githubUrl: z.string().optional(),
-    telegramUsername: z.string().optional(),
+    lastName: z.string().nullish(),
+    headline: z.string().nullish(),
+    birthdate: isoDate.nullish(),
+    bio: z.string().nullish(),
+    avatarUrl: z.string().nullish(),
+    bannerUrl: z.string().nullish(),
+    specialization: z.enum(SpecializationList).nullish(),
+    phoneNumber: z.string().nullish(),
+    githubUrl: z.string().nullish(),
+    telegramUsername: z.string().nullish(),
     role: z.enum(UserRoleList),
     status: z.enum(UserStatusList),
     followPolicy: z.enum(FollowPolicyList),

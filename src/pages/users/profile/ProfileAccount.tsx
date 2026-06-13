@@ -1,6 +1,7 @@
+import { useLogoutMutation } from '@/api/users/auth'
+import { useDeleteProfileMutation } from '@/api/users/users'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useDeleteProfileMutation, useLogoutMutation } from '@/api/users/auth'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 

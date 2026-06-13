@@ -1,11 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { useGetCountriesQueryOptions, useGetCitiesQueryOptions } from '@/api/locations/locations'
 import {
-  useCreateCountryMutation,
-  useUpdateCountryMutation,
   useCreateCityMutation,
   useUpdateCityMutation,
-  useDeleteCountryMutation,
   useDeleteCityMutation
 } from '@/api/admin/city'
 import { useState } from 'react'
@@ -16,9 +13,10 @@ import { CountryForm } from '@/components/admin/CountryForm'
 import { CityForm } from '@/components/admin/CityForm'
 import type {
   CityResponse as CitySchema,
-  CountryResponse as CountrySchema
+  CountryCreateRequest,
+  CountryResponse as CountrySchema,
+  CountryUpdateRequest
 } from '@/types/shared/location'
-import type { CountryCreateRequest, CountryUpdateRequest } from '@/types/admin/admin'
 import { getErrorMessage } from '@/types/shared/helper'
 import { isAxiosError } from 'axios'
 import { toast } from 'sonner'
@@ -33,6 +31,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
+import {
+  useCreateCountryMutation,
+  useDeleteCountryMutation,
+  useUpdateCountryMutation
+} from '@/api/admin/country'
 
 const toCountryUpdateRequest = (
   initialData: CountrySchema,

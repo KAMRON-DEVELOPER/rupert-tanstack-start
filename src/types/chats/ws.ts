@@ -24,7 +24,7 @@ export const chatRoomActionRequestSchema = z.object({
 
 export const scopedChatActionRequestSchema = chatRoomActionRequestSchema.extend(
   {
-    forParticipant: z.boolean().optional().default(false)
+    forParticipant: z.boolean().nullish().default(false)
   }
 )
 
@@ -33,19 +33,16 @@ export const messageActionRequestSchema = chatRoomActionRequestSchema.extend({
 })
 
 export const readChatRequestSchema = chatRoomActionRequestSchema.extend({
-  lastSeenAt: isoDateTime.optional()
+  lastSeenAt: isoDateTime.nullish()
 })
 
 export const createChatMessageRequestSchema = z
   .object({
-    message: z.string().optional(),
-    chatId: uuid.optional(),
-    replyId: uuid.optional(),
-    participantId: uuid.optional(),
-    attachments: z
-      .array(attachmentIdWithPositionRequestSchema)
-      .optional()
-      .default([])
+    message: z.string().nullish(),
+    chatId: uuid.nullish(),
+    replyId: uuid.nullish(),
+    participantId: uuid.nullish(),
+    attachments: z.array(attachmentIdWithPositionRequestSchema).default([])
   })
   .superRefine((value, context) => {
     const hasMessage = Boolean(value.message?.trim())
@@ -76,11 +73,11 @@ export const createChatMessageRequestSchema = z
 
 export const updateMessageActionRequestSchema = messageActionRequestSchema
   .extend({
-    message: z.string().optional(),
+    message: z.string().nullish(),
     attachments: z
       .array(attachmentIdWithPositionRequestSchema)
-      .optional()
-      .optional()
+      .nullish()
+      .nullish()
   })
   .superRefine((value, context) => {
     if (value.message === null && value.attachments === null) {
@@ -101,9 +98,9 @@ export const updateMessageActionRequestSchema = messageActionRequestSchema
 
 export const updateChatSettingsActionRequestSchema = chatRoomActionRequestSchema
   .extend({
-    isPinned: z.boolean().optional(),
-    isMuted: z.boolean().optional(),
-    isArchived: z.boolean().optional()
+    isPinned: z.boolean().nullish(),
+    isMuted: z.boolean().nullish(),
+    isArchived: z.boolean().nullish()
   })
   .superRefine((value, context) => {
     if (
@@ -157,7 +154,7 @@ export const chatWsInboundPayloadSchema = z.union([
   z.object({
     type: z.literal('error'),
     detail: z.unknown(),
-    statusCode: z.number().int().optional()
+    statusCode: z.number().int().nullish()
   }),
   z.object({ type: z.literal('chat_joined'), chatId: uuid }),
   z.object({ type: z.literal('chat_left'), chatId: uuid }),
@@ -179,7 +176,7 @@ export const chatWsInboundPayloadSchema = z.union([
     type: z.literal('chat_deleted'),
     chatId: uuid,
     userId: uuid,
-    deletedAt: isoDateTime.optional(),
+    deletedAt: isoDateTime.nullish(),
     forParticipant: z.boolean()
   }),
   z.object({ type: z.literal('user_online'), userId: uuid }),

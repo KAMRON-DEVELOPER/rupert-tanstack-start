@@ -4,9 +4,9 @@ import z from 'zod'
 
 export const sessionDetailResponseSchema = baseSchema.extend({
   userId: uuid,
-  userAgent: z.string().optional(),
-  ipAddr: z.string().optional(),
-  deviceName: z.string().optional(),
+  userAgent: z.string().nullish(),
+  ipAddr: z.string().nullish(),
+  deviceName: z.string().nullish(),
   isActive: z.boolean(),
   lastActivityAt: isoDateTime
 })

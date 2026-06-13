@@ -8,7 +8,7 @@ import ProfileWorkExperiences from './profile/ProfileWorkExperiences'
 import ProfileFollows from './profile/ProfileFollows'
 import ProfileAccount from './profile/ProfileAccount'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { useGetProfileQueryOptions } from '@/api/users/auth'
+import { useGetProfileQueryOptions } from '@/api/users/users'
 
 const ProfilePage = () => {
   const { data: user } = useSuspenseQuery(useGetProfileQueryOptions())

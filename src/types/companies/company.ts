@@ -21,63 +21,62 @@ const queryBooleanSchema = z.preprocess((value) => {
 
 const companyLocationResponseSchema = baseSchema.extend({
   country: countryResponseSchema,
-  city: cityResponseSchema.optional()
+  city: cityResponseSchema.nullish()
 })
 
 // --- Company Requests ---
 export const companyCreateRequestSchema = z.object({
   countryId: uuid,
-  cityId: uuid.optional(),
+  cityId: uuid.nullish(),
   name: z.string().max(120),
-  tagline: z.string().max(128).optional(),
-  description: z.string().optional(),
-  logoUrl: z.url().optional(),
-  websiteUrl: z.url().optional(),
+  tagline: z.string().max(128).nullish(),
+  description: z.string().nullish(),
+  logoUrl: z.url().nullish(),
+  websiteUrl: z.url().nullish(),
   type: z.enum(CompanyTypeList),
-  contactEmail: z.email().optional(),
-  contactPhone: z.string().max(32).optional()
+  contactEmail: z.email().nullish(),
+  contactPhone: z.string().max(32).nullish()
 })
 
 export const companyUpdateRequestSchema = z.object({
-  countryId: uuid.optional(),
-  cityId: uuid.optional(),
-  name: z.string().max(128).optional(),
-  tagline: z.string().max(128).optional(),
-  description: z.string().optional(),
-  logoUrl: z.url().optional(),
-  websiteUrl: z.url().optional(),
-  type: z.enum(CompanyTypeList).optional(),
-  contactEmail: z.email().optional(),
-  contactPhone: z.string().max(32).optional()
+  countryId: uuid.nullish(),
+  cityId: uuid.nullish(),
+  name: z.string().max(128).nullish(),
+  tagline: z.string().max(128).nullish(),
+  description: z.string().nullish(),
+  logoUrl: z.url().nullish(),
+  websiteUrl: z.url().nullish(),
+  type: z.enum(CompanyTypeList).nullish(),
+  contactEmail: z.email().nullish(),
+  contactPhone: z.string().max(32).nullish()
 })
 
 export const companyListParamsSchema = paginationQuerySchema.extend({
-  countryId: uuid.optional(),
-  cityId: uuid.optional(),
-  name: z.string().optional(),
-  type: z.enum(CompanyTypeList).optional(),
-  status: z.enum(CompanyStatusList).optional(),
-  hasOpenVacancies: queryBooleanSchema.optional(),
-  skillIds: z.array(uuid).optional()
+  countryId: uuid.nullish(),
+  cityId: uuid.nullish(),
+  name: z.string().nullish(),
+  type: z.enum(CompanyTypeList).nullish(),
+  status: z.enum(CompanyStatusList).nullish(),
+  hasOpenVacancies: queryBooleanSchema.nullish(),
+  skillIds: z.array(uuid).nullish()
 })
 
 // --- Company Responses ---
-export const companySummaryResponseSchema =
-  companyLocationResponseSchema.extend({
-    name: z.string(),
-    tagline: z.string().optional(),
-    logoUrl: z.url().optional(),
-    type: z.enum(CompanyTypeList),
-    status: z.enum(CompanyStatusList),
-    openVacanciesCount: z.number().int().optional()
-  })
+export const companySummaryResponseSchema = companyLocationResponseSchema.extend({
+  name: z.string(),
+  tagline: z.string().nullish(),
+  logoUrl: z.url().nullish(),
+  type: z.enum(CompanyTypeList),
+  status: z.enum(CompanyStatusList),
+  openVacanciesCount: z.number().int().nullish()
+})
 
 export const companyDetailResponseSchema = companySummaryResponseSchema.extend({
-  description: z.string().optional(),
-  websiteUrl: z.url().optional(),
-  contactEmail: z.string().optional(),
-  contactPhone: z.string().optional(),
-  memberCount: z.number().int().optional(),
+  description: z.string().nullish(),
+  websiteUrl: z.url().nullish(),
+  contactEmail: z.string().nullish(),
+  contactPhone: z.string().nullish(),
+  memberCount: z.number().int().nullish(),
   members: z.array(z.lazy(() => companyMemberResponseSchema)).default([])
 })
 

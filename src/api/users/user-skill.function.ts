@@ -1,5 +1,5 @@
 import {
-  SkillLinkCreateRequest,
+  skillLinkCreateRequestSchema,
   skillLinkResponseSchema,
   skillLinkUpdateRequestSchema
 } from '@/types/shared/skill'
@@ -7,13 +7,17 @@ import type { MessageResponse } from '@/types/shared/types'
 import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
 import { createServerApi } from '../api.server'
+import { uuid } from '@/types/shared/primitives'
+import { paginatedResponseSchema } from '@/types/shared/pagination'
 
 export const getUserSkillsFn = createServerFn().handler(async () => {
   const api = createServerApi()
 
   const data = await api('users/skills')
 
-  const result = skillLinkResponseSchema.array().safeParse(data)
+  const result = paginatedResponseSchema(skillLinkResponseSchema).safeParse(
+    data
+  )
 
   if (!result.success) {
     console.error(
@@ -28,8 +32,8 @@ export const getUserSkillsFn = createServerFn().handler(async () => {
   return result.data
 })
 
-export const addUserSkillFn = createServerFn({ method: 'POST' })
-  .inputValidator((data: SkillLinkCreateRequest) => data)
+export const createUserSkillFn = createServerFn({ method: 'POST' })
+  .inputValidator(skillLinkCreateRequestSchema)
   .handler(async ({ data }) => {
     const api = createServerApi()
 
@@ -51,9 +55,7 @@ export const addUserSkillFn = createServerFn({ method: 'POST' })
   })
 
 export const updateUserSkillFn = createServerFn({ method: 'POST' })
-  .inputValidator(
-    skillLinkUpdateRequestSchema.extend({ skillLinkId: z.string() })
-  )
+  .inputValidator(skillLinkUpdateRequestSchema.extend({ skillLinkId: uuid }))
   .handler(async ({ data: { skillLinkId, ...data } }) => {
     const api = createServerApi()
 
@@ -78,7 +80,7 @@ export const updateUserSkillFn = createServerFn({ method: 'POST' })
   })
 
 export const deleteUserSkillFn = createServerFn({ method: 'POST' })
-  .inputValidator((data: { skillLinkId: string }) => data)
+  .inputValidator(z.object({ skillLinkId: uuid }))
   .handler(async ({ data: { skillLinkId } }) => {
     const api = createServerApi()
     return api<MessageResponse>(`users/skills/${skillLinkId}`, {

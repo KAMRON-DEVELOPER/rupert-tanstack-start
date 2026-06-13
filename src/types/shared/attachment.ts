@@ -10,7 +10,7 @@ export const attachmentIdWithPositionRequestSchema = z.object({
 export const attachmentResponseSchema = z.object({
   id: uuid,
   objectKey: z.string(),
-  originalFilename: z.string().optional(),
+  originalFilename: z.string().nullish(),
   status: z.enum(AttachmentStatusList),
   mimeType: z.string(),
   label: z.string(),
@@ -20,10 +20,9 @@ export const attachmentResponseSchema = z.object({
   url: z.string()
 })
 
-export const attachmentWithPositionResponseSchema =
-  attachmentResponseSchema.extend({
-    position: z.number().int().nonnegative().optional()
-  })
+export const attachmentWithPositionResponseSchema = attachmentResponseSchema.extend({
+  position: z.number().int().nonnegative().nullish()
+})
 
 export const attachmentWithPositionableResponseSchema =
   attachmentResponseSchema.extend({

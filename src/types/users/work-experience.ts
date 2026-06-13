@@ -9,33 +9,32 @@ import {
 // --- Requests ---
 export const workExperienceCreateRequestSchema = locationRequestSchema.extend({
   companyName: z.string().max(128),
-  location: z.string().max(128).optional(),
+  location: z.string().max(128).nullish(),
   position: z.string().max(128),
-  description: z.string().optional(),
+  description: z.string().nullish(),
   startedAt: isoDate,
-  endedAt: isoDate.optional()
+  endedAt: isoDate.nullish()
 })
 
-export const workExperienceUpdateRequestSchema =
-  nullableLocationRequestSchema.extend({
-    companyName: z.string().max(128).optional(),
-    location: z.string().max(128).optional(),
-    position: z.string().max(128).optional(),
-    description: z.string().optional(),
-    startedAt: isoDate.optional(),
-    endedAt: isoDate.optional()
-  })
+export const workExperienceUpdateRequestSchema = nullableLocationRequestSchema.extend({
+  companyName: z.string().max(128).nullish(),
+  location: z.string().max(128).nullish(),
+  position: z.string().max(128).nullish(),
+  description: z.string().nullish(),
+  startedAt: isoDate.nullish(),
+  endedAt: isoDate.nullish()
+})
 
 // --- Responses ---
 export const workExperienceResponseSchema = baseSchema.extend({
   userId: uuid,
   companyName: z.string(),
-  location: z.string().optional(),
+  location: z.string().nullish(),
   position: z.string(),
-  description: z.string().optional(),
+  description: z.string().nullish(),
   startedAt: isoDate,
-  endedAt: isoDate.optional(),
-  is_current: z.boolean()
+  endedAt: isoDate.nullish(),
+  isCurrent: z.boolean()
 })
 
 // --- Types ---

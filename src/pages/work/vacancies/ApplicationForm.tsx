@@ -10,15 +10,15 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { useGetResumesQueryOptions } from '@/api/users/users'
 import { useCreateApplicationMutation } from '@/api/vacancies/vacancies'
 import { getErrorMessage } from '@/types/shared/helper'
 import type { VacancyDetailResponse } from '@/types/vacancies/vacancy'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { toast } from 'sonner'
+import { useGetResumesQueryOptions } from '@/api/users/resume'
 
 const ApplicationForm = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
   const { api } = useRouteContext({ from: '__root__' })
@@ -28,15 +28,15 @@ const ApplicationForm = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
   const [coverLetter, setCoverLetter] = useState('')
   const [error, setError] = useState<string | null>(null)
 
-  const submit = async (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError(null)
 
     try {
       await createApplication.mutateAsync({
         vacancyId: vacancy.id,
-        resumeId: resumeId === 'none' ? null : resumeId,
-        coverLetter: coverLetter.trim() || null
+        resumeId: resumeId === 'none' ? undefined : resumeId,
+        coverLetter: coverLetter.trim() || undefined
       })
       toast.success('Application submitted')
     } catch (err) {

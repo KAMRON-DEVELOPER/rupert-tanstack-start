@@ -1,3 +1,9 @@
+import {
+  useCreateWorkExperienceMutation,
+  useDeleteWorkExperienceMutation,
+  useGetWorkExperiencesQueryOptions,
+  useUpdateWorkExperienceMutation
+} from '@/api/users/work-experience'
 import EmptyState from '@/components/forms/EmptyState'
 import FormError from '@/components/forms/FormError'
 import SubmitButton from '@/components/forms/SubmitButton'
@@ -14,27 +20,22 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
-import {
-  useCreateWorkExperienceMutation,
-  useDeleteWorkExperienceMutation,
-  useGetWorkExperiencesQueryOptions,
-  useUpdateWorkExperienceMutation
-} from '@/api/users/users'
+
 import { getErrorMessage } from '@/types/shared/helper'
-import type { WorkExperienceRequest, WorkExperienceSchema } from '@/types/users/user'
+import { WorkExperienceResponse, WorkExperienceUpdateRequest } from '@/types/users/work-experience'
 import { useQuery } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import { Pencil, Plus, Trash2 } from 'lucide-react'
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useState, type SubmitEvent } from 'react'
 import { toast } from 'sonner'
 
-const emptyForm: WorkExperienceRequest = {
+const emptyForm: WorkExperienceUpdateRequest = {
   companyName: '',
   location: '',
   position: '',
   description: '',
   startedAt: '',
-  endedAt: null
+  endedAt: undefined
 }
 
 const ProfileWorkExperiences = () => {
@@ -44,7 +45,7 @@ const ProfileWorkExperiences = () => {
     isError
   } = useQuery(useGetWorkExperiencesQueryOptions())
   const deleteWorkExperience = useDeleteWorkExperienceMutation()
-  const [editing, setEditing] = useState<WorkExperienceSchema | null>(null)
+  const [editing, setEditing] = useState<WorkExperienceResponse | null>(null)
   const [formOpen, setFormOpen] = useState(false)
 
   const remove = async (workExperienceId: string) => {
@@ -130,7 +131,7 @@ const WorkExperienceForm = ({
   open,
   onOpenChange
 }: {
-  workExperience: WorkExperienceSchema | null
+  workExperience: WorkExperienceResponse | null
   open: boolean
   onOpenChange: (open: boolean) => void
 }) => {
@@ -138,7 +139,7 @@ const WorkExperienceForm = ({
   const updateWorkExperience = useUpdateWorkExperienceMutation()
   const [error, setError] = useState<string | null>(null)
   const [isCurrent, setIsCurrent] = useState(workExperience?.isCurrent ?? false)
-  const [form, setForm] = useState<WorkExperienceRequest>(
+  const [form, setForm] = useState<WorkExperienceUpdateRequest>(
     workExperience
       ? {
           companyName: workExperience.companyName,
@@ -167,22 +168,22 @@ const WorkExperienceForm = ({
     )
   }, [workExperience])
 
-  const updateField = <K extends keyof WorkExperienceRequest>(
+  const updateField = <K extends keyof WorkExperienceUpdateRequest>(
     key: K,
-    value: WorkExperienceRequest[K]
+    value: WorkExperienceUpdateRequest[K]
   ) => setForm((prev) => ({ ...prev, [key]: value }))
 
-  const submit = async (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError(null)
 
-    const payload: WorkExperienceRequest = {
+    const payload: WorkExperienceUpdateRequest = {
       companyName: form.companyName.trim(),
-      location: form.location?.trim() || null,
+      location: form.location?.trim() || undefined,
       position: form.position.trim(),
-      description: form.description?.trim() || null,
+      description: form.description?.trim() || undefined,
       startedAt: form.startedAt,
-      endedAt: isCurrent ? null : form.endedAt || null
+      endedAt: isCurrent ? undefined : form.endedAt || undefined
     }
 
     try {
@@ -264,7 +265,7 @@ const WorkExperienceForm = ({
                   id="work-ended"
                   type="date"
                   value={form.endedAt ?? ''}
-                  onChange={(event) => updateField('endedAt', event.target.value || null)}
+                  onChange={(event) => updateField('endedAt', event.target.value || undefined)}
                 />
               </div>
             )}

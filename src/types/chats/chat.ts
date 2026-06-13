@@ -8,9 +8,8 @@ export const chatListItemResponseSchema = baseSchema.extend({
   isPinned: z.boolean(),
   isMuted: z.boolean(),
   isArchived: z.boolean(),
-  lastMessage: chatListLastMessageResponseSchema.optional(),
-  unreadCount: z.number().int().min(0),
-  isOtherOnline: z.boolean().optional().default(false)
+  lastMessage: chatListLastMessageResponseSchema.nullish(),
+  unreadCount: z.number().int().min(0)
 })
 
 export type ChatListItemResponse = z.infer<typeof chatListItemResponseSchema>

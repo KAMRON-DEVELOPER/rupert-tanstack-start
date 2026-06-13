@@ -4,7 +4,7 @@ import VerifyPage from '@/pages/users/VerifyPage'
 
 export const Route = createFileRoute('/(users)/auth/verify')({
   validateSearch: z.object({
-    token: z.string().optional()
+    token: z.string().nullish()
   }),
   beforeLoad: async ({ search }) => {
     if (!search.token) {

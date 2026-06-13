@@ -15,10 +15,10 @@ export const followUpdateRequestSchema = z.object({
 
 export const followUserResponseSchema = baseSchema.extend({
   firstName: z.string(),
-  lastName: z.string().optional(),
-  headline: z.string().optional(),
-  avatarUrl: z.string().optional(),
-  specialization: z.enum(SpecializationList).optional(),
+  lastName: z.string().nullish(),
+  headline: z.string().nullish(),
+  avatarUrl: z.string().nullish(),
+  specialization: z.enum(SpecializationList).nullish(),
   followPolicy: z.enum(FollowPolicyList),
   jobSearchStatus: z.enum(JobSearchStatusList),
   followersCount: z.number().int(),
@@ -29,8 +29,8 @@ export const followResponseSchema = baseSchema.extend({
   followerId: uuid,
   followingId: uuid,
   status: z.enum(FollowStatusList),
-  follower: followUserResponseSchema.optional(),
-  following: followUserResponseSchema.optional()
+  follower: followUserResponseSchema.nullish(),
+  following: followUserResponseSchema.nullish()
 })
 
 export type FollowUpdateRequest = z.infer<typeof followUpdateRequestSchema>

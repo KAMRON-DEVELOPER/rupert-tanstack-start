@@ -41,7 +41,7 @@ type CompanyFormState = CompanyCreateRequest
 
 const emptyToNull = (value: string) => {
   const trimmed = value.trim()
-  return trimmed ? trimmed : null
+  return trimmed ? trimmed : undefined
 }
 
 const CompanyForm = ({ company, open, onOpenChange }: CompanyFormProps) => {

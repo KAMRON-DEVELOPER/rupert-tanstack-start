@@ -7,7 +7,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { getChatMessagesFn } from '@/api/chats/chats.functions'
-import type { ChatListItemResponse, ChatWsOutboundPayload } from '@/types/chats/chat'
+import type { ChatListItemResponse } from '@/types/chats/chat'
+import { ChatWsOutboundPayload } from '@/types/chats/ws'
 
 const PAGE_SIZE = 20
 

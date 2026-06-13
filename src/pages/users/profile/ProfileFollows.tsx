@@ -1,17 +1,18 @@
-import EmptyState from '@/components/forms/EmptyState'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   useGetFollowersQueryOptions,
   useGetFollowingQueryOptions,
   useGetFollowRequestsQueryOptions,
   useUpdateFollowRequestMutation
-} from '@/api/users/users'
-import type { FollowSchema, FollowUserSchema } from '@/types/users/user'
+} from '@/api/users/follow'
+import EmptyState from '@/components/forms/EmptyState'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { FollowResponse, FollowUserResponse } from '@/types/users/follow'
+
 import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-const FollowPerson = ({ user }: { user: FollowUserSchema | null }) => {
+const FollowPerson = ({ user }: { user: FollowUserResponse | null | undefined }) => {
   if (!user) return <span>Unknown user</span>
   return (
     <span>
@@ -86,7 +87,7 @@ const FollowList = ({
   kind
 }: {
   title: string
-  follows: FollowSchema[]
+  follows: FollowResponse[]
   kind: 'followers' | 'following'
 }) => (
   <div className="space-y-2">

@@ -8,7 +8,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useGetChatsQueryOptions } from '@/api/chats/chats'
 import { useSearchUsersQueryOptions } from '@/api/users/users'
-import type { ChatListItemResponse, ChatListUserResponse } from '@/types/chats/chat'
+import type { ChatListItemResponse } from '@/types/chats/chat'
+import { ChatListUserResponse } from '@/types/chats/chat-participant'
 
 const PAGE_SIZE = 20
 
@@ -206,7 +207,7 @@ const ChatListItem = ({
           <AvatarImage src={chat.user.avatarUrl ?? undefined} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
-        {chat.isOnline && (
+        {chat.isParticipantOnline && (
           <span className="border-background absolute right-0 bottom-0 block size-2.5 rounded-full bg-green-500 ring-2" />
         )}
       </div>

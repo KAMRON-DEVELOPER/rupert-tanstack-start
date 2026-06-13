@@ -53,11 +53,11 @@ type NullableFrequency = PaymentFrequency | 'none'
 
 const toOptionalString = (value: string) => {
   const trimmed = value.trim()
-  return trimmed ? trimmed : null
+  return trimmed ? trimmed : undefined
 }
 
 const toOptionalNumber = (value: string) => {
-  if (!value.trim()) return null
+  if (!value.trim()) return undefined
   return Number(value)
 }
 
@@ -114,8 +114,8 @@ const VacancyForm = ({ vacancy, open, onOpenChange }: VacancyFormProps) => {
       specialization,
       salaryMin: toOptionalNumber(salaryMin),
       salaryMax: toOptionalNumber(salaryMax),
-      salaryCurrency: salaryCurrency === 'none' ? null : salaryCurrency,
-      paymentFrequency: paymentFrequency === 'none' ? null : paymentFrequency,
+      salaryCurrency: salaryCurrency === 'none' ? undefined : salaryCurrency,
+      paymentFrequency: paymentFrequency === 'none' ? undefined : paymentFrequency,
       yearsOfExperienceMin: toOptionalNumber(yearsOfExperienceMin),
       workFormat,
       workHoursPerWeek: toOptionalNumber(workHoursPerWeek),

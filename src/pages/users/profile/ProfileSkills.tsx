@@ -19,20 +19,21 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { ProficiencyLevel, ProficiencyLevelList } from '@/types/shared/literals'
-import { UserSchema } from '@/types/users/user'
 import { Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
+
+import { toast } from 'sonner'
+import { useQuery } from '@tanstack/react-query'
+import { UserDetailResponse } from '@/types/users/user'
 import {
   useAddUserSkillMutation,
   useDeleteUserSkillMutation,
   useGetUserSkillsQueryOptions,
   useUpdateUserSkillMutation
-} from '@/api/users/users'
-import { toast } from 'sonner'
-import { useQuery } from '@tanstack/react-query'
+} from '@/api/users/user-skill'
 
 interface ProfileSkillsProps {
-  user: UserSchema
+  user: UserDetailResponse
 }
 
 const ProfileSkills = ({ user }: ProfileSkillsProps) => {
@@ -52,7 +53,7 @@ const ProfileSkills = ({ user }: ProfileSkillsProps) => {
       await addSkillMutation.mutateAsync({
         skillId,
         proficiency,
-        lastUsedAt: null
+        lastUsedAt: undefined
       })
       toast.success('Skill added')
       setSkillId('')
@@ -75,7 +76,7 @@ const ProfileSkills = ({ user }: ProfileSkillsProps) => {
     try {
       await updateSkillMutation.mutateAsync({
         skillLinkId,
-        data: { proficiency: nextProficiency }
+        proficiency: nextProficiency
       })
       toast.success('Skill updated')
     } catch {

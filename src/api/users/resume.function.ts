@@ -1,8 +1,7 @@
 import type { MessageResponse } from '@/types/shared/types'
 import {
   ResumeCreateRequest,
-  resumeDetailResponseSchema,
-  resumeSummaryResponseSchema,
+  resumeResponseSchema,
   resumeUpdateRequestSchema
 } from '@/types/users/resume'
 import { createServerFn } from '@tanstack/react-start'
@@ -14,15 +13,12 @@ export const getResumesFn = createServerFn().handler(async () => {
 
   const data = await api('users/resumes')
 
-  const result = resumeSummaryResponseSchema.array().safeParse(data)
+  const result = resumeResponseSchema.array().safeParse(data)
 
   if (!result.success) {
-    console.error(
-      '[resumeSummaryResponseSchema] parse failed:',
-      result.error.message
-    )
+    console.error('[resumeResponseSchema] parse failed:', result.error.message)
     throw new Error(
-      '[resumeSummaryResponseSchema] Unexpected response shape from backend'
+      '[resumeResponseSchema] Unexpected response shape from backend'
     )
   }
 
@@ -36,15 +32,15 @@ export const createResumeFn = createServerFn({ method: 'POST' })
 
     const responseData = await api('users/resumes', { method: 'POST', data })
 
-    const result = resumeDetailResponseSchema.safeParse(responseData)
+    const result = resumeResponseSchema.safeParse(responseData)
 
     if (!result.success) {
       console.error(
-        '[resumeDetailResponseSchema] parse failed:',
+        '[resumeResponseSchema] parse failed:',
         result.error.message
       )
       throw new Error(
-        '[resumeDetailResponseSchema] Unexpected response shape from backend'
+        '[resumeResponseSchema] Unexpected response shape from backend'
       )
     }
 
@@ -58,15 +54,15 @@ export const getResumeFn = createServerFn()
 
     const data = await api(`users/resumes/${resumeId}`)
 
-    const result = resumeDetailResponseSchema.safeParse(data)
+    const result = resumeResponseSchema.safeParse(data)
 
     if (!result.success) {
       console.error(
-        '[resumeDetailResponseSchema] parse failed:',
+        '[resumeResponseSchema] parse failed:',
         result.error.message
       )
       throw new Error(
-        '[resumeDetailResponseSchema] Unexpected response shape from backend'
+        '[resumeResponseSchema] Unexpected response shape from backend'
       )
     }
 
@@ -83,15 +79,15 @@ export const updateResumeFn = createServerFn({ method: 'POST' })
       data
     })
 
-    const result = resumeDetailResponseSchema.safeParse(responseData)
+    const result = resumeResponseSchema.safeParse(responseData)
 
     if (!result.success) {
       console.error(
-        '[resumeDetailResponseSchema] parse failed:',
+        '[resumeResponseSchema] parse failed:',
         result.error.message
       )
       throw new Error(
-        '[resumeDetailResponseSchema] Unexpected response shape from backend'
+        '[resumeResponseSchema] Unexpected response shape from backend'
       )
     }
 

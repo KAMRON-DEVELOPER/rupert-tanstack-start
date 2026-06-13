@@ -1,11 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { UserSchema } from '@/types/users/user'
+import { UserDetailResponse } from '@/types/users/user'
 import { SiGithub } from '@icons-pack/react-simple-icons'
-import { Globe, Mail, Phone } from 'lucide-react'
-import { FaLinkedin } from 'react-icons/fa'
+import { Mail, Phone } from 'lucide-react'
 
 interface ProfileSidebarProps {
-  user: UserSchema
+  user: UserDetailResponse
 }
 
 const ProfileSidebar = ({ user }: ProfileSidebarProps) => {
@@ -27,19 +26,13 @@ const ProfileSidebar = ({ user }: ProfileSidebarProps) => {
       label: 'GitHub',
       value: user.githubUrl?.replace('https://github.com/', ''),
       href: user.githubUrl
-    },
-    {
-      icon: FaLinkedin,
-      label: 'LinkedIn',
-      value: user.linkedinUrl?.replace('https://linkedin.com/in/', ''),
-      href: user.linkedinUrl
-    },
-    {
-      icon: Globe,
-      label: 'Portfolio',
-      value: user.portfolioUrl?.replace(/^https?:\/\//, ''),
-      href: user.portfolioUrl
     }
+    // {
+    //   icon: Globe,
+    //   label: 'Portfolio',
+    //   value: user.websiteUrl?.replace(/^https?:\/\//, ''),
+    //   href: user.websiteUrl
+    // }
   ]
 
   return (

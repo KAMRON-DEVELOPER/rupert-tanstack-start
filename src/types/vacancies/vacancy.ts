@@ -22,7 +22,7 @@ import {
 } from '@/types/shared/pagination'
 import { uuid } from '@/types/shared/primitives'
 import { companySummaryResponseSchema } from '@/types/companies/company'
-import { resumeSummaryResponseSchema } from '@/types/users/resume'
+import { resumeResponseSchema } from '@/types/users/resume'
 import { userSummaryResponseSchema } from '@/types/users/user'
 import { skillResponseSchema } from '@/types/shared/skill'
 
@@ -30,21 +30,21 @@ import { skillResponseSchema } from '@/types/shared/skill'
 export const vacancySkillLinkRequestSchema = z.object({
   skillId: uuid,
   proficiency: z.enum(ProficiencyLevelList),
-  yearsOfExperienceMin: z.number().optional(),
+  yearsOfExperienceMin: z.number().nullish(),
   isRequired: z.boolean().default(true)
 })
 
 export const vacancySkillLinkUpdateRequestSchema = z.object({
-  proficiency: z.enum(ProficiencyLevelList).optional(),
-  yearsOfExperienceMin: z.number().optional(),
-  isRequired: z.boolean().optional()
+  proficiency: z.enum(ProficiencyLevelList).nullish(),
+  yearsOfExperienceMin: z.number().nullish(),
+  isRequired: z.boolean().nullish()
 })
 
 export const vacancySkillLinkResponseSchema = baseSchema.extend({
   vacancyId: uuid,
   skill: skillResponseSchema,
   proficiency: z.enum(ProficiencyLevelList),
-  yearsOfExperienceMin: z.number().optional(),
+  yearsOfExperienceMin: z.number().nullish(),
   isRequired: z.boolean()
 })
 
@@ -52,54 +52,54 @@ export const vacancySkillLinkResponseSchema = baseSchema.extend({
 export const vacancyCreateRequestSchema = locationRequestSchema.extend({
   title: z.string().max(128),
   description: z.string(),
-  externalApplyUrl: z.url().optional(),
+  externalApplyUrl: z.url().nullish(),
   submissionType: z.enum(SubmissionTypeList),
   specialization: z.enum(SpecializationList),
-  salaryMin: z.number().int().min(0).optional(),
-  salaryMax: z.number().int().min(0).optional(),
-  salaryCurrency: z.enum(SalaryCurrencyList).optional(),
-  paymentFrequency: z.enum(PaymentFrequencyList).optional(),
-  yearsOfExperienceMin: z.number().min(0).optional(),
+  salaryMin: z.number().int().min(0).nullish(),
+  salaryMax: z.number().int().min(0).nullish(),
+  salaryCurrency: z.enum(SalaryCurrencyList).nullish(),
+  paymentFrequency: z.enum(PaymentFrequencyList).nullish(),
+  yearsOfExperienceMin: z.number().min(0).nullish(),
   workFormat: z.enum(WorkFormatList).default('onsite'),
-  workHoursPerWeek: z.number().int().min(1).max(168).optional(),
+  workHoursPerWeek: z.number().int().min(1).max(168).nullish(),
   employmentType: z.enum(EmploymentTypeList).default('full_time'),
   status: z.enum(VacancyStatusList).default('draft'),
-  skills: z.array(vacancySkillLinkRequestSchema).optional()
+  skills: z.array(vacancySkillLinkRequestSchema).nullish()
 })
 
 export const vacancyUpdateRequestSchema = nullableLocationRequestSchema.extend({
-  title: z.string().max(128).optional(),
-  description: z.string().optional(),
-  externalApplyUrl: z.url().optional(),
-  submissionType: z.enum(SubmissionTypeList).optional(),
-  specialization: z.enum(SpecializationList).optional(),
-  salaryMin: z.number().int().min(0).optional(),
-  salaryMax: z.number().int().min(0).optional(),
-  salaryCurrency: z.enum(SalaryCurrencyList).optional(),
-  paymentFrequency: z.enum(PaymentFrequencyList).optional(),
-  yearsOfExperienceMin: z.number().min(0).optional(),
-  workFormat: z.enum(WorkFormatList).optional(),
-  workHoursPerWeek: z.number().int().min(1).max(168).optional(),
-  employmentType: z.enum(EmploymentTypeList).optional(),
-  status: z.enum(VacancyStatusList).optional(),
-  skills: z.array(vacancySkillLinkRequestSchema).optional()
+  title: z.string().max(128).nullish(),
+  description: z.string().nullish(),
+  externalApplyUrl: z.url().nullish(),
+  submissionType: z.enum(SubmissionTypeList).nullish(),
+  specialization: z.enum(SpecializationList).nullish(),
+  salaryMin: z.number().int().min(0).nullish(),
+  salaryMax: z.number().int().min(0).nullish(),
+  salaryCurrency: z.enum(SalaryCurrencyList).nullish(),
+  paymentFrequency: z.enum(PaymentFrequencyList).nullish(),
+  yearsOfExperienceMin: z.number().min(0).nullish(),
+  workFormat: z.enum(WorkFormatList).nullish(),
+  workHoursPerWeek: z.number().int().min(1).max(168).nullish(),
+  employmentType: z.enum(EmploymentTypeList).nullish(),
+  status: z.enum(VacancyStatusList).nullish(),
+  skills: z.array(vacancySkillLinkRequestSchema).nullish()
 })
 
 export const vacancyListParamsSchema = paginationQuerySchema.extend({
-  companyId: z.uuid().optional(),
-  title: z.string().optional(),
-  submissionType: z.enum(SubmissionTypeList).optional(),
-  specialization: z.enum(SpecializationList).optional(),
-  salaryMin: z.number().optional(),
-  salaryMax: z.number().optional(),
-  salaryCurrency: z.enum(SalaryCurrencyList).optional(),
-  yearsOfExperienceMin: z.number().optional(),
-  workFormat: z.enum(WorkFormatList).optional(),
-  employmentType: z.enum(EmploymentTypeList).optional(),
-  status: z.enum(VacancyStatusList).optional(),
-  countryId: z.uuid().optional(),
-  cityId: z.uuid().optional(),
-  skillIds: z.array(z.uuid()).optional()
+  companyId: z.uuid().nullish(),
+  title: z.string().nullish(),
+  submissionType: z.enum(SubmissionTypeList).nullish(),
+  specialization: z.enum(SpecializationList).nullish(),
+  salaryMin: z.number().nullish(),
+  salaryMax: z.number().nullish(),
+  salaryCurrency: z.enum(SalaryCurrencyList).nullish(),
+  yearsOfExperienceMin: z.number().nullish(),
+  workFormat: z.enum(WorkFormatList).nullish(),
+  employmentType: z.enum(EmploymentTypeList).nullish(),
+  status: z.enum(VacancyStatusList).nullish(),
+  countryId: z.uuid().nullish(),
+  cityId: z.uuid().nullish(),
+  skillIds: z.array(z.uuid()).nullish()
 })
 
 // --- Vacancy Responses ---
@@ -108,22 +108,22 @@ export const vacancySummaryResponseSchema = baseLocationResponseSchema.extend({
   title: z.string(),
   submissionType: z.enum(SubmissionTypeList),
   specialization: z.enum(SpecializationList),
-  salaryMin: z.number().int().optional(),
-  salaryMax: z.number().int().optional(),
-  salaryCurrency: z.enum(SalaryCurrencyList).optional(),
-  yearsOfExperienceMin: z.number().optional(),
+  salaryMin: z.number().int().nullish(),
+  salaryMax: z.number().int().nullish(),
+  salaryCurrency: z.enum(SalaryCurrencyList).nullish(),
+  yearsOfExperienceMin: z.number().nullish(),
   workFormat: z.enum(WorkFormatList),
   employmentType: z.enum(EmploymentTypeList),
   status: z.enum(VacancyStatusList),
-  isSaved: z.boolean().optional(),
-  hasApplied: z.boolean().optional()
+  isSaved: z.boolean().nullish(),
+  hasApplied: z.boolean().nullish()
 })
 
 export const vacancyDetailResponseSchema = vacancySummaryResponseSchema.extend({
   description: z.string(),
-  externalApplyUrl: z.url().optional(),
-  workHoursPerWeek: z.number().int().optional(),
-  paymentFrequency: z.enum(PaymentFrequencyList).optional(),
+  externalApplyUrl: z.url().nullish(),
+  workHoursPerWeek: z.number().int().nullish(),
+  paymentFrequency: z.enum(PaymentFrequencyList).nullish(),
   skillLinks: z.array(vacancySkillLinkResponseSchema)
 })
 
@@ -134,19 +134,19 @@ export const vacancyListResponseSchema = paginatedResponseSchema(
 // --- Application Requests ---
 export const applicationRequestSchema = z.object({
   vacancyId: uuid,
-  resumeId: uuid.optional(),
-  coverLetter: z.string().optional()
+  resumeId: uuid.nullish(),
+  coverLetter: z.string().nullish()
 })
 
 export const applicationStatusUpdateRequestSchema = z.object({
   status: z.enum(ApplicationStatusList),
-  recruiterNote: z.string().optional()
+  recruiterNote: z.string().nullish()
 })
 
 export const applicationListParamsSchema = paginationQuerySchema.extend({
-  vacancyId: uuid.optional(),
-  applicantId: uuid.optional(),
-  status: z.enum(ApplicationStatusList).optional()
+  vacancyId: uuid.nullish(),
+  applicantId: uuid.nullish(),
+  status: z.enum(ApplicationStatusList).nullish()
 })
 
 // --- Application Responses ---
@@ -154,16 +154,17 @@ export const applicationSummaryResponseSchema = baseSchema.extend({
   vacancyId: uuid,
   applicantId: uuid,
   status: z.enum(ApplicationStatusList),
-  coverLetter: z.string().optional(),
+  coverLetter: z.string().nullish(),
   vacancy: vacancySummaryResponseSchema,
-  resume: resumeSummaryResponseSchema.optional()
+  resume: resumeResponseSchema.nullish()
 })
 
-export const applicationDetailResponseSchema =
-  applicationSummaryResponseSchema.extend({
+export const applicationDetailResponseSchema = applicationSummaryResponseSchema.extend(
+  {
     applicant: userSummaryResponseSchema,
-    recruiterNote: z.string().optional()
-  })
+    recruiterNote: z.string().nullish()
+  }
+)
 
 export const applicationListResponseSchema = paginatedResponseSchema(
   applicationSummaryResponseSchema

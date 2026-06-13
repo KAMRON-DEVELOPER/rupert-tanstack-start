@@ -1,11 +1,12 @@
-import EmptyState from '@/components/forms/EmptyState'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   useGetSessionsQueryOptions,
   useRevokeSessionMutation,
   useRevokeSessionsMutation
-} from '@/api/users/users'
+} from '@/api/users/session'
+import EmptyState from '@/components/forms/EmptyState'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
 import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 

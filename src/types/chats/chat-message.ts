@@ -8,30 +8,30 @@ import {
 
 // --- Requests ---
 export const chatMessageCreateRequestSchema = z.object({
-  message: z.string().optional(),
-  chatId: uuid.optional(),
-  replyId: uuid.optional(),
-  participantId: uuid.optional(),
+  message: z.string().nullish(),
+  chatId: uuid.nullish(),
+  replyId: uuid.nullish(),
+  participantId: uuid.nullish(),
   attachments: z.array(attachmentIdWithPositionRequestSchema)
 })
 
 export const chatMessageUpdateRequestSchema = z.object({
-  message: z.string().optional(),
-  attachments: z.array(attachmentIdWithPositionRequestSchema).optional()
+  message: z.string().nullish(),
+  attachments: z.array(attachmentIdWithPositionRequestSchema).nullish()
 })
 
 // --- Responses ---
 export const chatMessageResponseSchema = baseSchema.extend({
-  senderId: uuid.optional(),
-  message: z.string().optional(),
+  senderId: uuid.nullish(),
+  message: z.string().nullish(),
   chatId: uuid,
-  replyId: uuid.optional(),
+  replyId: uuid.nullish(),
   attachments: z.array(attachmentWithPositionResponseSchema).default([])
 })
 
 export const chatListLastMessageResponseSchema =
   chatMessageResponseSchema.extend({
-    seenByRecipient: z.boolean().optional()
+    seenByRecipient: z.boolean()
   })
 
 // --- Types ---

@@ -4,7 +4,7 @@ import z from 'zod'
 
 export const Route = createFileRoute('/(users)/auth/password-setup')({
   validateSearch: z.object({
-    token: z.string().optional()
+    token: z.string().nullish()
   }),
   beforeLoad: async ({ search }) => {
     if (!search.token) {

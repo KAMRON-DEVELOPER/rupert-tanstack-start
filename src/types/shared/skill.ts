@@ -11,12 +11,13 @@ export const skillRequestSchema = z.object({
 export const skillLinkCreateRequestSchema = z.object({
   skillId: uuid,
   proficiency: z.enum(ProficiencyLevelList),
-  lastUsedAt: isoDate.optional()
+  lastUsedAt: isoDate.nullish()
 })
 
 export const skillLinkUpdateRequestSchema = z.object({
-  proficiency: z.enum(ProficiencyLevelList).optional(),
-  lastUsedAt: isoDate.optional()
+  skillId: uuid.nullish(),
+  proficiency: z.enum(ProficiencyLevelList).nullish(),
+  lastUsedAt: isoDate.nullish()
 })
 
 // --- Responses ---
@@ -25,10 +26,9 @@ export const skillResponseSchema = baseSchema.extend({
 })
 
 export const skillLinkResponseSchema = baseSchema.extend({
-  resumeId: uuid,
   skill: skillResponseSchema,
-  proficiency: z.enum(ProficiencyLevelList).optional(),
-  lastUsedAt: isoDate.optional()
+  proficiency: z.enum(ProficiencyLevelList).nullish(),
+  lastUsedAt: isoDate.nullish()
 })
 
 // --- Types ---

@@ -42,7 +42,7 @@ export const AuthPage = () => {
               navigate({ to: '/', replace: true })
             }, 500)
           } else {
-            if (res.message === 'new_user') {
+            if (res.type === 'new_user') {
               setShowNamesField(true)
             } else {
               toast.error(res.message)

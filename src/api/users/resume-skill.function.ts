@@ -1,18 +1,42 @@
 import {
-  SkillLinkCreateRequest,
+  skillLinkCreateRequestSchema,
   skillLinkResponseSchema,
   skillLinkUpdateRequestSchema
 } from '@/types/shared/skill'
 import type { MessageResponse } from '@/types/shared/types'
 import { createServerFn } from '@tanstack/react-start'
-import z from 'zod'
 import { createServerApi } from '../api.server'
+import { uuid } from '@/types/shared/primitives'
+import z from 'zod'
+import { paginatedResponseSchema } from '@/types/shared/pagination'
 
-export const addResumeSkillFn = createServerFn({ method: 'POST' })
-  .inputValidator(
-    (data: { resumeId: string; data: SkillLinkCreateRequest }) => data
-  )
-  .handler(async ({ data: { resumeId, data } }) => {
+export const getResumeSkillsFn = createServerFn()
+  .inputValidator(z.object({ resumeId: uuid }))
+  .handler(async ({ data: { resumeId } }) => {
+    const api = createServerApi()
+
+    const data = await api(`users/resumes/${resumeId}/skills`)
+
+    const result = paginatedResponseSchema(skillLinkResponseSchema).safeParse(
+      data
+    )
+
+    if (!result.success) {
+      console.error(
+        '[skillLinkResponseSchema] parse failed:',
+        result.error.message
+      )
+      throw new Error(
+        '[skillLinkResponseSchema] Unexpected response shape from backend'
+      )
+    }
+
+    return result.data
+  })
+
+export const createResumeSkillFn = createServerFn({ method: 'POST' })
+  .inputValidator(skillLinkCreateRequestSchema.extend({ resumeId: uuid }))
+  .handler(async ({ data: { resumeId, ...data } }) => {
     const api = createServerApi()
 
     const responseData = await api(`users/resumes/${resumeId}/skills`, {
@@ -38,8 +62,8 @@ export const addResumeSkillFn = createServerFn({ method: 'POST' })
 export const updateResumeSkillFn = createServerFn({ method: 'POST' })
   .inputValidator(
     skillLinkUpdateRequestSchema.extend({
-      resumeId: z.uuid(),
-      skillLinkId: z.uuid()
+      resumeId: uuid,
+      skillLinkId: uuid
     })
   )
   .handler(async ({ data: { resumeId, skillLinkId, ...data } }) => {
@@ -69,7 +93,7 @@ export const updateResumeSkillFn = createServerFn({ method: 'POST' })
   })
 
 export const deleteResumeSkillFn = createServerFn({ method: 'POST' })
-  .inputValidator((data: { resumeId: string; skillLinkId: string }) => data)
+  .inputValidator(z.object({ resumeId: uuid, skillLinkId: uuid }))
   .handler(async ({ data: { resumeId, skillLinkId } }) => {
     const api = createServerApi()
 

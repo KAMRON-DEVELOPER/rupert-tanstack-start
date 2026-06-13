@@ -584,7 +584,7 @@ import { z } from 'zod'
 import { zodValidator } from '@tanstack/zod-adapter'
 
 const searchSchema = z.object({
-  rootValue: z.string().optional()
+  rootValue: z.string().nullish()
 })
 
 export const Route = createRootRoute({
@@ -615,7 +615,7 @@ import { createFileRoute, retainSearchParams } from '@tanstack/react-router'
 import { zodValidator } from '@tanstack/zod-adapter'
 
 const searchSchema = z.object({
-  rootValue: z.string().optional()
+  rootValue: z.string().nullish()
 })
 
 export const Route = createRootRoute({
@@ -634,7 +634,7 @@ import { createFileRoute, retainSearchParams } from '@tanstack/solid-router'
 import { zodValidator } from '@tanstack/zod-adapter'
 
 const searchSchema = z.object({
-  rootValue: z.string().optional()
+  rootValue: z.string().nullish()
 })
 
 export const Route = createRootRoute({
@@ -726,7 +726,7 @@ const defaultValues = ['foo', 'bar']
 export const Route = createFileRoute('/search')({
   validateSearch: zodValidator(
     z.object({
-      retainMe: z.string().optional(),
+      retainMe: z.string().nullish(),
       arrayWithDefaults: z.string().array().default(defaultValues),
       required: z.string()
     })
@@ -757,7 +757,7 @@ const defaultValues = ['foo', 'bar']
 export const Route = createFileRoute('/search')({
   validateSearch: zodValidator(
     z.object({
-      retainMe: z.string().optional(),
+      retainMe: z.string().nullish(),
       arrayWithDefaults: z.string().array().default(defaultValues),
       required: z.string()
     })
