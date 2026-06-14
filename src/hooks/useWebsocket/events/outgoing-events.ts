@@ -1,4 +1,5 @@
 import { chatListItemResponseSchema } from '@/types/chats/chat'
+import { chatListLastMessageResponseSchema } from '@/types/chats/chat-message'
 import { isoDateTime, uuid } from '@/types/shared/primitives'
 import { z } from 'zod'
 
@@ -77,12 +78,12 @@ export const userOfflineEventSchema = z.object({
 
 export const messageCreatedEventSchema = z.object({
   type: z.literal('message_created'),
-  message: chatListItemResponseSchema
+  message: chatListLastMessageResponseSchema
 })
 
 export const messageUpdatedEventSchema = z.object({
   type: z.literal('message_updated'),
-  message: chatListItemResponseSchema
+  message: chatListLastMessageResponseSchema
 })
 
 export const messageDeletedEventSchema = z.object({

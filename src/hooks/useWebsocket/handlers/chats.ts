@@ -103,7 +103,12 @@ function mutateChatMessages(
 function onMessageCreated(qc: QueryClient, ev: MessageCreatedEvent) {
   const msg = ev.message
 
-  mutateChatMessages(qc, msg.id, (items) => appendUnique(items, msg), 'last')
+  mutateChatMessages(
+    qc,
+    msg.chatId,
+    (items) => appendUnique(items, msg),
+    'last'
+  )
 
   mutateChatLists(
     qc,
@@ -112,7 +117,7 @@ function onMessageCreated(qc: QueryClient, ev: MessageCreatedEvent) {
       if (!target) return items
       return replaceInArray(items, {
         ...target,
-        lastMessage: msg.lastMessage
+        lastMessage: msg
       })
     },
     'all'
@@ -136,7 +141,7 @@ function onMessageUpdated(qc: QueryClient, ev: MessageUpdatedEvent) {
       if (!target) return items
       return replaceInArray(items, {
         ...target,
-        lastMessage: msg.lastMessage
+        lastMessage: msg
       })
     },
     'all'
