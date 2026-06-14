@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useCreateCompanyMutation, useUpdateCompanyMutation } from '@/api/companies/companies'
+import { useGetCountriesQueryOptions, useGetCitiesQueryOptions } from '@/api/locations/locations'
 import { getErrorMessage } from '@/types/shared/helper'
 import { CompanyTypeList, type CompanyType } from '@/types/shared/literals'
 import type {
@@ -26,6 +27,7 @@ import type {
   CompanyDetailResponse,
   CompanyUpdateRequest
 } from '@/types/companies/company'
+import { useQuery } from '@tanstack/react-query'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { useState, type FormEvent } from 'react'
@@ -43,6 +45,12 @@ const emptyToNull = (value: string) => {
   const trimmed = value.trim()
   return trimmed ? trimmed : undefined
 }
+
+const RequiredLabel = ({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) => (
+  <Label htmlFor={htmlFor}>
+    {children} <span className="text-destructive">*</span>
+  </Label>
+)
 
 const CompanyForm = ({ company, open, onOpenChange }: CompanyFormProps) => {
   const { api } = useRouteContext({ from: '__root__' })
@@ -62,10 +70,22 @@ const CompanyForm = ({ company, open, onOpenChange }: CompanyFormProps) => {
     contactPhone: company?.contactPhone ?? ''
   })
 
+  const { data: countriesData } = useQuery(useGetCountriesQueryOptions())
+  const { data: citiesData } = useQuery(
+    useGetCitiesQueryOptions({ countryId: form.countryId })
+  )
+
+  const countries = countriesData?.data ?? []
+  const cities = citiesData?.data ?? []
+
   const isPending = createMutation.isPending || updateMutation.isPending
 
   const updateField = <K extends keyof CompanyFormState>(key: K, value: CompanyFormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }))
+  }
+
+  const handleCountryChange = (countryId: string) => {
+    setForm((prev) => ({ ...prev, countryId, cityId: '' }))
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -116,7 +136,7 @@ const CompanyForm = ({ company, open, onOpenChange }: CompanyFormProps) => {
           <FormError message={error} />
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="company-name">Name</Label>
+              <RequiredLabel htmlFor="company-name">Name</RequiredLabel>
               <Input
                 id="company-name"
                 value={form.name}
@@ -125,7 +145,7 @@ const CompanyForm = ({ company, open, onOpenChange }: CompanyFormProps) => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="company-type">Type</Label>
+              <RequiredLabel htmlFor="company-type">Type</RequiredLabel>
               <Select
                 value={form.type}
                 onValueChange={(value) => updateField('type', value as CompanyType)}
@@ -143,21 +163,41 @@ const CompanyForm = ({ company, open, onOpenChange }: CompanyFormProps) => {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="company-country">Country ID</Label>
-              <Input
-                id="company-country"
+              <RequiredLabel htmlFor="company-country">Country</RequiredLabel>
+              <Select
                 value={form.countryId}
-                onChange={(event) => updateField('countryId', event.target.value)}
-                required
-              />
+                onValueChange={handleCountryChange}
+              >
+                <SelectTrigger id="company-country" className="w-full">
+                  <SelectValue placeholder="Select country" />
+                </SelectTrigger>
+                <SelectContent>
+                  {countries.map((country) => (
+                    <SelectItem key={country.id} value={country.id}>
+                      {country.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="company-city">City ID</Label>
-              <Input
-                id="company-city"
+              <Label htmlFor="company-city">City</Label>
+              <Select
                 value={form.cityId ?? ''}
-                onChange={(event) => updateField('cityId', event.target.value)}
-              />
+                onValueChange={(value) => updateField('cityId', value)}
+                disabled={!form.countryId}
+              >
+                <SelectTrigger id="company-city" className="w-full">
+                  <SelectValue placeholder="Select city" />
+                </SelectTrigger>
+                <SelectContent>
+                  {cities.map((city) => (
+                    <SelectItem key={city.id} value={city.id}>
+                      {city.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2 sm:col-span-2">
               <Label htmlFor="company-tagline">Tagline</Label>

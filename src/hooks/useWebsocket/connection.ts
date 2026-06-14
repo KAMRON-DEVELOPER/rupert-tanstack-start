@@ -20,6 +20,7 @@ import {
   type IncomingEvent,
   type WsStatus
 } from './events'
+import { toast } from 'sonner'
 
 const HEARTBEAT_MS = 25_000
 
@@ -101,7 +102,7 @@ export class WsConnection {
     return true
   }
 
-  // ─── Private handlers ────────────────────────────────────────────────────
+  // --- Private handlers ---
 
   private readonly handleBeforeUnload = () => {
     this.isUnloading = true
@@ -154,12 +155,14 @@ export class WsConnection {
     }
 
     const parsed = outgoingEventSchema.safeParse(raw)
+
     if (!parsed.success) {
-      // Unknown event type from a newer backend version; silently ignore
-      // rather than crashing — this makes rolling deploys safe.
-      if (import.meta.env.DEV) {
-        console.warn('[WS] unknown event', raw, parsed.error.message)
-      }
+      console.log(
+        `[WsConnection] handleMessage: failed to parse into outgoingEventSchema: ${raw}`
+      )
+      toast.error(
+        `[WsConnection] handleMessage: failed to parse into outgoingEventSchema: ${raw}`
+      )
       return
     }
 
@@ -170,13 +173,17 @@ export class WsConnection {
       this.cb.onError(ev.detail)
     }
 
+    if (ev.type != 'pong') {
+      console.log('ev: ', JSON.stringify(ev))
+    }
+
     // Emit to the domain handlers — TypeScript narrows the payload
     // by the discriminant key so each handler receives the right shape.
     // mitt is typed as EventMap so this cast is safe.
     eventBus.emit(ev.type as never, ev as never)
   }
 
-  // ─── Helpers ─────────────────────────────────────────────────────────────
+  // --- Helpers ---
 
   private stopHeartbeat(): void {
     if (this.heartbeatTimer !== null) {

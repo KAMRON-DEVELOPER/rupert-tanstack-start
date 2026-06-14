@@ -42,19 +42,19 @@ const emailAuthSuccessResponseSchema =
   })
 
 const emailAuthNewUserSchema = z.object({
-  type: z.literal('new_user')
+  kind: z.literal('new_user')
 })
 
 const emailAuthSetupPasswordSchema = z.object({
-  type: z.literal('setup_password'),
+  kind: z.literal('setup_password'),
   message: z.string()
 })
 
 const emailAuthSuccessSchema = emailAuthSuccessResponseSchema.extend({
-  type: z.literal('success')
+  kind: z.literal('success')
 })
 
-export const emailAuthResponseSchema = z.discriminatedUnion('type', [
+export const emailAuthResponseSchema = z.discriminatedUnion('kind', [
   emailAuthNewUserSchema,
   emailAuthSetupPasswordSchema,
   emailAuthSuccessSchema

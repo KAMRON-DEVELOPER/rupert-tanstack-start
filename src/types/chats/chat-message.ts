@@ -9,10 +9,9 @@ import {
 // --- Requests ---
 export const chatMessageCreateRequestSchema = z.object({
   message: z.string().nullish(),
-  chatId: uuid.nullish(),
+  chatId: uuid,
   replyId: uuid.nullish(),
-  participantId: uuid.nullish(),
-  attachments: z.array(attachmentIdWithPositionRequestSchema)
+  attachments: z.array(attachmentIdWithPositionRequestSchema).default([])
 })
 
 export const chatMessageUpdateRequestSchema = z.object({
@@ -31,7 +30,7 @@ export const chatMessageResponseSchema = baseSchema.extend({
 
 export const chatListLastMessageResponseSchema =
   chatMessageResponseSchema.extend({
-    seenByRecipient: z.boolean()
+    seenByRecipient: z.boolean().nullish()
   })
 
 // --- Types ---

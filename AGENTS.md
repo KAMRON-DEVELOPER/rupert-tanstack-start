@@ -1,199 +1,150 @@
 # Frontend Agent Rules
 
-This document defines working rules for AI coding agents contributing to this
-TanStack Start / React codebase. Follow the patterns already present over introducing
-cleaner but incompatible abstractions.
+Rules for AI coding agents working on this TanStack Start / React codebase.
+Follow patterns already present over introducing new abstractions.
 
 ---
 
 ## Two Modes of Work
 
-Always identify which mode applies before starting. Do not mix them.
+Identify which mode applies before starting. Do not mix them.
 
-### Logic Mode — bridging APIs, services, types, state
+### Logic Mode — APIs, state, types, data
 
-- Use TypeScript strictly. Define types and Zod schemas before writing logic.
-- All API response shapes must be validated with Zod. Never trust raw responses.
-- Map API errors explicitly — handle `AxiosError` status codes, surface useful messages.
-- Add only the minimum component needed to exercise and verify the logic. No polish.
-- Prefer server functions (`createServerFn`) for data fetching; keep cookie forwarding
-  intact via `createServerApi`.
-- Query keys must be consistent with the existing `['resource', params]` convention.
-- For PATCH/update mutations, only send changed fields. For FormData mutations,
-  follow the existing `toUserUpdateFormData` pattern.
+- Define TypeScript types and Zod schemas **before** writing logic.
+- All API responses must be validated with Zod. Never trust raw data.
+- Use `createServerFn` for server-side fetching; always call
+  `createServerApi()` inside `.functions.ts` files — never `createApi()`.
+- Handle `AxiosError` status codes explicitly; surface useful messages.
+- Add only the minimum UI needed to verify logic. No polish in this mode.
+- Query keys follow `['resource', id?, subresource?]` — match existing ones.
+- For PATCH mutations, send only changed fields.
 
-### UI / Design Mode — layout, styling, visual polish
+### UI Mode — layout, styling, visual polish
 
-- Do not touch service layer, types, or query logic unless it is actively broken.
-- Before writing a single class, read through the existing page and its sibling
-  components to understand spacing, sizing conventions, and recurring patterns.
-- Sizes, spacing, and layout values must be proportional — derive from existing
-  scale rather than arbitrary pixel values.
-- Prefer fewer Tailwind classes and shallower nesting. If you need more than three
-  levels of nesting in JSX, reconsider the structure.
-- If a component library (e.g. shadcn) is present, treat it as already themed.
-  Do not override its variables or add wrapper styles that fight the theme.
-- When a component library is absent, use CSS custom properties or a minimal utility
-  layer consistent with what already exists.
+- Do not touch service layer, types, or query logic unless it is broken.
+- Read the target page and its siblings before writing a single class.
+- Derive spacing and sizing from the existing scale — no arbitrary values.
+- Prefer fewer Tailwind classes and shallower JSX nesting (max 3 levels).
+- Treat shadcn/ui as already themed — do not override its CSS variables.
 
 ---
 
 ## Project Structure
 
-```bash
+```text
 src/
-├── routes/           # File-based routes (TanStack Router)
-│   ├── __root.tsx
-│   ├── (public)/
-│   ├── (apps)/
-│   └── (users)/
-├── pages/            # Page and section components, colocated by domain
-├── services/         # API layer: *.ts (hooks/queryOptions) + *.functions.ts
-├── types/            # TypeScript types + Zod schemas, colocated by domain
-├── components/       # Shared/reusable components
-│   └── ui/           # Component library files (do not edit unless intentional)
-├── hooks/            # Shared hooks
-└── lib/              # Utilities
+├── routes/        # File-based routes (TanStack Router)
+├── pages/         # Page and section components, colocated by domain
+├── api/           # Service layer: *.ts (hooks) + *.functions.ts (server)
+├── types/         # Zod schemas + inferred TS types, colocated by domain
+├── components/    # Shared components; ui/ is generated — edit with care
+├── hooks/         # Shared hooks (including WebSocket)
+└── lib/           # Utilities
 ```
 
-Route files are thin — they import a page component and optionally define a `loader`
-or `beforeLoad`. Business logic lives in `services/`, not in route files.
+Route files are thin — they import a page component and optionally define
+a `loader` or `beforeLoad`. All business logic lives in `api/`.
 
 ---
 
-## Service Layer Conventions
+## Service Layer
 
 Two files per domain:
 
-- `*.functions.ts` — `createServerFn` handlers. Always use `createServerApi()` here,
-  never `createApi()` directly.
-- `*.ts` — `queryOptions`, `useMutation` hooks. Client-side only.
+- `*.functions.ts` — `createServerFn` handlers. Always use
+  `createServerApi()` here for cookie-forwarding SSR correctness.
+- `*.ts` — `queryOptions` factories and `useMutation` hooks (client only).
 
-`queryOptions` factories are named `useGet<Resource>QueryOptions`.
-Mutation hooks are named `use<Action><Resource>Mutation`.
+Naming conventions:
 
-Query params go through `toApiParams` for camelCase → snake_case conversion and
-empty value filtering.
+| Kind              | Pattern                        |
+| ----------------- | ------------------------------ |
+| Query options     | `useGet<Resource>QueryOptions` |
+| Mutation hook     | `use<Action><Resource>Mutation`|
+
+Query params go through `toApiParams` for camelCase → snake_case
+conversion and empty-value filtering.
 
 ---
 
-## SSR Concerns
+## Types and Schemas
 
-This codebase runs SSR via TanStack Start. Keep these in mind:
+- Schemas live in `types/<domain>/<name>.ts`; types are inferred with
+  `z.infer<typeof schema>`.
+- No `any`. Use `unknown` and narrow, or define the actual type.
+- Prefer `type` over `interface` for API shapes and props.
+- Reuse shared building blocks: `baseSchema`, `paginationQuerySchema`,
+  `paginatedResponseSchema<T>`, `messageResponseSchema`, `uuid`,
+  `isoDateTime`.
+
+---
+
+## WebSocket System
+
+The WebSocket layer is split into four concerns — do not collapse them.
+
+| File / folder          | Responsibility                               |
+| ---------------------- | -------------------------------------------- |
+| `connection.ts`        | Lifecycle, heartbeat, Zod parsing, send()    |
+| `eventBus.ts`          | Typed mitt bus (no React imports)            |
+| `events/`              | Zod schemas for incoming and outgoing events |
+| `handlers/<domain>.ts` | Query-cache mutations per domain             |
+| `index.tsx`            | `WebSocketProvider`, `useWebSocket()`,       |
+|                        | `useWebSocketEvent()`                        |
+
+Rules:
+
+- `connection.ts` and `eventBus.ts` must have **zero React imports**.
+- Adding a new domain means adding a handler file and registering it in
+  the provider `useEffect` — nothing else changes.
+- Components never touch the socket directly. They call `send()` from
+  `useWebSocket()` and subscribe via `useWebSocketEvent(type, handler)`.
+- New outgoing events: add a Zod schema in `outgoing-events.ts`, extend
+  the discriminated union, export the inferred type.
+- New incoming events: same pattern in `incoming-events.ts`.
+
+---
+
+## SSR Rules
 
 - Never access `window`, `document`, or browser APIs at module level.
   Guard with `typeof window !== 'undefined'` or use `useEffect`.
-- Theme and locale state that depends on browser storage must be deferred to the
-  client to avoid hydration mismatches. `suppressHydrationWarning` is already applied
-  at the root for theme.
-- `createServerFn` handlers run on the server — no browser APIs, no client state.
-- Do not store user-specific data in module-level singletons; each request must
-  be isolated (`createServerApi()` is called per request for this reason).
-- Data prefetched in `loader` via `queryClient.ensureQueryData` will hydrate on
-  the client automatically — do not refetch the same data manually on mount.
+- `createServerFn` handlers run on the server — no browser APIs.
+- Do not store user-specific data in module-level singletons;
+  `createServerApi()` is called per request deliberately.
+- Data prefetched via `loader` → `queryClient.ensureQueryData` hydrates
+  automatically — do not refetch the same key on mount.
 
 ---
 
-## TypeScript Standards
+## TanStack Router Conventions
 
-- No `any`. Use `unknown` and narrow, or define the actual type.
-- Prefer `type` over `interface` for API shapes and component props unless
-  extension is needed.
-- Zod schemas live in `types/*.schema.ts`; derived TypeScript types are inferred
-  via `z.infer`.
-- For shared response shapes use existing types: `ListResponse<T>`, `Pagination`,
-  `MessageResponse`.
+- File-based routing only. Never edit `routeTree.gen.ts`.
+- Route files are thin — loaders prefetch, `beforeLoad` guards.
+- Use `(group)/` directories for organisation without affecting URLs.
+- Use `_layout.tsx` pathless layouts for shared guards or wrappers.
+
+Current top-level route groups: `(public)`, `(apps)`, `(users)`,
+`(admin)`. Prefer extending an existing group over creating a new one.
 
 ---
 
-## General Coding Standards
+## General Agent Behaviour
 
-- Read enough context before editing. Check the domain's existing service, types,
-  and page files first.
-- Batch related changes. Avoid micro-edits that require follow-up patches.
-- Do not introduce new abstractions (custom hooks, utility functions, context)
-  unless reuse across two or more places is immediate and obvious.
-- Prefer `rg` for searching the codebase.
-
-## TanStack Router Conventions in This Project
-
-- We use TanStack Start with file-based routing only.
-- Route files stay thin. Put business logic in `services/`.
-- Prefer route directories for large domains and flat routes for shallow nesting.
-- `routeTree.gen.ts` is generated automatically. Never edit it manually.
-- Group routes with `(group)` directories when organization is needed without
-  affecting URLs.
-- Use pathless layouts (`_layout`) for shared guards, loaders, or wrappers.
-
-### Current Route Structure
-
-```txt
-src/routes/
-├── __root.tsx
-├── index.tsx
-├── (public)/
-├── (apps)/
-└── (users)/
-```
-
-### Route File Rules
-
-| Pattern          | Purpose                 |
-| ---------------- | ----------------------- |
-| `index.tsx`      | Index route             |
-| `about.tsx`      | Static route            |
-| `$id.tsx`        | Dynamic route           |
-| `$.tsx`          | Catch-all / splat route |
-| `_layout.tsx`    | Pathless layout         |
-| `(group)/`       | Organizational grouping |
-| `-component.tsx` | Excluded from routing   |
-
-### Preferred Patterns
-
-#### Thin route files
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { UsersPage } from '@/pages/users/users-page'
-
-export const Route = createFileRoute('/users')({
-  component: UsersPage
-})
-```
-
-#### Use loaders only for prefetching
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { queryClient } from '@/lib/query-client'
-import { useGetUsersQueryOptions } from '@/services/users'
-
-export const Route = createFileRoute('/users')({
-  loader: () => queryClient.ensureQueryData(useGetUsersQueryOptions())
-})
-```
-
-#### Pathless layouts for auth/app wrappers
-
-```txt
-routes/
-├── _authenticated/
-│   ├── route.tsx
-│   ├── dashboard.tsx
-│   └── settings.tsx
-```
-
-### SSR Rules
-
-- Never access `window` or `document` at module scope.
-- Use `createServerFn` for server-side data access.
-- Do not duplicate loader fetching inside components.
-- Browser-only state must initialize in effects or guarded blocks.
-
-### AI Agent Notes
-
-- Read sibling routes before adding new routes.
+- Read enough context before editing: check domain's `api/`, `types/`,
+  and `pages/` files first. Use `rg` to search the codebase.
+- Batch related changes — avoid micro-edits that need follow-up patches.
+- Do not introduce new abstractions (hooks, utils, context) unless
+  immediate reuse across two or more call sites is obvious.
 - Match existing naming conventions exactly.
-- Do not introduce custom routing abstractions.
-- Keep layouts shallow unless nesting is already established.
-- Prefer extending existing route groups over creating new top-level domains.
+
+## Stack Constraints
+
+- **Zod** is the only validation library. Every external data boundary
+  (API responses, WebSocket frames, route search params) must go through
+  a Zod schema. Do not use `as`, type assertions, or raw casts to bypass
+  this.
+- **shadcn/ui** is the component library. Use its primitives before
+  writing custom ones. Do not override its CSS variables or wrap its
+  components in styles that fight the theme.

@@ -29,8 +29,9 @@ import { registerChatHandlers } from './handlers/chats'
 import { registerGroupHandlers } from './handlers/groups'
 import { registerFeedHandlers } from './handlers/feeds'
 import type { IncomingEvent, OutgoingEvent, WsStatus } from './events'
+import { toast } from 'sonner'
 
-// ─── Context ──────────────────────────────────────────────────────────────────
+// --- Context ---
 
 interface WsContextValue {
   status: WsStatus
@@ -41,8 +42,7 @@ interface WsContextValue {
 
 const WsContext = createContext<WsContextValue | null>(null)
 
-// ─── Provider ─────────────────────────────────────────────────────────────────
-
+// --- Provider ---
 interface WebSocketProviderProps {
   children: ReactNode
 }
@@ -64,15 +64,19 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   }, [])
 
   useEffect(() => {
-    // 1. Register domain handlers (they attach to the event bus)
+    // Register domain handlers (they attach to the event bus)
     const cleanupChat = registerChatHandlers(queryClient)
     const cleanupGroups = registerGroupHandlers(queryClient)
     const cleanupFeeds = registerFeedHandlers(queryClient)
 
-    // 2. Create and connect the WebSocket
+    // Create and connect the WebSocket
     const conn = new WsConnection({
       onStatusChange: setStatus,
-      onError: (msg) => setLastError(msg || null)
+      onError: (msg) => {
+        console.log(`[WebSocketProvider][WsConnection] onError: ${msg}`)
+        toast.error(`[WebSocketProvider][WsConnection] onError: ${msg}`)
+        setLastError(msg)
+      }
     })
     connectionRef.current = conn
     conn.connect()
@@ -98,7 +102,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   return <WsContext.Provider value={value}>{children}</WsContext.Provider>
 }
 
-// ─── Consumer hooks ───────────────────────────────────────────────────────────
+// --- Consumer hooks ---
 
 /**
  * Access connection status and send().

@@ -11,6 +11,7 @@ import { Toaster } from 'sonner'
 import { CreateApi } from '@/api/api'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { authProbeFn } from '@/api/users/auth.functions'
+import { WebSocketProvider } from '@/hooks/useWebsocket'
 
 export type RouterContext = {
   queryClient: QueryClient
@@ -47,14 +48,20 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 })
 
 function RootComponent() {
-  let { queryClient } = Route.useRouteContext()
+  const { queryClient, isAuthenticated } = Route.useRouteContext()
 
   return (
     <RootDocument>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider storageKey="theme" defaultTheme="system" attribute="class" enableSystem>
           <TooltipProvider>
-            <Outlet />
+            {isAuthenticated ? (
+              <WebSocketProvider>
+                <Outlet />
+              </WebSocketProvider>
+            ) : (
+              <Outlet />
+            )}
           </TooltipProvider>
           <Toaster
             position="top-right"

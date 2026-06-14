@@ -191,7 +191,7 @@ function onUserPresenceChange(
   )
 }
 
-// ─── Register / unregister ────────────────────────────────────────────────────
+// --- Register / unregister ---
 
 /**
  * Attach all chat-domain event listeners to the bus.
