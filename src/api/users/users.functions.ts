@@ -62,8 +62,10 @@ export const updateProfileFn = createServerFn({ method: 'POST' })
     return null
   })
 
-export const deleteProfileFn = createServerFn({ method: 'POST' }).handler(async () => {
-  const api = createServerApi()
-  await api('users/', { method: 'DELETE' })
-  return null
-})
+export const deleteProfileFn = createServerFn({ method: 'POST' }).handler(
+  async () => {
+    const api = createServerApi()
+    await api('users/', { method: 'DELETE' })
+    return null
+  }
+)

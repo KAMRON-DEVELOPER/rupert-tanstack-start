@@ -113,7 +113,7 @@ function onMessageCreated(qc: QueryClient, ev: MessageCreatedEvent) {
   mutateChatLists(
     qc,
     (items) => {
-      const target = items.find((i) => i.id === msg.id)
+      const target = items.find((i) => i.id === msg.chatId)
       if (!target) return items
       return replaceInArray(items, {
         ...target,
@@ -129,7 +129,7 @@ function onMessageUpdated(qc: QueryClient, ev: MessageUpdatedEvent) {
 
   mutateChatMessages(
     qc,
-    msg.id,
+    msg.chatId,
     (items) => items.map((i) => (i.id === msg.id ? msg : i)),
     'all'
   )
@@ -137,7 +137,7 @@ function onMessageUpdated(qc: QueryClient, ev: MessageUpdatedEvent) {
   mutateChatLists(
     qc,
     (items) => {
-      const target = items.find((i) => i.id === msg.id)
+      const target = items.find((i) => i.id === msg.chatId)
       if (!target) return items
       return replaceInArray(items, {
         ...target,
@@ -163,12 +163,12 @@ function onChatSettingsUpdated(qc: QueryClient, ev: ChatSettingsUpdatedEvent) {
     qc,
     (items) =>
       items.map((i) =>
-        i.id === ev.id
+        i.id === ev.chatId
           ? {
               ...i,
-              isPinned: ev.isPinned,
-              isMuted: ev.isMuted,
-              isArchived: ev.isArchived
+              isPinned: ev.isPinned ?? i.isPinned,
+              isMuted: ev.isMuted ?? i.isMuted,
+              isArchived: ev.isArchived ?? i.isArchived
             }
           : i
       ),
@@ -184,7 +184,9 @@ function onUserPresenceChange(
   mutateChatLists(
     qc,
     (items) =>
-      items.map((i) => (i.user.id === userId ? { ...i, isOnline } : i)),
+      items.map((i) =>
+        i.user.id === userId ? { ...i, user: { ...i.user, isOnline } } : i
+      ),
     'all'
   )
 }

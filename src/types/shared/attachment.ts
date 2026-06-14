@@ -20,9 +20,10 @@ export const attachmentResponseSchema = z.object({
   url: z.string()
 })
 
-export const attachmentWithPositionResponseSchema = attachmentResponseSchema.extend({
-  position: z.number().int().nonnegative().nullish()
-})
+export const attachmentWithPositionResponseSchema =
+  attachmentResponseSchema.extend({
+    position: z.number().int().nonnegative().nullish()
+  })
 
 export const attachmentWithPositionableResponseSchema =
   attachmentResponseSchema.extend({

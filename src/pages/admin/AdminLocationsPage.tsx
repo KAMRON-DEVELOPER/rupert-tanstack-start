@@ -291,7 +291,7 @@ export function AdminLocationsPage() {
             }
 
             updateCountryMutation.mutate(
-              { countryId: editingCountry.id, data },
+              { countryId: editingCountry.id, ...data },
               {
                 onSuccess: (_country) => {
                   setEditingCountry(null)
@@ -314,7 +314,7 @@ export function AdminLocationsPage() {
             if (!selectedCountry) return
 
             createCityMutation.mutate(
-              { countryId: selectedCountry.id, data },
+              { countryId: selectedCountry.id, ...data },
               {
                 onSuccess: () => {
                   setIsCityCreateOpen(false)
@@ -340,7 +340,7 @@ export function AdminLocationsPage() {
               {
                 countryId: selectedCountry.id,
                 cityId: editingCity.id,
-                data
+                ...data
               },
               {
                 onSuccess: () => {

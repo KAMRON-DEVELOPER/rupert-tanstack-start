@@ -159,12 +159,11 @@ export const applicationSummaryResponseSchema = baseSchema.extend({
   resume: resumeResponseSchema.nullish()
 })
 
-export const applicationDetailResponseSchema = applicationSummaryResponseSchema.extend(
-  {
+export const applicationDetailResponseSchema =
+  applicationSummaryResponseSchema.extend({
     applicant: userSummaryResponseSchema,
     recruiterNote: z.string().nullish()
-  }
-)
+  })
 
 export const applicationListResponseSchema = paginatedResponseSchema(
   applicationSummaryResponseSchema

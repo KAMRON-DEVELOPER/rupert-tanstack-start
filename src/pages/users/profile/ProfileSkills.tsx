@@ -44,7 +44,7 @@ const ProfileSkills = ({ user }: ProfileSkillsProps) => {
   const deleteSkillMutation = useDeleteUserSkillMutation()
   const updateSkillMutation = useUpdateUserSkillMutation()
   const { data: userSkills } = useQuery(useGetUserSkillsQueryOptions())
-  const skills = userSkills ?? user.skills
+  const skills = userSkills?.data ?? user.skills
 
   const handleAddSkill = async () => {
     if (!skillId) return
@@ -106,7 +106,7 @@ const ProfileSkills = ({ user }: ProfileSkillsProps) => {
               >
                 <span>{skillLink.skill.name}</span>
                 <Select
-                  value={skillLink.proficiency}
+                  value={skillLink.proficiency ?? undefined}
                   onValueChange={(value) =>
                     handleUpdateSkill(skillLink.id, value as ProficiencyLevel)
                   }

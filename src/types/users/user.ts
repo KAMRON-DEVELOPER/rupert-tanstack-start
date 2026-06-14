@@ -33,44 +33,46 @@ export const userUpdateRequestSchema = nullableLocationRequestSchema.extend({
 })
 
 // --- Responses ---
-export const userSummaryResponseSchema = baseNullableLocationResponseSchema.extend({
-  firstName: z.string(),
-  lastName: z.string().nullish(),
-  headline: z.string().nullish(),
-  avatarUrl: z.string().nullish(),
-  specialization: z.enum(SpecializationList).nullish(),
-  jobSearchStatus: z.enum(JobSearchStatusList).nullish(),
+export const userSummaryResponseSchema =
+  baseNullableLocationResponseSchema.extend({
+    firstName: z.string(),
+    lastName: z.string().nullish(),
+    headline: z.string().nullish(),
+    avatarUrl: z.string().nullish(),
+    specialization: z.enum(SpecializationList).nullish(),
+    jobSearchStatus: z.enum(JobSearchStatusList).nullish(),
 
-  followersCount: z.number().int(),
-  followingsCount: z.number().int()
-})
+    followersCount: z.number().int(),
+    followingsCount: z.number().int()
+  })
 
-export const userDetailResponseSchema = baseNullableLocationResponseSchema.extend({
-  email: z.string(),
-  emailVerified: z.boolean(),
-  firstName: z.string(),
-  lastName: z.string().nullish(),
-  headline: z.string().nullish(),
-  birthdate: isoDate.nullish(),
-  bio: z.string().nullish(),
-  avatarUrl: z.string().nullish(),
-  bannerUrl: z.string().nullish(),
-  specialization: z.enum(SpecializationList).nullish(),
-  phoneNumber: z.string().nullish(),
-  githubUrl: z.string().nullish(),
-  telegramUsername: z.string().nullish(),
-  role: z.enum(UserRoleList),
-  status: z.enum(UserStatusList),
-  followPolicy: z.enum(FollowPolicyList),
-  jobSearchStatus: z.enum(JobSearchStatusList),
+export const userDetailResponseSchema =
+  baseNullableLocationResponseSchema.extend({
+    email: z.string(),
+    emailVerified: z.boolean(),
+    firstName: z.string(),
+    lastName: z.string().nullish(),
+    headline: z.string().nullish(),
+    birthdate: isoDate.nullish(),
+    bio: z.string().nullish(),
+    avatarUrl: z.string().nullish(),
+    bannerUrl: z.string().nullish(),
+    specialization: z.enum(SpecializationList).nullish(),
+    phoneNumber: z.string().nullish(),
+    githubUrl: z.string().nullish(),
+    telegramUsername: z.string().nullish(),
+    role: z.enum(UserRoleList),
+    status: z.enum(UserStatusList),
+    followPolicy: z.enum(FollowPolicyList),
+    jobSearchStatus: z.enum(JobSearchStatusList),
 
-  resumes: z.array(resumeResponseSchema),
-  skills: z.array(skillLinkResponseSchema),
-  workExperiences: z.array(workExperienceResponseSchema),
+    resumes: z.array(resumeResponseSchema),
+    skills: z.array(skillLinkResponseSchema),
+    workExperiences: z.array(workExperienceResponseSchema),
 
-  followersCount: z.number().int(),
-  followingsCount: z.number().int()
-})
+    followersCount: z.number().int(),
+    followingsCount: z.number().int()
+  })
 
 // --- Types ---
 export type UserUpdateRequest = z.infer<typeof userUpdateRequestSchema>

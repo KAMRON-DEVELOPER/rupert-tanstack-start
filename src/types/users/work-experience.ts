@@ -16,14 +16,15 @@ export const workExperienceCreateRequestSchema = locationRequestSchema.extend({
   endedAt: isoDate.nullish()
 })
 
-export const workExperienceUpdateRequestSchema = nullableLocationRequestSchema.extend({
-  companyName: z.string().max(128).nullish(),
-  location: z.string().max(128).nullish(),
-  position: z.string().max(128).nullish(),
-  description: z.string().nullish(),
-  startedAt: isoDate.nullish(),
-  endedAt: isoDate.nullish()
-})
+export const workExperienceUpdateRequestSchema =
+  nullableLocationRequestSchema.extend({
+    companyName: z.string().max(128).nullish(),
+    location: z.string().max(128).nullish(),
+    position: z.string().max(128).nullish(),
+    description: z.string().nullish(),
+    startedAt: isoDate.nullish(),
+    endedAt: isoDate.nullish()
+  })
 
 // --- Responses ---
 export const workExperienceResponseSchema = baseSchema.extend({

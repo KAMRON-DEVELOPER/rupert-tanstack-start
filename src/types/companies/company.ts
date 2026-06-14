@@ -62,14 +62,15 @@ export const companyListParamsSchema = paginationQuerySchema.extend({
 })
 
 // --- Company Responses ---
-export const companySummaryResponseSchema = companyLocationResponseSchema.extend({
-  name: z.string(),
-  tagline: z.string().nullish(),
-  logoUrl: z.url().nullish(),
-  type: z.enum(CompanyTypeList),
-  status: z.enum(CompanyStatusList),
-  openVacanciesCount: z.number().int().nullish()
-})
+export const companySummaryResponseSchema =
+  companyLocationResponseSchema.extend({
+    name: z.string(),
+    tagline: z.string().nullish(),
+    logoUrl: z.url().nullish(),
+    type: z.enum(CompanyTypeList),
+    status: z.enum(CompanyStatusList),
+    openVacanciesCount: z.number().int().nullish()
+  })
 
 export const companyDetailResponseSchema = companySummaryResponseSchema.extend({
   description: z.string().nullish(),

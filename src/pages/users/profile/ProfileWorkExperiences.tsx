@@ -22,20 +22,37 @@ import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 
 import { getErrorMessage } from '@/types/shared/helper'
-import { WorkExperienceResponse, WorkExperienceUpdateRequest } from '@/types/users/work-experience'
+import {
+  WorkExperienceCreateRequest,
+  WorkExperienceResponse,
+  WorkExperienceUpdateRequest
+} from '@/types/users/work-experience'
 import { useQuery } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import { Pencil, Plus, Trash2 } from 'lucide-react'
 import { useEffect, useState, type SubmitEvent } from 'react'
 import { toast } from 'sonner'
 
-const emptyForm: WorkExperienceUpdateRequest = {
+type WorkExperienceFormState = {
+  countryId: string
+  cityId: string
+  companyName: string
+  location: string
+  position: string
+  description: string
+  startedAt: string
+  endedAt: string
+}
+
+const emptyForm: WorkExperienceFormState = {
+  countryId: '',
+  cityId: '',
   companyName: '',
   location: '',
   position: '',
   description: '',
   startedAt: '',
-  endedAt: undefined
+  endedAt: ''
 }
 
 const ProfileWorkExperiences = () => {
@@ -139,15 +156,17 @@ const WorkExperienceForm = ({
   const updateWorkExperience = useUpdateWorkExperienceMutation()
   const [error, setError] = useState<string | null>(null)
   const [isCurrent, setIsCurrent] = useState(workExperience?.isCurrent ?? false)
-  const [form, setForm] = useState<WorkExperienceUpdateRequest>(
+  const [form, setForm] = useState<WorkExperienceFormState>(
     workExperience
       ? {
+          countryId: '',
+          cityId: '',
           companyName: workExperience.companyName,
           location: workExperience.location ?? '',
           position: workExperience.position,
           description: workExperience.description ?? '',
           startedAt: workExperience.startedAt,
-          endedAt: workExperience.endedAt
+          endedAt: workExperience.endedAt ?? ''
         }
       : emptyForm
   )
@@ -157,32 +176,62 @@ const WorkExperienceForm = ({
     setForm(
       workExperience
         ? {
+            countryId: '',
+            cityId: '',
             companyName: workExperience.companyName,
             location: workExperience.location ?? '',
             position: workExperience.position,
             description: workExperience.description ?? '',
             startedAt: workExperience.startedAt,
-            endedAt: workExperience.endedAt
+            endedAt: workExperience.endedAt ?? ''
           }
         : emptyForm
     )
   }, [workExperience])
 
-  const updateField = <K extends keyof WorkExperienceUpdateRequest>(
+  const updateField = <K extends keyof WorkExperienceFormState>(
     key: K,
-    value: WorkExperienceUpdateRequest[K]
+    value: WorkExperienceFormState[K]
   ) => setForm((prev) => ({ ...prev, [key]: value }))
 
   const submit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError(null)
 
+    const companyName = form.companyName.trim()
+    const position = form.position.trim()
+    const startedAt = form.startedAt.trim()
+    const countryId = form.countryId.trim()
+
+    if (!workExperience && !countryId) {
+      setError('Country ID is required')
+      return
+    }
+
+    if (!companyName || !position || !startedAt) {
+      setError('Company, position, and start date are required')
+      return
+    }
+
     const payload: WorkExperienceUpdateRequest = {
-      companyName: form.companyName.trim(),
+      countryId: countryId || undefined,
+      cityId: form.cityId.trim() || undefined,
+      companyName,
       location: form.location?.trim() || undefined,
-      position: form.position.trim(),
+      position,
       description: form.description?.trim() || undefined,
-      startedAt: form.startedAt,
+      startedAt,
+      endedAt: isCurrent ? undefined : form.endedAt || undefined
+    }
+
+    const createPayload: WorkExperienceCreateRequest = {
+      countryId,
+      cityId: form.cityId.trim() || undefined,
+      companyName,
+      location: form.location.trim() || undefined,
+      position,
+      description: form.description.trim() || undefined,
+      startedAt,
       endedAt: isCurrent ? undefined : form.endedAt || undefined
     }
 
@@ -194,7 +243,7 @@ const WorkExperienceForm = ({
         })
         toast.success('Work experience updated')
       } else {
-        await createWorkExperience.mutateAsync(payload)
+        await createWorkExperience.mutateAsync(createPayload)
         toast.success('Work experience created')
       }
       onOpenChange(false)
@@ -245,6 +294,23 @@ const WorkExperienceForm = ({
               />
             </div>
             <div className="space-y-2">
+              <Label htmlFor="work-country">Country ID</Label>
+              <Input
+                id="work-country"
+                value={form.countryId}
+                onChange={(event) => updateField('countryId', event.target.value)}
+                required={!workExperience}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="work-city">City ID</Label>
+              <Input
+                id="work-city"
+                value={form.cityId}
+                onChange={(event) => updateField('cityId', event.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="work-started">Started at</Label>
               <Input
                 id="work-started"
@@ -265,7 +331,7 @@ const WorkExperienceForm = ({
                   id="work-ended"
                   type="date"
                   value={form.endedAt ?? ''}
-                  onChange={(event) => updateField('endedAt', event.target.value || undefined)}
+                  onChange={(event) => updateField('endedAt', event.target.value)}
                 />
               </div>
             )}

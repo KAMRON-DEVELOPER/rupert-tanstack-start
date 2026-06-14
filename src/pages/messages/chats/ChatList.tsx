@@ -207,7 +207,7 @@ const ChatListItem = ({
           <AvatarImage src={chat.user.avatarUrl ?? undefined} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
-        {chat.isParticipantOnline && (
+        {chat.user.isOnline && (
           <span className="border-background absolute right-0 bottom-0 block size-2.5 rounded-full bg-green-500 ring-2" />
         )}
       </div>

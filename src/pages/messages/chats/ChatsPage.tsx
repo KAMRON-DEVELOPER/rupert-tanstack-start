@@ -3,13 +3,14 @@ import { AlertCircle, MessageSquare } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { useGetChatsQueryOptions } from '@/api/chats/chats'
+import { useWebSocket, useWebSocketEvent } from '@/hooks/useWebsocket'
 import ChatList from './ChatList'
 import ChatDetails from './ChatDetails'
 import type { ChatListItemResponse } from '@/types/chats/chat'
 
 const ChatsPage = () => {
   const [selectedChat, setSelectedChat] = useState<ChatListItemResponse | null>(null)
-  const { status, lastEvent, send, authFailed } = useChatWebSocket()
+  const { status, send, authFailed } = useWebSocket()
 
   const chatsQuery = useQuery(useGetChatsQueryOptions())
   const chats = chatsQuery.data?.data ?? []
@@ -27,20 +28,14 @@ const ChatsPage = () => {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  // Watch for chat_created WebSocket event
-  useEffect(() => {
-    if (!lastEvent || lastEvent.type !== 'chat_created') return
+  useWebSocketEvent('chat_created', (event) => {
     if (!pendingRef.current) return
 
-    if ('chat' in lastEvent) {
-      if (lastEvent.chat.user.id === pendingRef.current.participantId) {
-        pendingRef.current = null
-        setSelectedChat(lastEvent.chat)
-      }
-    } else {
-      pendingRef.current.chatId = lastEvent.chatId
+    if (event.item.user.id === pendingRef.current.participantId) {
+      pendingRef.current = null
+      setSelectedChat(event.item)
     }
-  }, [lastEvent])
+  })
 
   // When we only got IDs from chat_created, wait for the chat to appear in cache
   useEffect(() => {

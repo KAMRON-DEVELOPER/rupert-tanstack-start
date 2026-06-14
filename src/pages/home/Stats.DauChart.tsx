@@ -7,20 +7,20 @@ import {
   ChartTooltipContent,
   type ChartConfig
 } from '@/components/ui/chart'
-import { DailyActiveUsersBucketSchema } from '@/types/stats/stats'
+import type { DailyActiveUsersBucket } from '@/types/stats/stats'
 
 const chartConfig = {
   count: {
     label: 'Registered',
     color: 'var(--chart-1)'
   },
-  anonymous_counts: {
+  anonymousCount: {
     label: 'Anonymous',
     color: 'var(--chart-2)'
   }
 } satisfies ChartConfig
 
-const StatsDauChart = ({ data }: { data: DailyActiveUsersBucketSchema[] }) => {
+const StatsDauChart = ({ data }: { data: DailyActiveUsersBucket[] }) => {
   const totalRegistered = data.reduce((acc, d) => acc + d.count, 0)
   const totalAnonymous = data.reduce((acc, d) => acc + d.anonymousCount, 0)
 
@@ -122,9 +122,9 @@ const StatsDauChart = ({ data }: { data: DailyActiveUsersBucketSchema[] }) => {
             <ChartLegend content={<ChartLegendContent />} />
             <Bar dataKey="count" stackId="a" fill="var(--color-count)" radius={[0, 0, 4, 4]} />
             <Bar
-              dataKey="anonymous_counts"
+              dataKey="anonymousCount"
               stackId="a"
-              fill="var(--color-anonymous_counts)"
+              fill="var(--color-anonymousCount)"
               radius={[4, 4, 0, 0]}
             />
           </BarChart>

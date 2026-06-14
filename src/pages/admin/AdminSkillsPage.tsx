@@ -4,13 +4,13 @@ import {
   useCreateSkillMutation,
   useUpdateSkillMutation,
   useDeleteSkillMutation
-} from '@/api/admin/city'
+} from '@/api/admin/skill'
 import { SkillList } from '@/components/admin/SkillList'
 import { SkillForm } from '@/components/admin/SkillForm'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
-import type { AdminSkill, SkillRequest } from '@/types/admin/admin'
+import type { SkillRequest, SkillResponse } from '@/types/shared/skill'
 import { getErrorMessage } from '@/types/shared/helper'
 import { isAxiosError } from 'axios'
 import { toast } from 'sonner'
@@ -39,9 +39,9 @@ export function AdminSkillsPage() {
     })
   }
 
-  const handleRename = (skill: AdminSkill, newName: string) => {
+  const handleRename = (skill: SkillResponse, newName: string) => {
     updateSkillMutation.mutate(
-      { skillId: skill.id, data: { name: newName } },
+      { skillId: skill.id, name: newName },
       {
         onSuccess: () => {
           toast.success('Skill renamed')
@@ -51,7 +51,7 @@ export function AdminSkillsPage() {
     )
   }
 
-  const handleDelete = (skill: AdminSkill) => {
+  const handleDelete = (skill: SkillResponse) => {
     deleteSkillMutation.mutate(
       { skillId: skill.id },
       {

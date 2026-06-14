@@ -17,12 +17,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import {
-  ProficiencyLevel,
-  ProficiencyLevelList,
-  Specialization,
-  SpecializationList
-} from '@/types/shared/literals'
+import { Specialization, SpecializationList } from '@/types/shared/literals'
 import { locationLabel } from '@/lib/location-label'
 import { FileText, Pencil, Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
@@ -37,11 +32,6 @@ import {
   useGetResumesQueryOptions,
   useUpdateResumeMutation
 } from '@/api/users/resume'
-import {
-  useCreateResumesSkillMutation,
-  useDeleteResumeSkillMutation,
-  useUpdateResumesSkillMutation
-} from '@/api/users/resume-skill'
 
 interface ProfileResumesProps {
   user: UserDetailResponse
@@ -55,9 +45,6 @@ type ResumeFormState = Partial<Omit<ResumeCreateRequest, 'countryId' | 'cityId'>
 const ProfileResumes = ({ user }: ProfileResumesProps) => {
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [editingResumeId, setEditingResumeId] = useState<string | null>(null)
-  const [skillResumeId, setSkillResumeId] = useState<string | null>(null)
-  const [skillId, setSkillId] = useState('')
-  const [skillProficiency, setSkillProficiency] = useState<ProficiencyLevel>('intermediate')
   const [newResume, setNewResume] = useState<ResumeFormState>({
     title: '',
     specialization: 'fullstack',
@@ -67,9 +54,6 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
   const createResumeMutation = useCreateResumeMutation()
   const updateResumeMutation = useUpdateResumeMutation()
   const deleteResumeMutation = useDeleteResumeMutation()
-  const addResumeSkillMutation = useCreateResumesSkillMutation()
-  const updateResumeSkillMutation = useUpdateResumesSkillMutation()
-  const deleteResumeSkillMutation = useDeleteResumeSkillMutation()
   const { data: resumesData } = useQuery(useGetResumesQueryOptions())
   const resumes = resumesData ?? []
   const editingResume = resumes.find((resume) => resume.id === editingResumeId)
@@ -111,15 +95,16 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
   const handleUpdateResume = async () => {
     if (!editingResumeId || !newResume.title || !newResume.specialization) return
 
-    // TODO skills are missing
     try {
       await updateResumeMutation.mutateAsync({
         resumeId: editingResumeId,
-        title: newResume.title,
-        summary: newResume.summary ?? undefined,
-        specialization: newResume.specialization,
-        countryId: newResume.countryId,
-        cityId: newResume.cityId || undefined
+        data: {
+          title: newResume.title,
+          summary: newResume.summary ?? undefined,
+          specialization: newResume.specialization,
+          countryId: newResume.countryId,
+          cityId: newResume.cityId || undefined
+        }
       })
       toast.success('Resume updated')
       setEditingResumeId(null)
@@ -152,51 +137,6 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
     setIsAddOpen(true)
   }
 
-  const handleAddResumeSkill = async () => {
-    if (!skillResumeId || !skillId) return
-
-    try {
-      await addResumeSkillMutation.mutateAsync({
-        resumeId: skillResumeId,
-        skillId: skillId.trim(),
-        proficiency: skillProficiency,
-        lastUsedAt: undefined
-      })
-      setSkillResumeId(null)
-      setSkillId('')
-      setSkillProficiency('intermediate')
-      toast.success('Resume skill added')
-    } catch {
-      toast.error('Failed to add resume skill')
-    }
-  }
-
-  const handleUpdateResumeSkill = async (
-    resumeId: string,
-    skillLinkId: string,
-    proficiency: ProficiencyLevel
-  ) => {
-    try {
-      await updateResumeSkillMutation.mutateAsync({
-        resumeId,
-        skillLinkId,
-        data: { proficiency }
-      })
-      toast.success('Resume skill updated')
-    } catch {
-      toast.error('Failed to update resume skill')
-    }
-  }
-
-  const handleDeleteResumeSkill = async (resumeId: string, skillLinkId: string) => {
-    try {
-      await deleteResumeSkillMutation.mutateAsync({ resumeId, skillLinkId })
-      toast.success('Resume skill removed')
-    } catch {
-      toast.error('Failed to remove resume skill')
-    }
-  }
-
   return (
     <Card className="border-none shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -225,53 +165,9 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
                     <p className="text-muted-foreground text-xs">
                       {resume.specialization} • {locationLabel(resume.country, resume.city)}
                     </p>
-                    {resume.skills && resume.skills.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {resume.skills.map((skillLink) => (
-                          <div
-                            key={skillLink.id}
-                            className="flex items-center gap-1 rounded-md border px-2 py-1"
-                          >
-                            <span className="text-xs">{skillLink.skill.name}</span>
-                            <Select
-                              value={skillLink.proficiency}
-                              onValueChange={(value) =>
-                                handleUpdateResumeSkill(
-                                  resume.id,
-                                  skillLink.id,
-                                  value as ProficiencyLevel
-                                )
-                              }
-                            >
-                              <SelectTrigger className="h-6 w-28 border-0 px-1 text-xs shadow-none">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {ProficiencyLevelList.map((level) => (
-                                  <SelectItem key={level} value={level}>
-                                    {level}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteResumeSkill(resume.id, skillLink.id)}
-                              className="text-muted-foreground hover:text-destructive"
-                            >
-                              <Trash2 className="size-3" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 </div>
                 <div className="flex gap-1">
-                  <Button variant="ghost" size="sm" onClick={() => setSkillResumeId(resume.id)}>
-                    <Plus className="size-4" />
-                    Skill
-                  </Button>
                   <Button
                     variant="ghost"
                     size="icon-sm"
@@ -376,49 +272,6 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
                 : createResumeMutation.isPending
                   ? 'Adding...'
                   : 'Add Resume'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={Boolean(skillResumeId)} onOpenChange={() => setSkillResumeId(null)}>
-        <DialogContent className="sm:max-w-106.25">
-          <DialogHeader>
-            <DialogTitle>Add Resume Skill</DialogTitle>
-            <DialogDescription>Add an existing skill to this resume.</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="resume-skill-id">Skill ID</Label>
-              <Input
-                id="resume-skill-id"
-                value={skillId}
-                onChange={(event) => setSkillId(event.target.value)}
-                placeholder="Existing skill UUID"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Proficiency</Label>
-              <Select
-                value={skillProficiency}
-                onValueChange={(value) => setSkillProficiency(value as ProficiencyLevel)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {ProficiencyLevelList.map((level) => (
-                    <SelectItem key={level} value={level}>
-                      {level}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button onClick={handleAddResumeSkill} disabled={addResumeSkillMutation.isPending}>
-              {addResumeSkillMutation.isPending ? 'Adding...' : 'Add Skill'}
             </Button>
           </DialogFooter>
         </DialogContent>

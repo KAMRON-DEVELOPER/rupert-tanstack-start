@@ -8,13 +8,14 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { getChatMessagesFn } from '@/api/chats/chats.functions'
 import type { ChatListItemResponse } from '@/types/chats/chat'
-import { ChatWsOutboundPayload } from '@/types/chats/ws'
+import type { ChatMessageResponse } from '@/types/chats/chat-message'
+import type { IncomingEvent } from '@/hooks/useWebsocket/events'
 
 const PAGE_SIZE = 20
 
 type ChatDetailsProps = {
   chat: ChatListItemResponse
-  send: (payload: ChatWsOutboundPayload) => boolean
+  send: (payload: IncomingEvent) => boolean
   wsStatus: string
 }
 
@@ -96,13 +97,15 @@ const ChatDetails = ({ chat, send, wsStatus }: ChatDetailsProps) => {
               <AvatarImage src={chat.user.avatarUrl ?? undefined} />
               <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
-            {chat.isOnline && (
+            {chat.user.isOnline && (
               <span className="border-background absolute right-0 bottom-0 block size-2.5 rounded-full bg-green-500 ring-2" />
             )}
           </div>
           <div>
             <p className="text-sm font-medium">{chat.user.name}</p>
-            <p className="text-muted-foreground text-xs">{chat.isOnline ? 'online' : 'offline'}</p>
+            <p className="text-muted-foreground text-xs">
+              {chat.user.isOnline ? 'online' : 'offline'}
+            </p>
           </div>
         </div>
       </div>
@@ -179,13 +182,7 @@ const ChatDetails = ({ chat, send, wsStatus }: ChatDetailsProps) => {
   )
 }
 
-const MessageBubble = ({
-  message,
-  isOwn
-}: {
-  message: { id: string; message: string | null; createdAt: string }
-  isOwn: boolean
-}) => {
+const MessageBubble = ({ message, isOwn }: { message: ChatMessageResponse; isOwn: boolean }) => {
   return (
     <div className={cn('mb-1.5 flex', isOwn ? 'justify-end' : 'justify-start')}>
       <div
