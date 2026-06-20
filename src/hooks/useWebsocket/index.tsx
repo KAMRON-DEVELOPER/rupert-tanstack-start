@@ -73,9 +73,11 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     const conn = new WsConnection({
       onStatusChange: setStatus,
       onError: (msg) => {
-        console.log(`[WebSocketProvider][WsConnection] onError: ${msg}`)
-        toast.error(`[WebSocketProvider][WsConnection] onError: ${msg}`)
-        setLastError(msg)
+        if (msg.trim() !== '') {
+          console.log(`[WebSocketProvider][WsConnection] onError: ${msg}`)
+          toast.error(`[WebSocketProvider][WsConnection] onError: ${msg}`)
+          setLastError(msg)
+        }
       }
     })
     connectionRef.current = conn

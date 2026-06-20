@@ -71,9 +71,7 @@ const CompanyForm = ({ company, open, onOpenChange }: CompanyFormProps) => {
   })
 
   const { data: countriesData } = useQuery(useGetCountriesQueryOptions())
-  const { data: citiesData } = useQuery(
-    useGetCitiesQueryOptions({ countryId: form.countryId })
-  )
+  const { data: citiesData } = useQuery(useGetCitiesQueryOptions({ countryId: form.countryId }))
 
   const countries = countriesData?.data ?? []
   const cities = citiesData?.data ?? []
@@ -164,10 +162,7 @@ const CompanyForm = ({ company, open, onOpenChange }: CompanyFormProps) => {
             </div>
             <div className="space-y-2">
               <RequiredLabel htmlFor="company-country">Country</RequiredLabel>
-              <Select
-                value={form.countryId}
-                onValueChange={handleCountryChange}
-              >
+              <Select value={form.countryId} onValueChange={handleCountryChange}>
                 <SelectTrigger id="company-country" className="w-full">
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>

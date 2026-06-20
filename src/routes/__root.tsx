@@ -12,6 +12,8 @@ import { CreateApi } from '@/api/api'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { authProbeFn } from '@/api/users/auth.functions'
 import { WebSocketProvider } from '@/hooks/useWebsocket'
+import { useGetCountriesQueryOptions } from '@/api/locations/locations'
+import { useGetSkillsQueryOptions } from '@/api/skills/skills'
 
 export type RouterContext = {
   queryClient: QueryClient
@@ -41,6 +43,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   beforeLoad: async () => {
     const isAuthenticated = await authProbeFn()
     return { isAuthenticated }
+  },
+  loader: async ({ context: { queryClient } }) => {
+    await Promise.all([
+      queryClient.ensureQueryData(useGetCountriesQueryOptions()),
+      queryClient.ensureQueryData(useGetSkillsQueryOptions())
+    ])
   },
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
