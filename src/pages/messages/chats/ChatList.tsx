@@ -48,19 +48,19 @@ const ChatList = ({ selectedChatId, onSelectChat, onStartChat }: ChatListProps) 
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="shrink-0 px-3 pt-2 pb-1">
+      <div className="shrink-0 px-3 py-3">
         <div className="relative">
-          <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+          <Search className="text-muted-foreground absolute top-1/2 left-3.5 size-4 -translate-y-1/2" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search"
-            className="pl-9"
+            className="bg-muted/60 h-11 rounded-xl border-transparent pr-3 pl-10 shadow-none"
           />
         </div>
       </div>
 
-      <ScrollArea className="min-h-0 flex-1">
+      <ScrollArea className="min-h-0 flex-1" viewportClassName="overflow-x-hidden">
         {isSearching ? (
           <UserSearchResults
             results={searchResults}
@@ -73,11 +73,11 @@ const ChatList = ({ selectedChatId, onSelectChat, onStartChat }: ChatListProps) 
         ) : (
           <>
             {chatsQuery.isLoading && (
-              <div className="space-y-1 p-2">
+              <div className="space-y-1 px-3">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="flex items-center gap-3 rounded-lg p-2">
-                    <Skeleton className="size-10 shrink-0 rounded-full" />
-                    <div className="flex-1 space-y-1.5">
+                  <div key={i} className="flex h-16 items-center gap-3 rounded-xl px-3">
+                    <Skeleton className="size-11 shrink-0 rounded-full" />
+                    <div className="min-w-0 flex-1 space-y-1.5">
                       <Skeleton className="h-4 w-28" />
                       <Skeleton className="h-3 w-40" />
                     </div>
@@ -90,7 +90,7 @@ const ChatList = ({ selectedChatId, onSelectChat, onStartChat }: ChatListProps) 
               <p className="text-muted-foreground px-4 py-8 text-center text-sm">No chats yet</p>
             )}
 
-            <div className="space-y-0.5 px-1.5">
+            <div className="space-y-1 px-3">
               {chats.map((chat) => (
                 <ChatListItem
                   key={chat.id}
@@ -132,11 +132,11 @@ const UserSearchResults = ({
 }) => {
   if (isLoading) {
     return (
-      <div className="space-y-1 p-2">
+      <div className="space-y-1 px-3">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="flex items-center gap-3 rounded-lg p-2">
-            <Skeleton className="size-10 shrink-0 rounded-full" />
-            <div className="flex-1">
+          <div key={i} className="flex h-16 items-center gap-3 rounded-xl px-3">
+            <Skeleton className="size-11 shrink-0 rounded-full" />
+            <div className="min-w-0 flex-1">
               <Skeleton className="h-4 w-32" />
             </div>
           </div>
@@ -150,7 +150,7 @@ const UserSearchResults = ({
   }
 
   return (
-    <div className="space-y-0.5 px-1.5">
+    <div className="space-y-1 px-3">
       {results.map((user) => (
         <UserSearchItem key={user.id} user={user} onStartChat={() => onStartChat(user.id)} />
       ))}
@@ -168,8 +168,8 @@ const UserSearchItem = ({
   const initials = getInitials(user.firstName, user.lastName)
 
   return (
-    <div className="hover:bg-muted flex items-center gap-3 rounded-lg px-3 py-2 transition-colors">
-      <Avatar>
+    <div className="hover:bg-muted/80 flex h-16 min-w-0 items-center gap-3 rounded-xl px-3 transition-colors">
+      <Avatar className="size-11 shrink-0">
         <AvatarImage src={user.avatarUrl ?? undefined} />
         <AvatarFallback>{initials}</AvatarFallback>
       </Avatar>
@@ -199,39 +199,42 @@ const ChatListItem = ({
       type="button"
       onClick={onSelect}
       className={cn(
-        'flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors',
-        isSelected ? 'bg-accent' : 'hover:bg-muted'
+        'flex h-16 w-full min-w-0 items-center gap-3 rounded-xl px-3 text-left transition-colors',
+        isSelected ? 'bg-accent' : 'hover:bg-muted/80'
       )}
     >
       <div className="relative shrink-0">
-        <Avatar>
+        <Avatar className="size-11">
           <AvatarImage src={chat.user.avatarUrl ?? undefined} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
         {chat.user.isOnline && (
-          <span className="border-background absolute right-0 bottom-0 block size-2.5 rounded-full bg-green-500 ring-2" />
+          <span className="border-background absolute right-0 bottom-0 block size-3 rounded-full border-2 bg-emerald-500" />
         )}
       </div>
 
       <div className="min-w-0 flex-1">
-        <div className="flex items-center justify-between">
+        <div className="flex min-w-0 items-center gap-2">
           <span
-            className={cn('truncate text-sm font-medium', chat.unreadCount > 0 && 'font-semibold')}
+            className={cn(
+              'min-w-0 flex-1 truncate text-sm font-medium',
+              chat.unreadCount > 0 && 'font-semibold'
+            )}
           >
             {chat.user.name}
           </span>
           {chat.lastMessage && (
-            <span className="text-muted-foreground ml-2 shrink-0 text-xs">
+            <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
               {formatTime(chat.lastMessage.createdAt)}
             </span>
           )}
         </div>
-        <div className="flex items-center justify-between">
-          <p className="text-muted-foreground truncate text-xs">
-            {chat.lastMessage?.message ?? 'No messages'}
+        <div className="mt-1 flex min-w-0 items-center gap-2">
+          <p className="text-muted-foreground min-w-0 flex-1 truncate text-xs">
+            {getPreview(chat)}
           </p>
           {chat.unreadCount > 0 && (
-            <span className="bg-primary text-primary-foreground ml-2 flex size-5 shrink-0 items-center justify-center rounded-full text-[10px] font-medium">
+            <span className="bg-primary text-primary-foreground flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full px-1.5 text-[10px] font-medium tabular-nums">
               {chat.unreadCount > 99 ? '99+' : chat.unreadCount}
             </span>
           )}
@@ -239,6 +242,15 @@ const ChatListItem = ({
       </div>
     </button>
   )
+}
+
+function getPreview(chat: ChatListItemResponse) {
+  const message = chat.lastMessage
+  if (!message) return 'No messages'
+  if (message.message) return message.message
+  const count = message.attachments.length
+  if (count === 0) return 'Attachment'
+  return count === 1 ? message.attachments[0]?.label || 'Attachment' : `${count} attachments`
 }
 
 function getInitials(firstName: string, lastName?: string | null) {

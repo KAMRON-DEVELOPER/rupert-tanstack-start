@@ -3,6 +3,7 @@ import { AlertCircle, MessageSquare } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { cn } from '@/lib/utils'
 import { useGetChatsQueryOptions } from '@/api/chats/chats'
 import { useWebSocket, useWebSocketEvent } from '@/hooks/useWebsocket'
 import ChatList from './chats/ChatList'
@@ -56,7 +57,7 @@ const MessagesPage = () => {
 
   if (authFailed) {
     return (
-      <div className="flex h-[calc(100vh-3rem)] flex-col items-center justify-center gap-4 md:h-[calc(100vh-3.5rem)]">
+      <div className="flex h-[calc(100vh-3rem)] flex-col items-center justify-center gap-4 overflow-hidden md:h-[calc(100vh-3.5rem)]">
         <AlertCircle className="text-destructive size-12" />
         <div className="text-center">
           <p className="text-lg font-medium">Something went wrong</p>
@@ -70,10 +71,15 @@ const MessagesPage = () => {
   }
 
   return (
-    <div className="flex h-[calc(100vh-3rem)] md:h-[calc(100vh-3.5rem)]">
-      <aside className="flex w-full shrink-0 flex-col border-r md:w-80">
+    <div className="bg-background flex h-[calc(100vh-3rem)] min-w-0 overflow-hidden md:h-[calc(100vh-3.5rem)]">
+      <aside
+        className={cn(
+          'bg-background min-w-0 shrink-0 flex-col border-r md:flex md:w-[22rem]',
+          selectedChat ? 'hidden' : 'flex w-full'
+        )}
+      >
         <Tabs defaultValue="chats" className="flex min-h-0 flex-1 flex-col">
-          <div className="shrink-0 px-3 pt-2">
+          <div className="shrink-0 px-3 pt-3">
             <TabsList variant="line" className="w-full">
               <TabsTrigger value="chats" className="flex-1">
                 Chats
@@ -91,9 +97,17 @@ const MessagesPage = () => {
         </Tabs>
       </aside>
 
-      <main className="hidden min-w-0 flex-1 md:block">
+      <main
+        className={cn('min-w-0 flex-1 overflow-hidden', selectedChat ? 'block' : 'hidden md:block')}
+      >
         {selectedChat ? (
-          <ChatDetails key={selectedChat.id} chat={selectedChat} send={send} wsStatus={status} />
+          <ChatDetails
+            key={selectedChat.id}
+            chat={selectedChat}
+            send={send}
+            wsStatus={status}
+            onBack={() => setSelectedChat(null)}
+          />
         ) : (
           <EmptyState />
         )}
@@ -103,8 +117,8 @@ const MessagesPage = () => {
 }
 
 const EmptyState = () => (
-  <div className="flex h-full flex-col items-center justify-center text-center">
-    <MessageSquare className="text-muted-foreground/40 size-16" />
+  <div className="bg-muted/20 flex h-full flex-col items-center justify-center text-center">
+    <MessageSquare className="text-muted-foreground/40 size-14" />
     <p className="text-muted-foreground mt-4 text-lg font-medium">Select a chat</p>
     <p className="text-muted-foreground/70 mt-1 text-sm">
       Choose a conversation from the sidebar to start messaging
