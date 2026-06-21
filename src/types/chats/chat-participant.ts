@@ -11,8 +11,8 @@ export const chatListUserResponseSchema = z.object({
   id: uuid,
   name: z.string(),
   firstName: z.string(),
-  lastName: z.string().nullable(),
-  avatarUrl: z.string().nullable(),
+  lastName: z.string().nullish(),
+  avatarUrl: z.string().nullish(),
   isOnline: z.boolean().nullish().default(false)
 })
 

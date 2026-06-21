@@ -158,7 +158,8 @@ export class WsConnection {
 
     if (!parsed.success) {
       console.log(
-        `[WsConnection] handleMessage: failed to parse into outgoingEventSchema: ${raw}`
+        '[WsConnection] handleMessage: failed to parse into outgoingEventSchema: ',
+        JSON.stringify(raw)
       )
       toast.error(
         `[WsConnection] handleMessage: failed to parse into outgoingEventSchema: ${raw}`

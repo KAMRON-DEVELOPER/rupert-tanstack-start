@@ -95,9 +95,9 @@ export const messageDeletedEventSchema = z.object({
 export const chatSettingsUpdatedEventSchema = z.object({
   type: z.literal('chat_settings_updated'),
   chatId: uuid,
-  isPinned: z.boolean().nullable(),
-  isMuted: z.boolean().nullable(),
-  isArchived: z.boolean().nullable()
+  isPinned: z.boolean().nullish(),
+  isMuted: z.boolean().nullish(),
+  isArchived: z.boolean().nullish()
 })
 
 export const outgoingEventSchema = z.discriminatedUnion('type', [

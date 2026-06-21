@@ -1,1 +1,0 @@
-import{$n as e}from"./index-BxAT3mXr.js";var t=e(),n=()=>(0,t.jsx)(`div`,{children:`GroupsPage`});export{n as component};

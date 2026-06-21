@@ -171,7 +171,7 @@ const MessageComposer = ({
         aria-label="Message composer"
       >
         <div className="flex min-w-0 flex-1 items-stretch gap-px">
-          <div className="bg-muted/90 flex w-12 shrink-0 items-end justify-center rounded-l-[1.45rem]">
+          <div className="bg-card flex w-12 shrink-0 items-end justify-center rounded-l-[1.45rem]">
             <Button
               type="button"
               variant="ghost"
@@ -184,7 +184,7 @@ const MessageComposer = ({
             </Button>
           </div>
 
-          <div className="bg-muted/90 flex min-h-12 min-w-0 flex-1 items-center px-2 py-1.5">
+          <div className="bg-card flex min-h-12 min-w-0 flex-1 items-center px-2 py-1.5">
             <textarea
               ref={textareaRef}
               value={text}
@@ -197,7 +197,7 @@ const MessageComposer = ({
             />
           </div>
 
-          <div className="bg-muted/90 flex w-12 shrink-0 items-end justify-center rounded-r-[1.45rem]">
+          <div className="bg-card flex w-12 shrink-0 items-end justify-center rounded-r-[1.45rem]">
             <Button
               type="button"
               variant="ghost"
@@ -213,10 +213,10 @@ const MessageComposer = ({
 
         <Button
           type="button"
-          variant={hasText ? 'default' : isRecording ? 'destructive' : 'secondary'}
+          variant={hasText ? 'default' : isRecording ? 'destructive' : 'default'}
           size="icon"
           className={cn(
-            'relative size-12 shrink-0 rounded-full transition-colors',
+            'bg-card text-foreground hover:bg-card/90 relative size-12 shrink-0 rounded-full transition-colors',
             isRecording && 'shadow-destructive/20 shadow-lg'
           )}
           disabled={disabled}

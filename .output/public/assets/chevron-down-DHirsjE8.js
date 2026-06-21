@@ -1,1 +1,0 @@
-import{ar as e,nr as t}from"./index-BxAT3mXr.js";import{t as n}from"./createLucideIcon--VNFDBUB.js";var r=e(t(),1);function i(e){let t=r.useRef({value:e,previous:e});return r.useMemo(()=>(t.current.value!==e&&(t.current.previous=t.current.value,t.current.value=e),t.current.previous),[e])}var a=n(`chevron-down`,[[`path`,{d:`m6 9 6 6 6-6`,key:`qrunsl`}]]);export{i as n,a as t};

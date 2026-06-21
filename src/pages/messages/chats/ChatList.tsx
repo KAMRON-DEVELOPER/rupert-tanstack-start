@@ -10,7 +10,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { useGetChatsQueryOptions } from '@/api/chats/chats'
 import { useSearchUsersQueryOptions } from '@/api/users/users'
 import type { ChatListItemResponse } from '@/types/chats/chat'
-import { ChatListUserResponse } from '@/types/chats/chat-participant'
+import type { ChatListUserResponse } from '@/types/chats/chat-participant'
 
 const PAGE_SIZE = 20
 
@@ -48,14 +48,14 @@ const ChatList = ({ selectedChatId, onSelectChat, onStartChat }: ChatListProps) 
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="shrink-0 px-3 py-3">
+      <div className="shrink-0 px-3 py-2.5">
         <div className="relative">
           <Search className="text-muted-foreground absolute top-1/2 left-3.5 size-4 -translate-y-1/2" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search"
-            className="bg-muted/60 h-11 rounded-xl border-transparent pr-3 pl-10 shadow-none"
+            className="bg-muted pr-3 pl-10"
           />
         </div>
       </div>
@@ -73,9 +73,9 @@ const ChatList = ({ selectedChatId, onSelectChat, onStartChat }: ChatListProps) 
         ) : (
           <>
             {chatsQuery.isLoading && (
-              <div className="space-y-1 px-3">
+              <div className="space-y-1.5 px-3">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="flex h-16 items-center gap-3 rounded-xl px-3">
+                  <div key={i} className="bg-muted flex h-17 items-center gap-3 rounded-xl px-3">
                     <Skeleton className="size-11 shrink-0 rounded-full" />
                     <div className="min-w-0 flex-1 space-y-1.5">
                       <Skeleton className="h-4 w-28" />
@@ -90,7 +90,7 @@ const ChatList = ({ selectedChatId, onSelectChat, onStartChat }: ChatListProps) 
               <p className="text-muted-foreground px-4 py-8 text-center text-sm">No chats yet</p>
             )}
 
-            <div className="space-y-1 px-3">
+            <div className="space-y-1.5 px-3">
               {chats.map((chat) => (
                 <ChatListItem
                   key={chat.id}
@@ -132,9 +132,9 @@ const UserSearchResults = ({
 }) => {
   if (isLoading) {
     return (
-      <div className="space-y-1 px-3">
+      <div className="space-y-1.5 px-3">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="flex h-16 items-center gap-3 rounded-xl px-3">
+          <div key={i} className="bg-muted/40 flex h-16 items-center gap-3 rounded-xl px-3">
             <Skeleton className="size-11 shrink-0 rounded-full" />
             <div className="min-w-0 flex-1">
               <Skeleton className="h-4 w-32" />
@@ -150,7 +150,7 @@ const UserSearchResults = ({
   }
 
   return (
-    <div className="space-y-1 px-3">
+    <div className="space-y-1.5 px-3">
       {results.map((user) => (
         <UserSearchItem key={user.id} user={user} onStartChat={() => onStartChat(user.id)} />
       ))}
@@ -168,7 +168,7 @@ const UserSearchItem = ({
   const initials = getInitials(user.firstName, user.lastName)
 
   return (
-    <div className="hover:bg-muted/80 flex h-16 min-w-0 items-center gap-3 rounded-xl px-3 transition-colors">
+    <div className="bg-muted flex h-16 min-w-0 items-center gap-3 rounded-xl px-3 transition-colors">
       <Avatar className="size-11 shrink-0">
         <AvatarImage src={user.avatarUrl ?? undefined} />
         <AvatarFallback>{initials}</AvatarFallback>
@@ -198,10 +198,7 @@ const ChatListItem = ({
     <button
       type="button"
       onClick={onSelect}
-      className={cn(
-        'flex h-16 w-full min-w-0 items-center gap-3 rounded-xl px-3 text-left transition-colors',
-        isSelected ? 'bg-accent' : 'hover:bg-muted/80'
-      )}
+      className={cn('bg-muted flex h-17 w-full items-center gap-3 rounded-xl px-3 text-left')}
     >
       <div className="relative shrink-0">
         <Avatar className="size-11">
@@ -209,11 +206,11 @@ const ChatListItem = ({
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
         {chat.user.isOnline && (
-          <span className="border-background absolute right-0 bottom-0 block size-3 rounded-full border-2 bg-emerald-500" />
+          <span className="border-card absolute right-0 bottom-0 block size-3 rounded-full border-2 bg-emerald-500" />
         )}
       </div>
 
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 overflow-hidden">
         <div className="flex min-w-0 items-center gap-2">
           <span
             className={cn(

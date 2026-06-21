@@ -148,7 +148,7 @@ const ChatDetails = ({ chat, send, wsStatus, onBack }: ChatDetailsProps) => {
   const initials = getInitials(chat.user.firstName, chat.user.lastName)
 
   return (
-    <div className="bg-muted/20 flex h-full min-w-0 flex-col overflow-hidden">
+    <div className="bg-background flex h-full min-w-0 flex-col overflow-hidden">
       <div className="bg-background/95 shrink-0 border-b px-3 py-3 backdrop-blur sm:px-4">
         <div className="flex min-w-0 items-center gap-3">
           <Button
@@ -176,7 +176,6 @@ const ChatDetails = ({ chat, send, wsStatus, onBack }: ChatDetailsProps) => {
               {isTyping ? 'typing...' : chat.user.isOnline ? 'online' : 'offline'}
             </p>
           </div>
-          <ConnectionBadge status={wsStatus} />
         </div>
       </div>
 
@@ -269,22 +268,7 @@ const ChatDetails = ({ chat, send, wsStatus, onBack }: ChatDetailsProps) => {
   )
 }
 
-const ConnectionBadge = ({ status }: { status: string }) => {
-  const isOpen = status === 'open'
-  const isConnecting = status === 'connecting' || status === 'idle'
 
-  return (
-    <div className="text-muted-foreground hidden items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs sm:flex">
-      <span
-        className={cn(
-          'size-1.5 rounded-full',
-          isOpen ? 'bg-emerald-500' : isConnecting ? 'bg-amber-500' : 'bg-destructive'
-        )}
-      />
-      {isOpen ? 'Connected' : isConnecting ? 'Connecting' : 'Offline'}
-    </div>
-  )
-}
 
 const DateSeparator = ({ iso }: { iso: string }) => (
   <div className="sticky top-3 z-10 my-4 flex justify-center">

@@ -74,7 +74,7 @@ const MessagesPage = () => {
     <div className="bg-background flex h-[calc(100vh-3rem)] min-w-0 overflow-hidden md:h-[calc(100vh-3.5rem)]">
       <aside
         className={cn(
-          'bg-background min-w-0 shrink-0 flex-col border-r md:flex md:w-[22rem]',
+          'min-w-0 shrink-0 flex-col border-r md:flex md:w-88',
           selectedChat ? 'hidden' : 'flex w-full'
         )}
       >
@@ -117,7 +117,7 @@ const MessagesPage = () => {
 }
 
 const EmptyState = () => (
-  <div className="bg-muted/20 flex h-full flex-col items-center justify-center text-center">
+  <div className="flex h-full flex-col items-center justify-center text-center">
     <MessageSquare className="text-muted-foreground/40 size-14" />
     <p className="text-muted-foreground mt-4 text-lg font-medium">Select a chat</p>
     <p className="text-muted-foreground/70 mt-1 text-sm">

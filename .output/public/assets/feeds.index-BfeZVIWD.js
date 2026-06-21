@@ -1,1 +1,0 @@
-import{$n as e}from"./index-BxAT3mXr.js";var t=e(),n=()=>(0,t.jsx)(`div`,{className:`col-span-3 border-x`}),r=()=>(0,t.jsx)(`div`,{className:`p-8`}),i=()=>(0,t.jsx)(`div`,{}),a=()=>(0,t.jsxs)(`div`,{className:`grid min-h-screen md:grid-cols-5`,children:[(0,t.jsx)(r,{}),(0,t.jsx)(n,{}),(0,t.jsx)(i,{})]});export{a as component};

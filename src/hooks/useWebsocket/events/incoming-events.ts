@@ -15,9 +15,9 @@ const scopedChatActionRequestSchema = chatRoomActionRequestSchema.extend({
 })
 const updateChatSettingsActionRequestSchema = z.object({
   chatId: uuid,
-  isPinned: z.boolean().nullable().nullish(),
-  isMuted: z.boolean().nullable().nullish(),
-  isArchived: z.boolean().nullable().nullish()
+  isPinned: z.boolean().nullish(),
+  isMuted: z.boolean().nullish(),
+  isArchived: z.boolean().nullish()
 })
 const updateMessageActionRequestSchema = z.object({
   chatId: uuid,
@@ -29,8 +29,8 @@ const createChatRequestSchema = z.object({ participantId: uuid })
 const sendMessageRequestSchema = z.object({
   chatId: uuid,
   message: z.string().nullish(),
-  replyId: uuid.nullable().nullish(),
-  participantId: uuid.nullable().nullish(),
+  replyId: uuid.nullish(),
+  participantId: uuid.nullish(),
   attachments: z.array(uuid).nullish()
 })
 
