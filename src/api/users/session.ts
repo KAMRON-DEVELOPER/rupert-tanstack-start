@@ -12,7 +12,8 @@ import {
 export const useGetSessionsQueryOptions = () =>
   queryOptions({
     queryKey: ['sessions'],
-    queryFn: () => getSessionsFn()
+    queryFn: () => getSessionsFn(),
+    staleTime: 30_000
   })
 
 export const useRevokeSessionsMutation = () => {

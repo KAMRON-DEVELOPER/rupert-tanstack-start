@@ -1,6 +1,6 @@
 import { createRouter } from '@tanstack/react-router'
 import { routeTree } from '@/routeTree.gen'
-import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query'
+import { MutationCache, QueryCache, QueryClient, dehydrate, hydrate } from '@tanstack/react-query'
 import { createApi } from '@/api/api'
 import { isAxiosError } from 'axios'
 
@@ -54,6 +54,13 @@ export function getRouter() {
       api,
       isAuthenticated: false
     },
+    hydrate: (dehydrated) => {
+      hydrate(queryClient, dehydrated.queryClientState)
+    },
+    dehydrate: () =>
+      ({
+        queryClientState: dehydrate(queryClient)
+      }) as any,
     scrollRestoration: true,
     defaultPreload: 'intent'
   })

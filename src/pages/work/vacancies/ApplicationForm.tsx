@@ -67,7 +67,7 @@ const ApplicationForm = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">No resume</SelectItem>
-                  {resumes.map((resume) => (
+                  {resumes.data.map((resume) => (
                     <SelectItem key={resume.id} value={resume.id}>
                       {resume.title}
                     </SelectItem>

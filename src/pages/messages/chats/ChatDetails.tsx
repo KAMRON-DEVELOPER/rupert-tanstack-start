@@ -1,15 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useLayoutEffect, useRef } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { ArrowUp, MessageSquare } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { getChatMessagesFn } from '@/api/chats/chats.functions'
 import type { ChatListItemResponse } from '@/types/chats/chat'
 import type { ChatMessageResponse } from '@/types/chats/chat-message'
 import type { IncomingEvent } from '@/hooks/useWebsocket/events'
+import MessageComposer from './MessageComposer'
 
 const PAGE_SIZE = 20
 
@@ -20,10 +20,10 @@ type ChatDetailsProps = {
 }
 
 const ChatDetails = ({ chat, send, wsStatus }: ChatDetailsProps) => {
-  const [text, setText] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const shouldAutoScrollRef = useRef(true)
+  const prevScrollHeightRef = useRef(0)
 
   const messagesQuery = useInfiniteQuery({
     queryKey: ['chats', chat.id, 'messages'] as const,
@@ -37,21 +37,23 @@ const ChatDetails = ({ chat, send, wsStatus }: ChatDetailsProps) => {
   })
 
   const pages = messagesQuery.data?.pages ?? []
-  const allMessages = pages.flatMap((p) => p.data)
+  const allMessages = pages.flatMap((p) => [...p.data].reverse())
   const hasOlder = messagesQuery.hasNextPage
 
-  useEffect(() => {
-    send({ type: 'join_chat', chatId: chat.id })
-    return () => {
-      send({ type: 'leave_chat', chatId: chat.id })
-    }
-  }, [chat.id, send])
+  useLayoutEffect(() => {
+    const el = scrollContainerRef.current
+    if (!el) return
 
-  useEffect(() => {
-    if (!messagesQuery.isLoading && shouldAutoScrollRef.current) {
+    if (prevScrollHeightRef.current > 0) {
+      const delta = el.scrollHeight - prevScrollHeightRef.current
+      if (delta > 0) {
+        el.scrollTop += delta
+      }
+      prevScrollHeightRef.current = 0
+    } else if (shouldAutoScrollRef.current) {
       messagesEndRef.current?.scrollIntoView()
     }
-  }, [allMessages.length, messagesQuery.isLoading])
+  }, [allMessages.length])
 
   const handleScroll = useCallback(() => {
     const el = scrollContainerRef.current
@@ -60,13 +62,20 @@ const ChatDetails = ({ chat, send, wsStatus }: ChatDetailsProps) => {
     shouldAutoScrollRef.current = atBottom
   }, [])
 
-  const handleSend = () => {
-    const trimmed = text.trim()
-    if (!trimmed || wsStatus !== 'open') return
+  const handleLoadOlder = () => {
+    const el = scrollContainerRef.current
+    if (el) {
+      prevScrollHeightRef.current = el.scrollHeight
+    }
+    messagesQuery.fetchNextPage()
+  }
+
+  const handleSend = (text: string) => {
+    if (wsStatus !== 'open') return
 
     const didSend = send({
       type: 'send_message',
-      message: trimmed,
+      message: text,
       chatId: chat.id,
       participantId: null,
       replyId: null,
@@ -74,15 +83,7 @@ const ChatDetails = ({ chat, send, wsStatus }: ChatDetailsProps) => {
     })
 
     if (didSend) {
-      setText('')
       shouldAutoScrollRef.current = true
-    }
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault()
-      handleSend()
     }
   }
 
@@ -90,7 +91,7 @@ const ChatDetails = ({ chat, send, wsStatus }: ChatDetailsProps) => {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-b px-4 py-3">
+      <div className="shrink-0 border-b px-4 py-3">
         <div className="flex items-center gap-3">
           <div className="relative shrink-0">
             <Avatar>
@@ -113,7 +114,7 @@ const ChatDetails = ({ chat, send, wsStatus }: ChatDetailsProps) => {
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto px-4 py-3"
+        className="min-h-0 flex-1 overflow-y-auto px-4 py-3"
       >
         {messagesQuery.isLoading && (
           <div className="space-y-3">
@@ -130,7 +131,7 @@ const ChatDetails = ({ chat, send, wsStatus }: ChatDetailsProps) => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => messagesQuery.fetchNextPage()}
+              onClick={handleLoadOlder}
               disabled={messagesQuery.isFetchingNextPage}
             >
               <ArrowUp className="mr-1 size-3" />
@@ -157,26 +158,8 @@ const ChatDetails = ({ chat, send, wsStatus }: ChatDetailsProps) => {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="border-t p-3">
-        <div className="flex gap-2">
-          <Textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Message"
-            className="max-h-32 min-h-10 resize-none"
-            rows={1}
-          />
-          <Button
-            type="button"
-            onClick={handleSend}
-            disabled={!text.trim() || wsStatus !== 'open'}
-            className="shrink-0 self-end"
-          >
-            Send
-          </Button>
-        </div>
-        <p className="text-muted-foreground mt-1.5 text-[11px]">Ctrl+Enter to send</p>
+      <div className="shrink-0">
+        <MessageComposer onSend={handleSend} disabled={wsStatus !== 'open'} />
       </div>
     </div>
   )

@@ -19,13 +19,15 @@ import type { MessageResponse } from '@/types/shared/types'
 export const useGetCompaniesQueryOptions = (data: CompanyListParams) =>
   queryOptions({
     queryKey: ['companies', data],
-    queryFn: () => getCompaniesFn({ data })
+    queryFn: () => getCompaniesFn({ data }),
+    staleTime: 30_000
   })
 
 export const useGetCompanyQueryOptions = (data: { id: string }) =>
   queryOptions({
     queryKey: ['companies', data],
-    queryFn: () => getCompanyFn({ data })
+    queryFn: () => getCompanyFn({ data }),
+    staleTime: 30_000
   })
 
 export const useCreateCompanyMutation = (api: CreateApi) => {

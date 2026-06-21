@@ -18,13 +18,15 @@ export const useSearchUsersQueryOptions = (data: {
 }) =>
   queryOptions({
     queryKey: ['users', 'search', data],
-    queryFn: () => searchUsersFn({ data })
+    queryFn: () => searchUsersFn({ data }),
+    staleTime: 30_000
   })
 
 export const useGetProfileQueryOptions = () =>
   queryOptions({
     queryKey: ['profile'],
-    queryFn: () => getProfileFn()
+    queryFn: () => getProfileFn(),
+    staleTime: 30_000
   })
 
 export const useUpdateProfileMutation = () => {

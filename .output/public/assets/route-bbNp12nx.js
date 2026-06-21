@@ -1,0 +1,1 @@
+import{t as e}from"./Navbar-Dsbx0u3-.js";import{$n as t,Un as n}from"./index-BxAT3mXr.js";var r=t();function i(){return(0,r.jsxs)(`div`,{children:[(0,r.jsx)(e,{}),(0,r.jsx)(`main`,{className:`pt-12 md:pt-14`,children:(0,r.jsx)(n,{})})]})}export{i as component};

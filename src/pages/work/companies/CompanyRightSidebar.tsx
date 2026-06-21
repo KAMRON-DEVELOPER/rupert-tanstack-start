@@ -1,26 +1,11 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Plus } from 'lucide-react'
-import { useState } from 'react'
-import CompanyForm from './CompanyForm'
+import { BarChart3 } from 'lucide-react'
 
 const CompanyRightSidebar = () => {
-  const [createOpen, setCreateOpen] = useState(false)
-
   return (
-    <div className="col-span-1">
-      <Card>
-        <CardHeader>
-          <CardTitle>Companies</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Button className="w-full" onClick={() => setCreateOpen(true)}>
-            <Plus className="size-4" />
-            Create company
-          </Button>
-        </CardContent>
-      </Card>
-      <CompanyForm open={createOpen} onOpenChange={setCreateOpen} />
+    <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed p-4 text-center">
+      <BarChart3 className="text-muted-foreground size-8" />
+      <h3 className="text-sm font-semibold">Insights</h3>
+      <p className="text-muted-foreground text-xs">Company insights will appear here.</p>
     </div>
   )
 }

@@ -88,7 +88,7 @@ export const vacancyUpdateRequestSchema = nullableLocationRequestSchema.extend({
 export const vacancyListParamsSchema = paginationQuerySchema.extend({
   title: z.string().nullish(),
   submissionType: z.enum(SubmissionTypeList).nullish(),
-  specialization: z.enum(SpecializationList).nullish(),
+  specialization: z.array(z.enum(SpecializationList)).nullish(),
   salaryMin: z.number().nullish(),
   salaryMax: z.number().nullish(),
   salaryCurrency: z.enum(SalaryCurrencyList).nullish(),

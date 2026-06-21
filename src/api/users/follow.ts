@@ -17,19 +17,22 @@ import { FollowUpdateRequest } from '@/types/users/follow'
 export const useGetFollowersQueryOptions = (data: PaginationQuery) =>
   queryOptions({
     queryKey: ['followers', data],
-    queryFn: () => getFollowersFn({ data })
+    queryFn: () => getFollowersFn({ data }),
+    staleTime: 30_000
   })
 
 export const useGetFollowingQueryOptions = (data: PaginationQuery) =>
   queryOptions({
     queryKey: ['following', data],
-    queryFn: () => getFollowingFn({ data })
+    queryFn: () => getFollowingFn({ data }),
+    staleTime: 30_000
   })
 
 export const useGetFollowRequestsQueryOptions = (data: PaginationQuery) =>
   queryOptions({
     queryKey: ['follow-requests', data],
-    queryFn: () => getFollowRequestsFn({ data })
+    queryFn: () => getFollowRequestsFn({ data }),
+    staleTime: 30_000
   })
 
 export const useFollowUserMutation = () => {

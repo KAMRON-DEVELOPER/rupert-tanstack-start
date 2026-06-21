@@ -1,26 +1,11 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Plus } from 'lucide-react'
-import { useState } from 'react'
-import VacancyForm from './VacancyForm'
+import { BarChart3 } from 'lucide-react'
 
 const VacancyRightSidebar = () => {
-  const [createOpen, setCreateOpen] = useState(false)
-
   return (
-    <div className="col-span-1">
-      <Card>
-        <CardHeader>
-          <CardTitle>Vacancies</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Button className="w-full" onClick={() => setCreateOpen(true)}>
-            <Plus className="size-4" />
-            Create vacancy
-          </Button>
-        </CardContent>
-      </Card>
-      <VacancyForm open={createOpen} onOpenChange={setCreateOpen} />
+    <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed p-4 text-center">
+      <BarChart3 className="text-muted-foreground size-8" />
+      <h3 className="text-sm font-semibold">Insights</h3>
+      <p className="text-muted-foreground text-xs">Vacancy insights will appear here.</p>
     </div>
   )
 }

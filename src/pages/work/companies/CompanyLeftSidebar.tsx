@@ -1,22 +1,105 @@
-import type { CompanyListParams } from '@/types/companies/company'
+import { useMemo } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
-import { CompanyTypeList, type CompanyType } from '@/types/shared/literals'
-import { Search, Building2, Globe, MapPin, FilterX } from 'lucide-react'
+import { Building2, FilterX, Search } from 'lucide-react'
+
+import { useGetCitiesQueryOptions, useGetCountriesQueryOptions } from '@/api/locations/locations'
 import { Button } from '@/components/ui/button'
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList
+} from '@/components/ui/combobox'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import type { CompanyListParams } from '@/types/companies/company'
+import { CompanyTypeList } from '@/types/shared/literals'
+
+type ComboboxOption<Value extends string = string> = {
+  value: Value
+  label: string
+}
+
+const formatLabel = (value: string) =>
+  value.replace(/_/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
+
+function SingleCombobox<Value extends string>({
+  id,
+  options,
+  value,
+  placeholder,
+  emptyLabel = 'No results found',
+  disabled = false,
+  onChange
+}: {
+  id: string
+  options: ComboboxOption<Value>[]
+  value: Value | null | undefined
+  placeholder: string
+  emptyLabel?: string
+  disabled?: boolean
+  onChange: (value: Value | null) => void
+}) {
+  const selectedOption = options.find((option) => option.value === value) ?? null
+
+  return (
+    <Combobox
+      items={options}
+      value={selectedOption}
+      disabled={disabled}
+      itemToStringLabel={(option) => option.label}
+      itemToStringValue={(option) => option.label}
+      isItemEqualToValue={(item, selected) => item.value === selected.value}
+      onValueChange={(option) => onChange(option?.value ?? null)}
+    >
+      <ComboboxInput
+        id={id}
+        className="w-full"
+        placeholder={placeholder}
+        showClear={Boolean(selectedOption)}
+        disabled={disabled}
+      />
+      <ComboboxContent>
+        <ComboboxEmpty>{emptyLabel}</ComboboxEmpty>
+        <ComboboxList>
+          {(option: ComboboxOption<Value>) => (
+            <ComboboxItem key={option.value} value={option}>
+              {option.label}
+            </ComboboxItem>
+          )}
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+  )
+}
 
 const CompanyLeftSidebar = () => {
   const navigate = useNavigate({ from: '/work/companies/' })
   const search = useSearch({ from: '/(apps)/(work)/work/companies/' })
+  const { data: countriesData } = useQuery(useGetCountriesQueryOptions())
+  const { data: citiesData } = useQuery(
+    useGetCitiesQueryOptions({ countryId: search.countryId ?? '' })
+  )
+
+  const countries = countriesData?.data ?? []
+  const cities = citiesData?.data ?? []
+
+  const countryOptions = useMemo(
+    () => countries.map((country) => ({ value: country.id, label: country.name })),
+    [countries]
+  )
+  const cityOptions = useMemo(
+    () => cities.map((city) => ({ value: city.id, label: city.name })),
+    [cities]
+  )
+  const companyTypeOptions = useMemo(
+    () => CompanyTypeList.map((type) => ({ value: type, label: formatLabel(type) })),
+    []
+  )
 
   const updateFilter = (newFilter: Partial<CompanyListParams>) => {
     navigate({
@@ -26,91 +109,81 @@ const CompanyLeftSidebar = () => {
 
   const clearFilters = () => {
     navigate({
-      search: () => ({})
+      search: (prev) => (prev.own ? { own: prev.own } : {})
     })
   }
 
   return (
-    <div className="bg-card sticky top-24 flex h-fit flex-col gap-6 rounded-xl border p-6">
+    <div className="flex flex-col gap-6 rounded-lg border border-dashed p-4">
       <div className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 text-lg font-semibold">
-          <Search className="text-primary h-5 w-5" />
-          Search
+          <Search className="text-primary size-5" />
+          Filters
         </h2>
         <Button
           variant="ghost"
           size="sm"
           onClick={clearFilters}
-          className="text-muted-foreground hover:text-destructive h-8 text-xs"
+          className="text-muted-foreground hover:text-destructive"
         >
-          <FilterX className="mr-1 h-3.5 w-3.5" />
+          <FilterX data-icon="inline-start" />
           Reset
         </Button>
       </div>
 
-      <div className="space-y-4">
-        <div className="space-y-2">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           <Label htmlFor="name">Company Name</Label>
-          <div className="relative">
-            <Input
+          <InputGroup>
+            <InputGroupAddon>
+              <Building2 />
+            </InputGroupAddon>
+            <InputGroupInput
               id="name"
               placeholder="Search companies..."
-              value={search.name || ''}
+              value={search.name ?? ''}
               onChange={(e) => updateFilter({ name: e.target.value || undefined })}
-              className="pl-9"
             />
-            <Building2 className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-          </div>
+          </InputGroup>
         </div>
 
-        <div className="space-y-2">
-          <Label>Company Type</Label>
-          <Select
-            value={search.type || 'all'}
-            onValueChange={(val) =>
-              updateFilter({ type: val === 'all' ? undefined : (val as CompanyType) })
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="type">Company Type</Label>
+          <SingleCombobox
+            id="type"
+            options={companyTypeOptions}
+            value={search.type}
+            placeholder="Select type"
+            emptyLabel="No types found"
+            onChange={(type) => updateFilter({ type: type ?? undefined })}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="country">Country</Label>
+          <SingleCombobox
+            id="country"
+            options={countryOptions}
+            value={search.countryId}
+            placeholder="Select country"
+            emptyLabel="No countries found"
+            onChange={(countryId) =>
+              updateFilter({ countryId: countryId ?? undefined, cityId: undefined })
             }
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              {CompanyTypeList.map((type) => (
-                <SelectItem key={type} value={type}>
-                  {type.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="country">Country ID</Label>
-          <div className="relative">
-            <Input
-              id="country"
-              placeholder="Filter by country ID..."
-              value={search.countryId || ''}
-              onChange={(e) => updateFilter({ countryId: e.target.value || undefined })}
-              className="pl-9"
-            />
-            <Globe className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="city">City ID</Label>
-          <div className="relative">
-            <Input
-              id="city"
-              placeholder="Filter by city ID..."
-              value={search.cityId || ''}
-              onChange={(e) => updateFilter({ cityId: e.target.value || undefined })}
-              className="pl-9"
-            />
-            <MapPin className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-          </div>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="city">City</Label>
+          <SingleCombobox
+            id="city"
+            options={cityOptions}
+            value={search.cityId}
+            placeholder={search.countryId ? 'Select city' : 'Select a country first'}
+            emptyLabel="No cities found"
+            disabled={!search.countryId}
+            onChange={(cityId) => updateFilter({ cityId: cityId ?? undefined })}
+          />
         </div>
 
         <div className="flex items-center justify-between pt-2">

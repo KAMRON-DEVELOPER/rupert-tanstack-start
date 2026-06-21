@@ -11,7 +11,7 @@ const VacancyList = () => {
   } = useSuspenseQuery(useGetVacanciesQueryOptions(deps))
 
   return (
-    <div className="col-span-2 space-y-4 border p-0.5">
+    <div className="col-span-2 space-y-4 rounded-lg border border-dashed p-4">
       <p>Total vacancies: {total}</p>
 
       <div className="space-y-4">

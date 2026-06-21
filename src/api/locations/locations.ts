@@ -10,7 +10,8 @@ export const useGetCountriesQueryOptions = (
       Object.keys(data).length > 0
         ? (['countries', data] as const)
         : (['countries'] as const),
-    queryFn: () => getCountriesFn({ data })
+    queryFn: () => getCountriesFn({ data }),
+    staleTime: 30_000
   })
 
 export const useGetCitiesQueryOptions = (
@@ -19,5 +20,6 @@ export const useGetCitiesQueryOptions = (
   queryOptions({
     queryKey: ['countries', data.countryId, 'cities', data] as const,
     queryFn: () => getCitiesFn({ data: { offset: 0, limit: 100, ...data } }),
-    enabled: Boolean(data.countryId)
+    enabled: Boolean(data.countryId),
+    staleTime: 3_600_000
   })

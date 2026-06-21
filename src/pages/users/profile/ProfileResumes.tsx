@@ -23,7 +23,7 @@ import { FileText, Pencil, Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 
 import { toast } from 'sonner'
-import { useQuery } from '@tanstack/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { ResumeCreateRequest } from '@/types/users/resume'
 import { UserDetailResponse } from '@/types/users/user'
 import {
@@ -54,8 +54,8 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
   const createResumeMutation = useCreateResumeMutation()
   const updateResumeMutation = useUpdateResumeMutation()
   const deleteResumeMutation = useDeleteResumeMutation()
-  const { data: resumesData } = useQuery(useGetResumesQueryOptions())
-  const resumes = resumesData ?? []
+  const { data: resumesData } = useSuspenseQuery(useGetResumesQueryOptions())
+  const resumes = resumesData.data
   const editingResume = resumes.find((resume) => resume.id === editingResumeId)
 
   const handleAddResume = async () => {

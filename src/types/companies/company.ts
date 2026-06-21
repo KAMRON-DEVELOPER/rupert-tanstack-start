@@ -58,7 +58,7 @@ export const companyListParamsSchema = paginationQuerySchema.extend({
   type: z.enum(CompanyTypeList).nullish(),
   status: z.enum(CompanyStatusList).nullish(),
   hasOpenVacancies: queryBooleanSchema.nullish(),
-  skillIds: z.array(uuid).nullish()
+  own: queryBooleanSchema.nullish()
 })
 
 // --- Company Responses ---

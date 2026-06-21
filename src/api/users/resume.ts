@@ -15,13 +15,15 @@ import { ResumeCreateRequest, ResumeUpdateRequest } from '@/types/users/resume'
 export const useGetResumesQueryOptions = () =>
   queryOptions({
     queryKey: ['resumes'],
-    queryFn: () => getResumesFn()
+    queryFn: () => getResumesFn(),
+    staleTime: 30_000
   })
 
 export const useGetResumeQueryOptions = (data: { resumeId: string }) =>
   queryOptions({
     queryKey: ['resumes', data],
-    queryFn: () => getResumeFn({ data })
+    queryFn: () => getResumeFn({ data }),
+    staleTime: 30_000
   })
 
 export const useCreateResumeMutation = () => {

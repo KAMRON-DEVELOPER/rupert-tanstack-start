@@ -1,0 +1,2 @@
+import{yt as e}from"./index-BxAT3mXr.js";e.object({message:e.string()});var t=e.object({details:e.union([e.string(),e.array(e.string())])});e.object({name:e.string()});function n(e){return t.safeParse(e).success}function r(e,t=`Something went wrong`){return n(e)?Array.isArray(e.details)?e.details.join(`
+`):e.details:t}export{r as t};

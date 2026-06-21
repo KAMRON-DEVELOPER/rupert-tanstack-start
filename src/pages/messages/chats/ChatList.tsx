@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { useGetChatsQueryOptions } from '@/api/chats/chats'
 import { useSearchUsersQueryOptions } from '@/api/users/users'
 import type { ChatListItemResponse } from '@/types/chats/chat'
@@ -46,8 +47,8 @@ const ChatList = ({ selectedChatId, onSelectChat, onStartChat }: ChatListProps) 
   }
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="p-3">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="shrink-0 px-3 pt-2 pb-1">
         <div className="relative">
           <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <Input
@@ -59,7 +60,7 @@ const ChatList = ({ selectedChatId, onSelectChat, onStartChat }: ChatListProps) 
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <ScrollArea className="min-h-0 flex-1">
         {isSearching ? (
           <UserSearchResults
             results={searchResults}
@@ -115,7 +116,7 @@ const ChatList = ({ selectedChatId, onSelectChat, onStartChat }: ChatListProps) 
             )}
           </>
         )}
-      </div>
+      </ScrollArea>
     </div>
   )
 }

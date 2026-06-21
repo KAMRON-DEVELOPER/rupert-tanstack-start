@@ -1,0 +1,1 @@
+import{$n as e}from"./index-BxAT3mXr.js";var t=e(),n=({title:e,description:n})=>(0,t.jsxs)(`div`,{className:`rounded-lg border border-dashed p-4 text-sm`,children:[(0,t.jsx)(`p`,{className:`font-medium`,children:e}),n&&(0,t.jsx)(`p`,{className:`text-muted-foreground mt-1`,children:n})]});export{n as t};

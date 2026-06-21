@@ -10,7 +10,8 @@ export const useGetChatsQueryOptions = (
       Object.keys(data).length > 0
         ? (['chats', data] as const)
         : (['chats'] as const),
-    queryFn: () => getChatsFn({ data })
+    queryFn: () => getChatsFn({ data }),
+    staleTime: 30_000
   })
 
 export const useGetChatMessagesQueryOptions = (
@@ -18,5 +19,6 @@ export const useGetChatMessagesQueryOptions = (
 ) =>
   queryOptions({
     queryKey: ['chats', data.chatId, 'messages'] as const,
-    queryFn: () => getChatMessagesFn({ data })
+    queryFn: () => getChatMessagesFn({ data }),
+    staleTime: 30_000
   })

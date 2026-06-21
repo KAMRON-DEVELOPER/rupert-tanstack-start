@@ -17,7 +17,8 @@ import {
 export const useGetUserSkillsQueryOptions = () =>
   queryOptions({
     queryKey: ['user-skills'],
-    queryFn: () => getUserSkillsFn()
+    queryFn: () => getUserSkillsFn(),
+    staleTime: 30_000
   })
 
 export const useAddUserSkillMutation = () => {

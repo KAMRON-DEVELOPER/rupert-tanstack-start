@@ -2,18 +2,16 @@ import appCss from '@/styles.css?url'
 
 import type { ReactNode } from 'react'
 import { Outlet, HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'sonner'
 import { CreateApi } from '@/api/api'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import { authProbeFn } from '@/api/users/auth.functions'
 import { WebSocketProvider } from '@/hooks/useWebsocket'
 import { useGetCountriesQueryOptions } from '@/api/locations/locations'
 import { useGetSkillsQueryOptions } from '@/api/skills/skills'
+import { useGetAuthProbeQueryOptions } from '@/api/users/auth'
 
 export type RouterContext = {
   queryClient: QueryClient
@@ -40,8 +38,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { rel: 'icon', type: 'image/svg+xml', href: '/RupertSvg.svg' }
     ]
   }),
-  beforeLoad: async () => {
-    const isAuthenticated = await authProbeFn()
+  beforeLoad: async ({ context: { queryClient } }) => {
+    const isAuthenticated = await queryClient.ensureQueryData(useGetAuthProbeQueryOptions())
     return { isAuthenticated }
   },
   loader: async ({ context: { queryClient } }) => {
@@ -87,8 +85,8 @@ function RootComponent() {
             }}
           />
         </ThemeProvider>
-        <TanStackRouterDevtools position="bottom-right" />
-        <ReactQueryDevtools />
+        {/* <TanStackRouterDevtools position="bottom-right" /> */}
+        {/* <ReactQueryDevtools /> */}
       </QueryClientProvider>
     </RootDocument>
   )

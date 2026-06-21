@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  queryOptions,
+  useMutation,
+  useQueryClient
+} from '@tanstack/react-query'
 
 import { CreateApi } from '@/api/api'
 import {
@@ -6,7 +10,14 @@ import {
   EmailAuthResponse,
   PasswordSetupRequest
 } from '@/types/users/auth'
-import { logoutFn } from './auth.functions'
+import { authProbeFn, logoutFn } from './auth.functions'
+
+export const useGetAuthProbeQueryOptions = () =>
+  queryOptions({
+    queryKey: ['authProbe'],
+    queryFn: () => authProbeFn(),
+    staleTime: 30_000
+  })
 
 export const useEmailAuthMutation = (api: CreateApi) => {
   const queryClient = useQueryClient()

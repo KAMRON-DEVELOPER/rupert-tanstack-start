@@ -17,7 +17,8 @@ import {
 export const useGetWorkExperiencesQueryOptions = () =>
   queryOptions({
     queryKey: ['work-experiences'],
-    queryFn: () => getWorkExperiencesFn()
+    queryFn: () => getWorkExperiencesFn(),
+    staleTime: 30_000
   })
 
 export const useCreateWorkExperienceMutation = () => {

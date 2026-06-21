@@ -7,13 +7,14 @@ import {
 import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
 import { createServerApi } from '../api.server'
+import { paginatedResponseSchema } from '@/types/shared/pagination'
 
 export const getResumesFn = createServerFn().handler(async () => {
   const api = createServerApi()
 
   const data = await api('users/resumes')
 
-  const result = resumeResponseSchema.array().safeParse(data)
+  const result = paginatedResponseSchema(resumeResponseSchema).safeParse(data)
 
   if (!result.success) {
     console.error('[resumeResponseSchema] parse failed:', result.error.message)

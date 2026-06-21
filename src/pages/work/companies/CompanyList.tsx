@@ -11,7 +11,7 @@ const CompanyList = () => {
   } = useSuspenseQuery(useGetCompaniesQueryOptions(deps))
 
   return (
-    <div className="col-span-2 space-y-2 border-x">
+    <div className="col-span-2 space-y-2 rounded-lg border border-dashed p-4">
       <p>Total companies: {total}</p>
 
       <div className="space-y-2">

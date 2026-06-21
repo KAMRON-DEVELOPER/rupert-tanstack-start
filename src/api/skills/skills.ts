@@ -10,5 +10,6 @@ export const useGetSkillsQueryOptions = (
       Object.keys(data).length > 0
         ? (['skills', data] as const)
         : (['skills'] as const),
-    queryFn: () => getSkillsFn({ data })
+    queryFn: () => getSkillsFn({ data }),
+    staleTime: 3_600_000
   })

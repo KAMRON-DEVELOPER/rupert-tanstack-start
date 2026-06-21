@@ -30,25 +30,29 @@ import type {
 export const useGetVacanciesQueryOptions = (data: VacancyListParams) =>
   queryOptions({
     queryKey: ['vacancies', data],
-    queryFn: () => getVacanciesFn({ data })
+    queryFn: () => getVacanciesFn({ data }),
+    staleTime: 30_000
   })
 
 export const useGetVacancyQueryOptions = (data: { id: string }) =>
   queryOptions({
     queryKey: ['vacancies', data],
-    queryFn: () => getVacancyFn({ data })
+    queryFn: () => getVacancyFn({ data }),
+    staleTime: 30_000
   })
 
 export const useGetApplicationsQueryOptions = (data: ApplicationListParams) =>
   queryOptions({
     queryKey: ['applications', data],
-    queryFn: () => getApplicationsFn({ data })
+    queryFn: () => getApplicationsFn({ data }),
+    staleTime: 30_000
   })
 
 export const useGetApplicationQueryOptions = (data: { id: string }) =>
   queryOptions({
     queryKey: ['applications', data],
-    queryFn: () => getApplicationFn({ data })
+    queryFn: () => getApplicationFn({ data }),
+    staleTime: 30_000
   })
 
 export const useCreateVacancyMutation = (api: CreateApi) => {
