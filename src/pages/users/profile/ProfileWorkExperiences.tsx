@@ -1,9 +1,16 @@
+import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useSuspenseQuery, useQuery } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
+import { toast } from 'sonner'
+
 import {
   useCreateWorkExperienceMutation,
   useDeleteWorkExperienceMutation,
   useGetWorkExperiencesQueryOptions,
   useUpdateWorkExperienceMutation
 } from '@/api/users/work-experience'
+import { useGetCountriesQueryOptions, useGetCitiesQueryOptions } from '@/api/locations/locations'
+import { SingleCombobox } from '@/components/combobox'
 import EmptyState from '@/components/forms/EmptyState'
 import FormError from '@/components/forms/FormError'
 import SubmitButton from '@/components/forms/SubmitButton'
@@ -20,18 +27,13 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
-
 import { getErrorMessage } from '@/types/shared/helper'
 import {
   WorkExperienceCreateRequest,
   WorkExperienceResponse,
   WorkExperienceUpdateRequest
 } from '@/types/users/work-experience'
-import { useQuery } from '@tanstack/react-query'
-import { isAxiosError } from 'axios'
 import { Pencil, Plus, Trash2 } from 'lucide-react'
-import { useEffect, useState, type SubmitEvent } from 'react'
-import { toast } from 'sonner'
 
 type WorkExperienceFormState = {
   countryId: string
@@ -56,11 +58,7 @@ const emptyForm: WorkExperienceFormState = {
 }
 
 const ProfileWorkExperiences = () => {
-  const {
-    data: workExperiences,
-    isPending,
-    isError
-  } = useQuery(useGetWorkExperiencesQueryOptions())
+  const { data: workExperiences } = useSuspenseQuery(useGetWorkExperiencesQueryOptions())
   const deleteWorkExperience = useDeleteWorkExperienceMutation()
   const [editing, setEditing] = useState<WorkExperienceResponse | null>(null)
   const [formOpen, setFormOpen] = useState(false)
@@ -91,12 +89,8 @@ const ProfileWorkExperiences = () => {
         </Button>
       </CardHeader>
       <CardContent className="space-y-3">
-        {isPending && <p className="text-muted-foreground text-sm">Loading...</p>}
-        {isError && (
-          <p className="text-muted-foreground text-sm">Work experiences are not available.</p>
-        )}
-        {workExperiences?.length === 0 && <EmptyState title="No work experience" />}
-        {workExperiences?.map((item) => (
+        {workExperiences.length === 0 && <EmptyState title="No work experience" />}
+        {workExperiences.map((item) => (
           <div key={item.id} className="rounded-lg border p-3">
             <div className="flex items-start justify-between gap-3">
               <div>
@@ -171,6 +165,18 @@ const WorkExperienceForm = ({
       : emptyForm
   )
 
+  const { data: countriesData } = useSuspenseQuery(useGetCountriesQueryOptions())
+  const { data: citiesData } = useQuery(useGetCitiesQueryOptions({ countryId: form.countryId }))
+
+  const countryOptions = useMemo(
+    () => countriesData.data.map((c) => ({ value: c.id, label: c.name })),
+    [countriesData]
+  )
+  const cityOptions = useMemo(
+    () => (citiesData?.data ?? []).map((c) => ({ value: c.id, label: c.name })),
+    [citiesData]
+  )
+
   useEffect(() => {
     setIsCurrent(workExperience?.isCurrent ?? false)
     setForm(
@@ -192,9 +198,15 @@ const WorkExperienceForm = ({
   const updateField = <K extends keyof WorkExperienceFormState>(
     key: K,
     value: WorkExperienceFormState[K]
-  ) => setForm((prev) => ({ ...prev, [key]: value }))
+  ) => {
+    setForm((prev) => {
+      const next = { ...prev, [key]: value }
+      if (key === 'countryId') next.cityId = ''
+      return next
+    })
+  }
 
-  const submit = async (event: SubmitEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError(null)
 
@@ -204,7 +216,7 @@ const WorkExperienceForm = ({
     const countryId = form.countryId.trim()
 
     if (!workExperience && !countryId) {
-      setError('Country ID is required')
+      setError('Country is required')
       return
     }
 
@@ -294,20 +306,26 @@ const WorkExperienceForm = ({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="work-country">Country ID</Label>
-              <Input
+              <Label htmlFor="work-country">Country</Label>
+              <SingleCombobox
                 id="work-country"
+                options={countryOptions}
                 value={form.countryId}
-                onChange={(event) => updateField('countryId', event.target.value)}
-                required={!workExperience}
+                placeholder="Select country"
+                emptyLabel="No countries found"
+                onChange={(val) => updateField('countryId', val ?? '')}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="work-city">City ID</Label>
-              <Input
+              <Label htmlFor="work-city">City</Label>
+              <SingleCombobox
                 id="work-city"
+                options={cityOptions}
                 value={form.cityId}
-                onChange={(event) => updateField('cityId', event.target.value)}
+                placeholder={form.countryId ? 'Select city' : 'Select a country first'}
+                emptyLabel="No cities found"
+                disabled={!form.countryId}
+                onChange={(val) => updateField('cityId', val ?? '')}
               />
             </div>
             <div className="space-y-2">

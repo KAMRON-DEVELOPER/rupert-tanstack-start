@@ -3,11 +3,11 @@ import { UserDetailResponse } from '@/types/users/user'
 import { SiGithub } from '@icons-pack/react-simple-icons'
 import { Mail, Phone } from 'lucide-react'
 
-interface ProfileSidebarProps {
+interface ProfileContactInfoProps {
   user: UserDetailResponse
 }
 
-const ProfileSidebar = ({ user }: ProfileSidebarProps) => {
+const ProfileContactInfo = ({ user }: ProfileContactInfoProps) => {
   const links = [
     {
       icon: Mail,
@@ -104,4 +104,4 @@ const ProfileSidebar = ({ user }: ProfileSidebarProps) => {
   )
 }
 
-export default ProfileSidebar
+export default ProfileContactInfo

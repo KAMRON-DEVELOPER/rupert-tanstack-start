@@ -4,78 +4,16 @@ import { useNavigate, useSearch } from '@tanstack/react-router'
 import { Building2, FilterX, Search } from 'lucide-react'
 
 import { useGetCitiesQueryOptions, useGetCountriesQueryOptions } from '@/api/locations/locations'
+import { SingleCombobox } from '@/components/combobox'
 import { Button } from '@/components/ui/button'
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList
-} from '@/components/ui/combobox'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import type { CompanyListParams } from '@/types/companies/company'
 import { CompanyTypeList } from '@/types/shared/literals'
 
-type ComboboxOption<Value extends string = string> = {
-  value: Value
-  label: string
-}
-
 const formatLabel = (value: string) =>
   value.replace(/_/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
-
-function SingleCombobox<Value extends string>({
-  id,
-  options,
-  value,
-  placeholder,
-  emptyLabel = 'No results found',
-  disabled = false,
-  onChange
-}: {
-  id: string
-  options: ComboboxOption<Value>[]
-  value: Value | null | undefined
-  placeholder: string
-  emptyLabel?: string
-  disabled?: boolean
-  onChange: (value: Value | null) => void
-}) {
-  const selectedOption = options.find((option) => option.value === value) ?? null
-
-  return (
-    <Combobox
-      items={options}
-      value={selectedOption}
-      disabled={disabled}
-      itemToStringLabel={(option) => option.label}
-      itemToStringValue={(option) => option.label}
-      isItemEqualToValue={(item, selected) => item.value === selected.value}
-      onValueChange={(option) => onChange(option?.value ?? null)}
-    >
-      <ComboboxInput
-        id={id}
-        className="w-full"
-        placeholder={placeholder}
-        showClear={Boolean(selectedOption)}
-        disabled={disabled}
-      />
-      <ComboboxContent>
-        <ComboboxEmpty>{emptyLabel}</ComboboxEmpty>
-        <ComboboxList>
-          {(option: ComboboxOption<Value>) => (
-            <ComboboxItem key={option.value} value={option}>
-              {option.label}
-            </ComboboxItem>
-          )}
-        </ComboboxList>
-      </ComboboxContent>
-    </Combobox>
-  )
-}
 
 const CompanyLeftSidebar = () => {
   const navigate = useNavigate({ from: '/work/companies/' })

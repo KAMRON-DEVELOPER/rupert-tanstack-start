@@ -1,4 +1,9 @@
+import { useMemo, useState } from 'react'
+import { useSuspenseQuery, useQuery } from '@tanstack/react-query'
+
 import { useUpdateProfileMutation } from '@/api/users/users'
+import { useGetCountriesQueryOptions, useGetCitiesQueryOptions } from '@/api/locations/locations'
+import { SingleCombobox } from '@/components/combobox'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -12,7 +17,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { UserDetailResponse, UserUpdateRequest } from '@/types/users/user'
-import { useState } from 'react'
 import { toast } from 'sonner'
 
 type ProfileEditForm = Pick<
@@ -56,6 +60,18 @@ const ProfileEditDialog = ({ user, open, onOpenChange }: ProfileEditDialogProps)
     cityId: user.city?.id ?? ''
   })
   const updateMutation = useUpdateProfileMutation()
+
+  const { data: countriesData } = useSuspenseQuery(useGetCountriesQueryOptions())
+  const { data: citiesData } = useQuery(useGetCitiesQueryOptions({ countryId: formData.countryId }))
+
+  const countryOptions = useMemo(
+    () => countriesData.data.map((c) => ({ value: c.id, label: c.name })),
+    [countriesData]
+  )
+  const cityOptions = useMemo(
+    () => (citiesData?.data ?? []).map((c) => ({ value: c.id, label: c.name })),
+    [citiesData]
+  )
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -143,17 +159,29 @@ const ProfileEditDialog = ({ user, open, onOpenChange }: ProfileEditDialogProps)
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="countryId">Country ID</Label>
-              <Input
+              <Label htmlFor="countryId">Country</Label>
+              <SingleCombobox
                 id="countryId"
-                name="countryId"
+                options={countryOptions}
                 value={formData.countryId}
-                onChange={handleChange}
+                placeholder="Select country"
+                emptyLabel="No countries found"
+                onChange={(val) =>
+                  setFormData((prev) => ({ ...prev, countryId: val ?? '', cityId: '' }))
+                }
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="cityId">City ID</Label>
-              <Input id="cityId" name="cityId" value={formData.cityId} onChange={handleChange} />
+              <Label htmlFor="cityId">City</Label>
+              <SingleCombobox
+                id="cityId"
+                options={cityOptions}
+                value={formData.cityId}
+                placeholder={formData.countryId ? 'Select city' : 'Select a country first'}
+                emptyLabel="No cities found"
+                disabled={!formData.countryId}
+                onChange={(val) => setFormData((prev) => ({ ...prev, cityId: val ?? '' }))}
+              />
             </div>
           </div>
           <DialogFooter>

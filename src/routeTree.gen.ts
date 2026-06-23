@@ -13,21 +13,30 @@ import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as appsRouteRouteImport } from './routes/(apps)/route'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
 import { Route as publicTermsRouteImport } from './routes/(public)/terms'
+import { Route as publicProfileRouteImport } from './routes/(public)/profile'
 import { Route as publicPrivacyRouteImport } from './routes/(public)/privacy'
 import { Route as adminAdminRouteImport } from './routes/(admin)/admin'
 import { Route as appsworkRouteRouteImport } from './routes/(apps)/(work)/route'
 import { Route as appsmessagesRouteRouteImport } from './routes/(apps)/(messages)/route'
-import { Route as usersAuthIndexRouteImport } from './routes/(users)/auth.index'
 import { Route as publicProfileIndexRouteImport } from './routes/(public)/profile.index'
+import { Route as authAuthIndexRouteImport } from './routes/(auth)/auth.index'
 import { Route as appsPostsIndexRouteImport } from './routes/(apps)/posts.index'
 import { Route as appsFeedsIndexRouteImport } from './routes/(apps)/feeds.index'
 import { Route as adminAdminIndexRouteImport } from './routes/(admin)/admin.index'
-import { Route as usersAuthVerifyRouteImport } from './routes/(users)/auth.verify'
-import { Route as usersAuthPasswordSetupRouteImport } from './routes/(users)/auth.password-setup'
+import { Route as authAuthVerifyRouteImport } from './routes/(auth)/auth.verify'
+import { Route as authAuthPasswordSetupRouteImport } from './routes/(auth)/auth.password-setup'
 import { Route as adminAdminSkillsRouteImport } from './routes/(admin)/admin.skills'
 import { Route as adminAdminLocationsRouteImport } from './routes/(admin)/admin.locations'
+import { Route as publicProfileWorkExperienceIndexRouteImport } from './routes/(public)/profile.work-experience.index'
+import { Route as publicProfileSkillsIndexRouteImport } from './routes/(public)/profile.skills.index'
+import { Route as publicProfileSessionsIndexRouteImport } from './routes/(public)/profile.sessions.index'
+import { Route as publicProfileResumesIndexRouteImport } from './routes/(public)/profile.resumes.index'
+import { Route as publicProfileFollowsIndexRouteImport } from './routes/(public)/profile.follows.index'
+import { Route as publicProfileCompanyIndexRouteImport } from './routes/(public)/profile.company.index'
+import { Route as publicProfileApplicationsIndexRouteImport } from './routes/(public)/profile.applications.index'
 import { Route as appsworkWorkIndexRouteImport } from './routes/(apps)/(work)/work.index'
 import { Route as appsmessagesMessagesIndexRouteImport } from './routes/(apps)/(messages)/messages.index'
+import { Route as publicProfileCompanyIdRouteImport } from './routes/(public)/profile.company.$id'
 import { Route as appsworkWorkVacanciesIndexRouteImport } from './routes/(apps)/(work)/work.vacancies.index'
 import { Route as appsworkWorkCompaniesIndexRouteImport } from './routes/(apps)/(work)/work.companies.index'
 import { Route as appsworkWorkApplicationsIndexRouteImport } from './routes/(apps)/(work)/work.applications.index'
@@ -55,6 +64,11 @@ const publicTermsRoute = publicTermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => publicRouteRoute,
 } as any)
+const publicProfileRoute = publicProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => publicRouteRoute,
+} as any)
 const publicPrivacyRoute = publicPrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -73,15 +87,15 @@ const appsmessagesRouteRoute = appsmessagesRouteRouteImport.update({
   id: '/(messages)',
   getParentRoute: () => appsRouteRoute,
 } as any)
-const usersAuthIndexRoute = usersAuthIndexRouteImport.update({
-  id: '/(users)/auth/',
+const publicProfileIndexRoute = publicProfileIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicProfileRoute,
+} as any)
+const authAuthIndexRoute = authAuthIndexRouteImport.update({
+  id: '/(auth)/auth/',
   path: '/auth/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const publicProfileIndexRoute = publicProfileIndexRouteImport.update({
-  id: '/profile/',
-  path: '/profile/',
-  getParentRoute: () => publicRouteRoute,
 } as any)
 const appsPostsIndexRoute = appsPostsIndexRouteImport.update({
   id: '/posts/',
@@ -98,13 +112,13 @@ const adminAdminIndexRoute = adminAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => adminAdminRoute,
 } as any)
-const usersAuthVerifyRoute = usersAuthVerifyRouteImport.update({
-  id: '/(users)/auth/verify',
+const authAuthVerifyRoute = authAuthVerifyRouteImport.update({
+  id: '/(auth)/auth/verify',
   path: '/auth/verify',
   getParentRoute: () => rootRouteImport,
 } as any)
-const usersAuthPasswordSetupRoute = usersAuthPasswordSetupRouteImport.update({
-  id: '/(users)/auth/password-setup',
+const authAuthPasswordSetupRoute = authAuthPasswordSetupRouteImport.update({
+  id: '/(auth)/auth/password-setup',
   path: '/auth/password-setup',
   getParentRoute: () => rootRouteImport,
 } as any)
@@ -118,6 +132,48 @@ const adminAdminLocationsRoute = adminAdminLocationsRouteImport.update({
   path: '/locations',
   getParentRoute: () => adminAdminRoute,
 } as any)
+const publicProfileWorkExperienceIndexRoute =
+  publicProfileWorkExperienceIndexRouteImport.update({
+    id: '/work-experience/',
+    path: '/work-experience/',
+    getParentRoute: () => publicProfileRoute,
+  } as any)
+const publicProfileSkillsIndexRoute =
+  publicProfileSkillsIndexRouteImport.update({
+    id: '/skills/',
+    path: '/skills/',
+    getParentRoute: () => publicProfileRoute,
+  } as any)
+const publicProfileSessionsIndexRoute =
+  publicProfileSessionsIndexRouteImport.update({
+    id: '/sessions/',
+    path: '/sessions/',
+    getParentRoute: () => publicProfileRoute,
+  } as any)
+const publicProfileResumesIndexRoute =
+  publicProfileResumesIndexRouteImport.update({
+    id: '/resumes/',
+    path: '/resumes/',
+    getParentRoute: () => publicProfileRoute,
+  } as any)
+const publicProfileFollowsIndexRoute =
+  publicProfileFollowsIndexRouteImport.update({
+    id: '/follows/',
+    path: '/follows/',
+    getParentRoute: () => publicProfileRoute,
+  } as any)
+const publicProfileCompanyIndexRoute =
+  publicProfileCompanyIndexRouteImport.update({
+    id: '/company/',
+    path: '/company/',
+    getParentRoute: () => publicProfileRoute,
+  } as any)
+const publicProfileApplicationsIndexRoute =
+  publicProfileApplicationsIndexRouteImport.update({
+    id: '/applications/',
+    path: '/applications/',
+    getParentRoute: () => publicProfileRoute,
+  } as any)
 const appsworkWorkIndexRoute = appsworkWorkIndexRouteImport.update({
   id: '/work/',
   path: '/work/',
@@ -129,6 +185,11 @@ const appsmessagesMessagesIndexRoute =
     path: '/messages/',
     getParentRoute: () => appsmessagesRouteRoute,
   } as any)
+const publicProfileCompanyIdRoute = publicProfileCompanyIdRouteImport.update({
+  id: '/company/$id',
+  path: '/company/$id',
+  getParentRoute: () => publicProfileRoute,
+} as any)
 const appsworkWorkVacanciesIndexRoute =
   appsworkWorkVacanciesIndexRouteImport.update({
     id: '/work/vacancies/',
@@ -179,19 +240,28 @@ const appsworkWorkApplicationsIdRoute =
 export interface FileRoutesByFullPath {
   '/admin': typeof adminAdminRouteWithChildren
   '/privacy': typeof publicPrivacyRoute
+  '/profile': typeof publicProfileRouteWithChildren
   '/terms': typeof publicTermsRoute
   '/': typeof publicIndexRoute
   '/admin/locations': typeof adminAdminLocationsRoute
   '/admin/skills': typeof adminAdminSkillsRoute
-  '/auth/password-setup': typeof usersAuthPasswordSetupRoute
-  '/auth/verify': typeof usersAuthVerifyRoute
+  '/auth/password-setup': typeof authAuthPasswordSetupRoute
+  '/auth/verify': typeof authAuthVerifyRoute
   '/admin/': typeof adminAdminIndexRoute
   '/feeds/': typeof appsFeedsIndexRoute
   '/posts/': typeof appsPostsIndexRoute
+  '/auth/': typeof authAuthIndexRoute
   '/profile/': typeof publicProfileIndexRoute
-  '/auth/': typeof usersAuthIndexRoute
+  '/profile/company/$id': typeof publicProfileCompanyIdRoute
   '/messages/': typeof appsmessagesMessagesIndexRoute
   '/work/': typeof appsworkWorkIndexRoute
+  '/profile/applications/': typeof publicProfileApplicationsIndexRoute
+  '/profile/company/': typeof publicProfileCompanyIndexRoute
+  '/profile/follows/': typeof publicProfileFollowsIndexRoute
+  '/profile/resumes/': typeof publicProfileResumesIndexRoute
+  '/profile/sessions/': typeof publicProfileSessionsIndexRoute
+  '/profile/skills/': typeof publicProfileSkillsIndexRoute
+  '/profile/work-experience/': typeof publicProfileWorkExperienceIndexRoute
   '/work/applications/$id': typeof appsworkWorkApplicationsIdRoute
   '/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
   '/work/vacancies/$id': typeof appsworkWorkVacanciesIdRoute
@@ -207,15 +277,23 @@ export interface FileRoutesByTo {
   '/': typeof publicIndexRoute
   '/admin/locations': typeof adminAdminLocationsRoute
   '/admin/skills': typeof adminAdminSkillsRoute
-  '/auth/password-setup': typeof usersAuthPasswordSetupRoute
-  '/auth/verify': typeof usersAuthVerifyRoute
+  '/auth/password-setup': typeof authAuthPasswordSetupRoute
+  '/auth/verify': typeof authAuthVerifyRoute
   '/admin': typeof adminAdminIndexRoute
   '/feeds': typeof appsFeedsIndexRoute
   '/posts': typeof appsPostsIndexRoute
+  '/auth': typeof authAuthIndexRoute
   '/profile': typeof publicProfileIndexRoute
-  '/auth': typeof usersAuthIndexRoute
+  '/profile/company/$id': typeof publicProfileCompanyIdRoute
   '/messages': typeof appsmessagesMessagesIndexRoute
   '/work': typeof appsworkWorkIndexRoute
+  '/profile/applications': typeof publicProfileApplicationsIndexRoute
+  '/profile/company': typeof publicProfileCompanyIndexRoute
+  '/profile/follows': typeof publicProfileFollowsIndexRoute
+  '/profile/resumes': typeof publicProfileResumesIndexRoute
+  '/profile/sessions': typeof publicProfileSessionsIndexRoute
+  '/profile/skills': typeof publicProfileSkillsIndexRoute
+  '/profile/work-experience': typeof publicProfileWorkExperienceIndexRoute
   '/work/applications/$id': typeof appsworkWorkApplicationsIdRoute
   '/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
   '/work/vacancies/$id': typeof appsworkWorkVacanciesIdRoute
@@ -233,19 +311,28 @@ export interface FileRoutesById {
   '/(apps)/(work)': typeof appsworkRouteRouteWithChildren
   '/(admin)/admin': typeof adminAdminRouteWithChildren
   '/(public)/privacy': typeof publicPrivacyRoute
+  '/(public)/profile': typeof publicProfileRouteWithChildren
   '/(public)/terms': typeof publicTermsRoute
   '/(public)/': typeof publicIndexRoute
   '/(admin)/admin/locations': typeof adminAdminLocationsRoute
   '/(admin)/admin/skills': typeof adminAdminSkillsRoute
-  '/(users)/auth/password-setup': typeof usersAuthPasswordSetupRoute
-  '/(users)/auth/verify': typeof usersAuthVerifyRoute
+  '/(auth)/auth/password-setup': typeof authAuthPasswordSetupRoute
+  '/(auth)/auth/verify': typeof authAuthVerifyRoute
   '/(admin)/admin/': typeof adminAdminIndexRoute
   '/(apps)/feeds/': typeof appsFeedsIndexRoute
   '/(apps)/posts/': typeof appsPostsIndexRoute
+  '/(auth)/auth/': typeof authAuthIndexRoute
   '/(public)/profile/': typeof publicProfileIndexRoute
-  '/(users)/auth/': typeof usersAuthIndexRoute
+  '/(public)/profile/company/$id': typeof publicProfileCompanyIdRoute
   '/(apps)/(messages)/messages/': typeof appsmessagesMessagesIndexRoute
   '/(apps)/(work)/work/': typeof appsworkWorkIndexRoute
+  '/(public)/profile/applications/': typeof publicProfileApplicationsIndexRoute
+  '/(public)/profile/company/': typeof publicProfileCompanyIndexRoute
+  '/(public)/profile/follows/': typeof publicProfileFollowsIndexRoute
+  '/(public)/profile/resumes/': typeof publicProfileResumesIndexRoute
+  '/(public)/profile/sessions/': typeof publicProfileSessionsIndexRoute
+  '/(public)/profile/skills/': typeof publicProfileSkillsIndexRoute
+  '/(public)/profile/work-experience/': typeof publicProfileWorkExperienceIndexRoute
   '/(apps)/(work)/work/applications/$id': typeof appsworkWorkApplicationsIdRoute
   '/(apps)/(work)/work/companies/$id': typeof appsworkWorkCompaniesIdRoute
   '/(apps)/(work)/work/vacancies/$id': typeof appsworkWorkVacanciesIdRoute
@@ -260,6 +347,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/admin'
     | '/privacy'
+    | '/profile'
     | '/terms'
     | '/'
     | '/admin/locations'
@@ -269,10 +357,18 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/feeds/'
     | '/posts/'
-    | '/profile/'
     | '/auth/'
+    | '/profile/'
+    | '/profile/company/$id'
     | '/messages/'
     | '/work/'
+    | '/profile/applications/'
+    | '/profile/company/'
+    | '/profile/follows/'
+    | '/profile/resumes/'
+    | '/profile/sessions/'
+    | '/profile/skills/'
+    | '/profile/work-experience/'
     | '/work/applications/$id'
     | '/work/companies/$id'
     | '/work/vacancies/$id'
@@ -293,10 +389,18 @@ export interface FileRouteTypes {
     | '/admin'
     | '/feeds'
     | '/posts'
-    | '/profile'
     | '/auth'
+    | '/profile'
+    | '/profile/company/$id'
     | '/messages'
     | '/work'
+    | '/profile/applications'
+    | '/profile/company'
+    | '/profile/follows'
+    | '/profile/resumes'
+    | '/profile/sessions'
+    | '/profile/skills'
+    | '/profile/work-experience'
     | '/work/applications/$id'
     | '/work/companies/$id'
     | '/work/vacancies/$id'
@@ -313,19 +417,28 @@ export interface FileRouteTypes {
     | '/(apps)/(work)'
     | '/(admin)/admin'
     | '/(public)/privacy'
+    | '/(public)/profile'
     | '/(public)/terms'
     | '/(public)/'
     | '/(admin)/admin/locations'
     | '/(admin)/admin/skills'
-    | '/(users)/auth/password-setup'
-    | '/(users)/auth/verify'
+    | '/(auth)/auth/password-setup'
+    | '/(auth)/auth/verify'
     | '/(admin)/admin/'
     | '/(apps)/feeds/'
     | '/(apps)/posts/'
+    | '/(auth)/auth/'
     | '/(public)/profile/'
-    | '/(users)/auth/'
+    | '/(public)/profile/company/$id'
     | '/(apps)/(messages)/messages/'
     | '/(apps)/(work)/work/'
+    | '/(public)/profile/applications/'
+    | '/(public)/profile/company/'
+    | '/(public)/profile/follows/'
+    | '/(public)/profile/resumes/'
+    | '/(public)/profile/sessions/'
+    | '/(public)/profile/skills/'
+    | '/(public)/profile/work-experience/'
     | '/(apps)/(work)/work/applications/$id'
     | '/(apps)/(work)/work/companies/$id'
     | '/(apps)/(work)/work/vacancies/$id'
@@ -340,9 +453,9 @@ export interface RootRouteChildren {
   appsRouteRoute: typeof appsRouteRouteWithChildren
   publicRouteRoute: typeof publicRouteRouteWithChildren
   adminAdminRoute: typeof adminAdminRouteWithChildren
-  usersAuthPasswordSetupRoute: typeof usersAuthPasswordSetupRoute
-  usersAuthVerifyRoute: typeof usersAuthVerifyRoute
-  usersAuthIndexRoute: typeof usersAuthIndexRoute
+  authAuthPasswordSetupRoute: typeof authAuthPasswordSetupRoute
+  authAuthVerifyRoute: typeof authAuthVerifyRoute
+  authAuthIndexRoute: typeof authAuthIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -375,6 +488,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicTermsRouteImport
       parentRoute: typeof publicRouteRoute
     }
+    '/(public)/profile': {
+      id: '/(public)/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof publicProfileRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
     '/(public)/privacy': {
       id: '/(public)/privacy'
       path: '/privacy'
@@ -403,19 +523,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appsmessagesRouteRouteImport
       parentRoute: typeof appsRouteRoute
     }
-    '/(users)/auth/': {
-      id: '/(users)/auth/'
-      path: '/auth'
-      fullPath: '/auth/'
-      preLoaderRoute: typeof usersAuthIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(public)/profile/': {
       id: '/(public)/profile/'
-      path: '/profile'
+      path: '/'
       fullPath: '/profile/'
       preLoaderRoute: typeof publicProfileIndexRouteImport
-      parentRoute: typeof publicRouteRoute
+      parentRoute: typeof publicProfileRoute
+    }
+    '/(auth)/auth/': {
+      id: '/(auth)/auth/'
+      path: '/auth'
+      fullPath: '/auth/'
+      preLoaderRoute: typeof authAuthIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/(apps)/posts/': {
       id: '/(apps)/posts/'
@@ -438,18 +558,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof adminAdminIndexRouteImport
       parentRoute: typeof adminAdminRoute
     }
-    '/(users)/auth/verify': {
-      id: '/(users)/auth/verify'
+    '/(auth)/auth/verify': {
+      id: '/(auth)/auth/verify'
       path: '/auth/verify'
       fullPath: '/auth/verify'
-      preLoaderRoute: typeof usersAuthVerifyRouteImport
+      preLoaderRoute: typeof authAuthVerifyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(users)/auth/password-setup': {
-      id: '/(users)/auth/password-setup'
+    '/(auth)/auth/password-setup': {
+      id: '/(auth)/auth/password-setup'
       path: '/auth/password-setup'
       fullPath: '/auth/password-setup'
-      preLoaderRoute: typeof usersAuthPasswordSetupRouteImport
+      preLoaderRoute: typeof authAuthPasswordSetupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(admin)/admin/skills': {
@@ -466,6 +586,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof adminAdminLocationsRouteImport
       parentRoute: typeof adminAdminRoute
     }
+    '/(public)/profile/work-experience/': {
+      id: '/(public)/profile/work-experience/'
+      path: '/work-experience'
+      fullPath: '/profile/work-experience/'
+      preLoaderRoute: typeof publicProfileWorkExperienceIndexRouteImport
+      parentRoute: typeof publicProfileRoute
+    }
+    '/(public)/profile/skills/': {
+      id: '/(public)/profile/skills/'
+      path: '/skills'
+      fullPath: '/profile/skills/'
+      preLoaderRoute: typeof publicProfileSkillsIndexRouteImport
+      parentRoute: typeof publicProfileRoute
+    }
+    '/(public)/profile/sessions/': {
+      id: '/(public)/profile/sessions/'
+      path: '/sessions'
+      fullPath: '/profile/sessions/'
+      preLoaderRoute: typeof publicProfileSessionsIndexRouteImport
+      parentRoute: typeof publicProfileRoute
+    }
+    '/(public)/profile/resumes/': {
+      id: '/(public)/profile/resumes/'
+      path: '/resumes'
+      fullPath: '/profile/resumes/'
+      preLoaderRoute: typeof publicProfileResumesIndexRouteImport
+      parentRoute: typeof publicProfileRoute
+    }
+    '/(public)/profile/follows/': {
+      id: '/(public)/profile/follows/'
+      path: '/follows'
+      fullPath: '/profile/follows/'
+      preLoaderRoute: typeof publicProfileFollowsIndexRouteImport
+      parentRoute: typeof publicProfileRoute
+    }
+    '/(public)/profile/company/': {
+      id: '/(public)/profile/company/'
+      path: '/company'
+      fullPath: '/profile/company/'
+      preLoaderRoute: typeof publicProfileCompanyIndexRouteImport
+      parentRoute: typeof publicProfileRoute
+    }
+    '/(public)/profile/applications/': {
+      id: '/(public)/profile/applications/'
+      path: '/applications'
+      fullPath: '/profile/applications/'
+      preLoaderRoute: typeof publicProfileApplicationsIndexRouteImport
+      parentRoute: typeof publicProfileRoute
+    }
     '/(apps)/(work)/work/': {
       id: '/(apps)/(work)/work/'
       path: '/work'
@@ -479,6 +648,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/messages/'
       preLoaderRoute: typeof appsmessagesMessagesIndexRouteImport
       parentRoute: typeof appsmessagesRouteRoute
+    }
+    '/(public)/profile/company/$id': {
+      id: '/(public)/profile/company/$id'
+      path: '/company/$id'
+      fullPath: '/profile/company/$id'
+      preLoaderRoute: typeof publicProfileCompanyIdRouteImport
+      parentRoute: typeof publicProfileRoute
     }
     '/(apps)/(work)/work/vacancies/': {
       id: '/(apps)/(work)/work/vacancies/'
@@ -596,18 +772,46 @@ const appsRouteRouteWithChildren = appsRouteRoute._addFileChildren(
   appsRouteRouteChildren,
 )
 
+interface publicProfileRouteChildren {
+  publicProfileIndexRoute: typeof publicProfileIndexRoute
+  publicProfileCompanyIdRoute: typeof publicProfileCompanyIdRoute
+  publicProfileApplicationsIndexRoute: typeof publicProfileApplicationsIndexRoute
+  publicProfileCompanyIndexRoute: typeof publicProfileCompanyIndexRoute
+  publicProfileFollowsIndexRoute: typeof publicProfileFollowsIndexRoute
+  publicProfileResumesIndexRoute: typeof publicProfileResumesIndexRoute
+  publicProfileSessionsIndexRoute: typeof publicProfileSessionsIndexRoute
+  publicProfileSkillsIndexRoute: typeof publicProfileSkillsIndexRoute
+  publicProfileWorkExperienceIndexRoute: typeof publicProfileWorkExperienceIndexRoute
+}
+
+const publicProfileRouteChildren: publicProfileRouteChildren = {
+  publicProfileIndexRoute: publicProfileIndexRoute,
+  publicProfileCompanyIdRoute: publicProfileCompanyIdRoute,
+  publicProfileApplicationsIndexRoute: publicProfileApplicationsIndexRoute,
+  publicProfileCompanyIndexRoute: publicProfileCompanyIndexRoute,
+  publicProfileFollowsIndexRoute: publicProfileFollowsIndexRoute,
+  publicProfileResumesIndexRoute: publicProfileResumesIndexRoute,
+  publicProfileSessionsIndexRoute: publicProfileSessionsIndexRoute,
+  publicProfileSkillsIndexRoute: publicProfileSkillsIndexRoute,
+  publicProfileWorkExperienceIndexRoute: publicProfileWorkExperienceIndexRoute,
+}
+
+const publicProfileRouteWithChildren = publicProfileRoute._addFileChildren(
+  publicProfileRouteChildren,
+)
+
 interface publicRouteRouteChildren {
   publicPrivacyRoute: typeof publicPrivacyRoute
+  publicProfileRoute: typeof publicProfileRouteWithChildren
   publicTermsRoute: typeof publicTermsRoute
   publicIndexRoute: typeof publicIndexRoute
-  publicProfileIndexRoute: typeof publicProfileIndexRoute
 }
 
 const publicRouteRouteChildren: publicRouteRouteChildren = {
   publicPrivacyRoute: publicPrivacyRoute,
+  publicProfileRoute: publicProfileRouteWithChildren,
   publicTermsRoute: publicTermsRoute,
   publicIndexRoute: publicIndexRoute,
-  publicProfileIndexRoute: publicProfileIndexRoute,
 }
 
 const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
@@ -634,9 +838,9 @@ const rootRouteChildren: RootRouteChildren = {
   appsRouteRoute: appsRouteRouteWithChildren,
   publicRouteRoute: publicRouteRouteWithChildren,
   adminAdminRoute: adminAdminRouteWithChildren,
-  usersAuthPasswordSetupRoute: usersAuthPasswordSetupRoute,
-  usersAuthVerifyRoute: usersAuthVerifyRoute,
-  usersAuthIndexRoute: usersAuthIndexRoute,
+  authAuthPasswordSetupRoute: authAuthPasswordSetupRoute,
+  authAuthVerifyRoute: authAuthVerifyRoute,
+  authAuthIndexRoute: authAuthIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

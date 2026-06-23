@@ -7,7 +7,7 @@ export function createAxiosInstance(
   return axios.create({
     baseURL: BASE_URL,
     withCredentials: true,
-    timeout: 2500,
+    timeout: 4000,
     ...config
   })
 }

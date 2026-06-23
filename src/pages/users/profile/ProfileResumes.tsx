@@ -1,3 +1,15 @@
+import { useMemo, useState } from 'react'
+import { useSuspenseQuery, useQuery } from '@tanstack/react-query'
+import { toast } from 'sonner'
+
+import { useGetCountriesQueryOptions, useGetCitiesQueryOptions } from '@/api/locations/locations'
+import {
+  useCreateResumeMutation,
+  useDeleteResumeMutation,
+  useGetResumesQueryOptions,
+  useUpdateResumeMutation
+} from '@/api/users/resume'
+import { SingleCombobox } from '@/components/combobox'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -20,36 +32,21 @@ import {
 import { Specialization, SpecializationList } from '@/types/shared/literals'
 import { locationLabel } from '@/lib/location-label'
 import { FileText, Pencil, Plus, Trash2 } from 'lucide-react'
-import { useState } from 'react'
-
-import { toast } from 'sonner'
-import { useSuspenseQuery } from '@tanstack/react-query'
 import { ResumeCreateRequest } from '@/types/users/resume'
-import { UserDetailResponse } from '@/types/users/user'
-import {
-  useCreateResumeMutation,
-  useDeleteResumeMutation,
-  useGetResumesQueryOptions,
-  useUpdateResumeMutation
-} from '@/api/users/resume'
-
-interface ProfileResumesProps {
-  user: UserDetailResponse
-}
 
 type ResumeFormState = Partial<Omit<ResumeCreateRequest, 'countryId' | 'cityId'>> & {
   countryId: string
   cityId: string
 }
 
-const ProfileResumes = ({ user }: ProfileResumesProps) => {
+const ProfileResumes = () => {
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [editingResumeId, setEditingResumeId] = useState<string | null>(null)
   const [newResume, setNewResume] = useState<ResumeFormState>({
     title: '',
     specialization: 'fullstack',
-    countryId: user.country?.id ?? '',
-    cityId: user.city?.id ?? ''
+    countryId: '',
+    cityId: ''
   })
   const createResumeMutation = useCreateResumeMutation()
   const updateResumeMutation = useUpdateResumeMutation()
@@ -57,6 +54,20 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
   const { data: resumesData } = useSuspenseQuery(useGetResumesQueryOptions())
   const resumes = resumesData.data
   const editingResume = resumes.find((resume) => resume.id === editingResumeId)
+
+  const { data: countriesData } = useSuspenseQuery(useGetCountriesQueryOptions())
+  const { data: citiesData } = useQuery(
+    useGetCitiesQueryOptions({ countryId: newResume.countryId })
+  )
+
+  const countryOptions = useMemo(
+    () => countriesData.data.map((c) => ({ value: c.id, label: c.name })),
+    [countriesData]
+  )
+  const cityOptions = useMemo(
+    () => (citiesData?.data ?? []).map((c) => ({ value: c.id, label: c.name })),
+    [citiesData]
+  )
 
   const handleAddResume = async () => {
     if (!newResume.title || !newResume.specialization) return
@@ -72,12 +83,7 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
       await createResumeMutation.mutateAsync(resumeToAdd)
       toast.success('Resume added')
       setIsAddOpen(false)
-      setNewResume({
-        title: '',
-        specialization: 'fullstack',
-        countryId: user.country?.id ?? '',
-        cityId: user.city?.id ?? ''
-      })
+      resetForm()
     } catch {
       toast.error('Failed to add resume')
     }
@@ -114,6 +120,15 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
     }
   }
 
+  const resetForm = () => {
+    setNewResume({
+      title: '',
+      specialization: 'fullstack',
+      countryId: '',
+      cityId: ''
+    })
+  }
+
   const openEdit = (resume: (typeof resumes)[number]) => {
     setEditingResumeId(resume.id)
     setNewResume({
@@ -128,13 +143,16 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
 
   const openCreate = () => {
     setEditingResumeId(null)
-    setNewResume({
-      title: '',
-      specialization: 'fullstack',
-      countryId: user.country?.id ?? '',
-      cityId: user.city?.id ?? ''
-    })
+    resetForm()
     setIsAddOpen(true)
+  }
+
+  const updateField = <K extends keyof ResumeFormState>(key: K, value: ResumeFormState[K]) => {
+    setNewResume((prev) => {
+      const next = { ...prev, [key]: value }
+      if (key === 'countryId') next.cityId = ''
+      return next
+    })
   }
 
   return (
@@ -205,7 +223,7 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
               <Input
                 id="title"
                 value={newResume.title}
-                onChange={(e) => setNewResume((prev) => ({ ...prev, title: e.target.value }))}
+                onChange={(e) => updateField('title', e.target.value)}
                 placeholder="e.g. Senior Frontend Developer"
               />
             </div>
@@ -214,19 +232,14 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
               <Input
                 id="summary"
                 value={newResume.summary ?? ''}
-                onChange={(e) => setNewResume((prev) => ({ ...prev, summary: e.target.value }))}
+                onChange={(e) => updateField('summary', e.target.value)}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="specialization">Specialization</Label>
               <Select
                 value={newResume.specialization}
-                onValueChange={(value) =>
-                  setNewResume((prev) => ({
-                    ...prev,
-                    specialization: value as Specialization
-                  }))
-                }
+                onValueChange={(value) => updateField('specialization', value as Specialization)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select specialization" />
@@ -243,19 +256,26 @@ const ProfileResumes = ({ user }: ProfileResumesProps) => {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="resume-country">Country ID</Label>
-                <Input
+                <Label htmlFor="resume-country">Country</Label>
+                <SingleCombobox
                   id="resume-country"
+                  options={countryOptions}
                   value={newResume.countryId}
-                  onChange={(e) => setNewResume((prev) => ({ ...prev, countryId: e.target.value }))}
+                  placeholder="Select country"
+                  emptyLabel="No countries found"
+                  onChange={(val) => updateField('countryId', val ?? '')}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="resume-city">City ID</Label>
-                <Input
+                <Label htmlFor="resume-city">City</Label>
+                <SingleCombobox
                   id="resume-city"
+                  options={cityOptions}
                   value={newResume.cityId}
-                  onChange={(e) => setNewResume((prev) => ({ ...prev, cityId: e.target.value }))}
+                  placeholder={newResume.countryId ? 'Select city' : 'Select a country first'}
+                  emptyLabel="No cities found"
+                  disabled={!newResume.countryId}
+                  onChange={(val) => updateField('cityId', val ?? '')}
                 />
               </div>
             </div>

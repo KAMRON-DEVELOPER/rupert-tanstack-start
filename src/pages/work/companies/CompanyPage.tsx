@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { useDeleteCompanyMutation, useGetCompanyQueryOptions } from '@/api/companies/companies'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { useNavigate, useParams, useRouteContext } from '@tanstack/react-router'
+import { useNavigate, useRouteContext } from '@tanstack/react-router'
 import { Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -9,11 +9,14 @@ import CompanyDetails from './CompanyDetails'
 import CompanyForm from './CompanyForm'
 import CompanyMembers from './CompanyMembers'
 
-const CompanyPage = () => {
-  const params = useParams({ from: '/(apps)/(work)/work/companies/$id' })
+type CompanyPageProps = {
+  companyId: string
+}
+
+const CompanyPage = ({ companyId }: CompanyPageProps) => {
   const navigate = useNavigate()
   const { api } = useRouteContext({ from: '__root__' })
-  const { data: company } = useSuspenseQuery(useGetCompanyQueryOptions(params))
+  const { data: company } = useSuspenseQuery(useGetCompanyQueryOptions({ id: companyId }))
   const deleteCompany = useDeleteCompanyMutation(api)
   const [editOpen, setEditOpen] = useState(false)
 
@@ -30,7 +33,7 @@ const CompanyPage = () => {
   }
 
   return (
-    <div className="col-span-3 space-y-4">
+    <div className="space-y-4">
       <div className="flex justify-end gap-2">
         <Button variant="outline" onClick={() => setEditOpen(true)}>
           <Pencil className="size-4" />

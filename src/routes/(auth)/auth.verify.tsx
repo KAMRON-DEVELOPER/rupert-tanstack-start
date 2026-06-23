@@ -2,7 +2,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import z from 'zod'
 import VerifyPage from '@/pages/users/VerifyPage'
 
-export const Route = createFileRoute('/(users)/auth/verify')({
+export const Route = createFileRoute('/(auth)/auth/verify')({
   validateSearch: z.object({
     token: z.string().nullish()
   }),

@@ -1,28 +1,34 @@
-import {
-  useGetFollowersQueryOptions,
-  useGetFollowingQueryOptions,
-  useGetFollowRequestsQueryOptions
-} from '@/api/users/follow'
-import { useGetResumesQueryOptions } from '@/api/users/resume'
-import { useGetSessionsQueryOptions } from '@/api/users/session'
-import { useGetUserSkillsQueryOptions } from '@/api/users/user-skill'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { useGetProfileQueryOptions } from '@/api/users/users'
-import { useGetWorkExperiencesQueryOptions } from '@/api/users/work-experience'
-import ProfilePage from '@/pages/users/ProfilePage'
+import ProfileHeader from '@/pages/users/profile/ProfileHeader'
+import ProfileAbout from '@/pages/users/profile/ProfileAbout'
+import ProfileContactInfo from '@/pages/users/profile/ProfileContactInfo'
+import ProfileEditDialog from '@/pages/users/profile/ProfileEditDialog'
 import { createFileRoute } from '@tanstack/react-router'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Pencil } from 'lucide-react'
 
 export const Route = createFileRoute('/(public)/profile/')({
-  loader: async ({ context: { queryClient } }) => {
-    return await Promise.all([
-      queryClient.ensureQueryData(useGetProfileQueryOptions()),
-      queryClient.ensureQueryData(useGetUserSkillsQueryOptions()),
-      queryClient.ensureQueryData(useGetResumesQueryOptions()),
-      queryClient.ensureQueryData(useGetWorkExperiencesQueryOptions()),
-      queryClient.ensureQueryData(useGetSessionsQueryOptions()),
-      queryClient.ensureQueryData(useGetFollowersQueryOptions({ offset: 0, limit: 10 })),
-      queryClient.ensureQueryData(useGetFollowingQueryOptions({ offset: 0, limit: 10 })),
-      queryClient.ensureQueryData(useGetFollowRequestsQueryOptions({ offset: 0, limit: 10 }))
-    ])
-  },
-  component: ProfilePage
+  component: ProfileOverviewPage
 })
+
+function ProfileOverviewPage() {
+  const { data: user } = useSuspenseQuery(useGetProfileQueryOptions())
+  const [editOpen, setEditOpen] = useState(false)
+
+  return (
+    <div className="space-y-8">
+      <div className="flex justify-end">
+        <Button variant="outline" size="sm" onClick={() => setEditOpen(true)}>
+          <Pencil className="mr-1 size-4" />
+          Edit Profile
+        </Button>
+      </div>
+      <ProfileHeader user={user} />
+      <ProfileAbout bio={user.bio} />
+      <ProfileContactInfo user={user} />
+      <ProfileEditDialog user={user} open={editOpen} onOpenChange={setEditOpen} />
+    </div>
+  )
+}

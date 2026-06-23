@@ -1,3 +1,15 @@
+import { useMemo, useState } from 'react'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { toast } from 'sonner'
+
+import { useGetSkillsQueryOptions } from '@/api/skills/skills'
+import {
+  useAddUserSkillMutation,
+  useDeleteUserSkillMutation,
+  useGetUserSkillsQueryOptions,
+  useUpdateUserSkillMutation
+} from '@/api/users/user-skill'
+import { SingleCombobox } from '@/components/combobox'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,7 +21,6 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
   Select,
@@ -20,31 +31,23 @@ import {
 } from '@/components/ui/select'
 import { ProficiencyLevel, ProficiencyLevelList } from '@/types/shared/literals'
 import { Plus, Trash2 } from 'lucide-react'
-import { useState } from 'react'
 
-import { toast } from 'sonner'
-import { useQuery } from '@tanstack/react-query'
-import { UserDetailResponse } from '@/types/users/user'
-import {
-  useAddUserSkillMutation,
-  useDeleteUserSkillMutation,
-  useGetUserSkillsQueryOptions,
-  useUpdateUserSkillMutation
-} from '@/api/users/user-skill'
-
-interface ProfileSkillsProps {
-  user: UserDetailResponse
-}
-
-const ProfileSkills = ({ user }: ProfileSkillsProps) => {
+const ProfileSkills = () => {
   const [isAddOpen, setIsAddOpen] = useState(false)
-  const [skillId, setSkillId] = useState('')
+  const [skillId, setSkillId] = useState<string | null>(null)
   const [proficiency, setProficiency] = useState<ProficiencyLevel>('intermediate')
   const addSkillMutation = useAddUserSkillMutation()
   const deleteSkillMutation = useDeleteUserSkillMutation()
   const updateSkillMutation = useUpdateUserSkillMutation()
-  const { data: userSkills } = useQuery(useGetUserSkillsQueryOptions())
-  const skills = userSkills?.data ?? user.skills
+  const { data: userSkills } = useSuspenseQuery(useGetUserSkillsQueryOptions())
+  const { data: skillsData } = useSuspenseQuery(useGetSkillsQueryOptions())
+
+  const skills = userSkills.data
+
+  const skillOptions = useMemo(
+    () => skillsData.data.map((s) => ({ value: s.id, label: s.name })),
+    [skillsData]
+  )
 
   const handleAddSkill = async () => {
     if (!skillId) return
@@ -56,7 +59,7 @@ const ProfileSkills = ({ user }: ProfileSkillsProps) => {
         lastUsedAt: undefined
       })
       toast.success('Skill added')
-      setSkillId('')
+      setSkillId(null)
       setIsAddOpen(false)
     } catch {
       toast.error('Failed to add skill')
@@ -144,12 +147,14 @@ const ProfileSkills = ({ user }: ProfileSkillsProps) => {
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="skillId">Skill ID</Label>
-              <Input
+              <Label htmlFor="skillId">Skill</Label>
+              <SingleCombobox
                 id="skillId"
+                options={skillOptions}
                 value={skillId}
-                onChange={(e) => setSkillId(e.target.value)}
-                placeholder="Existing skill UUID"
+                placeholder="Search for a skill..."
+                emptyLabel="No skills found"
+                onChange={setSkillId}
               />
             </div>
             <div className="space-y-2">

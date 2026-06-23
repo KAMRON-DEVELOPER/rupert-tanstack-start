@@ -6,5 +6,10 @@ export const Route = createFileRoute('/(apps)/(work)/work/companies/$id')({
   loader: async ({ context: { queryClient }, params }) => {
     await queryClient.ensureQueryData(useGetCompanyQueryOptions(params))
   },
-  component: CompanyPage
+  component: WorkCompanyPage
 })
+
+function WorkCompanyPage() {
+  const { id } = Route.useParams()
+  return <CompanyPage companyId={id} />
+}

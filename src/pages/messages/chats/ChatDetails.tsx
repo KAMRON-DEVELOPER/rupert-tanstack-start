@@ -268,8 +268,6 @@ const ChatDetails = ({ chat, send, wsStatus, onBack }: ChatDetailsProps) => {
   )
 }
 
-
-
 const DateSeparator = ({ iso }: { iso: string }) => (
   <div className="sticky top-3 z-10 my-4 flex justify-center">
     <span className="bg-background/80 text-muted-foreground rounded-full border px-3 py-1 text-[11px] font-medium shadow-sm backdrop-blur">
