@@ -86,6 +86,7 @@ export const vacancyUpdateRequestSchema = nullableLocationRequestSchema.extend({
 })
 
 export const vacancyListParamsSchema = paginationQuerySchema.extend({
+  companyId: uuid.nullish(),
   title: z.string().nullish(),
   submissionType: z.enum(SubmissionTypeList).nullish(),
   specialization: z.array(z.enum(SpecializationList)).nullish(),
@@ -144,7 +145,6 @@ export const applicationStatusUpdateRequestSchema = z.object({
 })
 
 export const applicationListParamsSchema = paginationQuerySchema.extend({
-  vacancyId: uuid.nullish(),
   applicantId: uuid.nullish(),
   status: z.enum(ApplicationStatusList).nullish()
 })

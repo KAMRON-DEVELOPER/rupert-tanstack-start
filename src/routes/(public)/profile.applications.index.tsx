@@ -4,9 +4,10 @@ import { applicationListParamsSchema } from '@/types/vacancies/vacancy'
 import EmptyState from '@/components/forms/EmptyState'
 import ApplicationCard from '@/pages/work/vacancies/ApplicationCard'
 import { createFileRoute } from '@tanstack/react-router'
+import { uuid } from '@/types/shared/primitives'
 
 export const Route = createFileRoute('/(public)/profile/applications/')({
-  validateSearch: applicationListParamsSchema,
+  validateSearch: applicationListParamsSchema.extend({ vacancyId: uuid }),
   loaderDeps: ({ search }) => search,
   loader: async ({ context: { queryClient }, deps }) => {
     await queryClient.ensureQueryData(useGetApplicationsQueryOptions(deps))

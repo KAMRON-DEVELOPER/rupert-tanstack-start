@@ -41,7 +41,9 @@ export const useGetVacancyQueryOptions = (data: { id: string }) =>
     staleTime: 30_000
   })
 
-export const useGetApplicationsQueryOptions = (data: ApplicationListParams) =>
+export const useGetApplicationsQueryOptions = (
+  data: ApplicationListParams & { vacancyId: string }
+) =>
   queryOptions({
     queryKey: ['applications', data],
     queryFn: () => getApplicationsFn({ data }),

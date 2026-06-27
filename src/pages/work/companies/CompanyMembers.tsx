@@ -17,34 +17,61 @@ import {
   useDeleteCompanyMemberMutation,
   useUpdateCompanyMemberMutation
 } from '@/api/companies/companies'
+import { useSearchUsersQueryOptions } from '@/api/users/users'
 import type { CompanyDetailResponse } from '@/types/companies/company'
 import { getErrorMessage } from '@/types/shared/helper'
 import { CompanyMemberRoleList, type CompanyMemberRole } from '@/types/shared/literals'
+import { useQuery } from '@tanstack/react-query'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
-import { Trash2 } from 'lucide-react'
-import { useState, type FormEvent } from 'react'
+import { Search, Trash2, X } from 'lucide-react'
+import { useState, useDeferredValue, type FormEvent } from 'react'
 import { toast } from 'sonner'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 const CompanyMembers = ({ company }: { company: CompanyDetailResponse }) => {
   const { api } = useRouteContext({ from: '__root__' })
   const addMember = useAddCompanyMemberMutation(api)
   const updateMember = useUpdateCompanyMemberMutation(api)
   const deleteMember = useDeleteCompanyMemberMutation(api)
-  const [userId, setUserId] = useState('')
+  const [search, setSearch] = useState('')
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
+  const [selectedUserName, setSelectedUserName] = useState<string | null>(null)
   const [role, setRole] = useState<CompanyMemberRole>('member')
   const [error, setError] = useState<string | null>(null)
 
+  const debouncedSearch = useDeferredValue(search)
+  const isSearching = debouncedSearch.trim().length > 0
+
+  const { data: searchResults } = useQuery({
+    ...useSearchUsersQueryOptions({ q: debouncedSearch.trim(), offset: 0, limit: 10 }),
+    enabled: isSearching && !selectedUserId
+  })
+
+  const users = searchResults?.data ?? []
+
+  const selectUser = (userId: string, name: string) => {
+    setSelectedUserId(userId)
+    setSelectedUserName(name)
+    setSearch('')
+  }
+
+  const clearSelection = () => {
+    setSelectedUserId(null)
+    setSelectedUserName(null)
+  }
+
   const submitMember = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (!selectedUserId) return
     setError(null)
 
     try {
       await addMember.mutateAsync({
         companyId: company.id,
-        data: { userId: userId.trim(), role }
+        data: { userId: selectedUserId, role }
       })
-      setUserId('')
+      clearSelection()
       setRole('member')
       toast.success('Member added')
     } catch (err) {
@@ -86,18 +113,53 @@ const CompanyMembers = ({ company }: { company: CompanyDetailResponse }) => {
       <CardContent className="space-y-4">
         <form onSubmit={submitMember} className="space-y-3 rounded-lg border p-3">
           <FormError message={error} />
-          <div className="grid gap-3 sm:grid-cols-[1fr_160px_auto]">
-            <div className="space-y-2">
-              <Label htmlFor="company-member-user">User ID</Label>
-              <Input
-                id="company-member-user"
-                value={userId}
-                onChange={(event) => setUserId(event.target.value)}
-                placeholder="Existing user UUID"
-                required
-              />
+          <div className="space-y-2">
+            <Label>User</Label>
+            {selectedUserId ? (
+              <div className="flex items-center gap-2 rounded-md border p-2">
+                <span className="flex-1 text-sm">{selectedUserName ?? selectedUserId}</span>
+                <Button type="button" variant="ghost" size="icon-xs" onClick={clearSelection}>
+                  <X className="size-3" />
+                </Button>
+              </div>
+            ) : (
+              <div className="relative">
+                <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+                <Input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search users by name..."
+                  className="pl-9"
+                />
+              </div>
+            )}
+          </div>
+
+          {!selectedUserId && isSearching && users.length > 0 && (
+            <div className="space-y-1 rounded-md border">
+              {users.map((user) => {
+                const initials =
+                  (user.firstName?.charAt(0) ?? '') + (user.lastName?.charAt(0) ?? '')
+                return (
+                  <button
+                    key={user.id}
+                    type="button"
+                    onClick={() => selectUser(user.id, user.name)}
+                    className="hover:bg-accent flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors"
+                  >
+                    <Avatar className="size-7">
+                      <AvatarImage src={user.avatarUrl ?? undefined} />
+                      <AvatarFallback className="text-xs">{initials.toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                    <span>{user.name}</span>
+                  </button>
+                )
+              })}
             </div>
-            <div className="space-y-2">
+          )}
+
+          <div className="flex items-end gap-2">
+            <div className="w-36">
               <Label>Role</Label>
               <Select value={role} onValueChange={(value) => setRole(value as CompanyMemberRole)}>
                 <SelectTrigger className="w-full">
@@ -112,14 +174,14 @@ const CompanyMembers = ({ company }: { company: CompanyDetailResponse }) => {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-end">
-              <SubmitButton isPending={addMember.isPending}>Add</SubmitButton>
-            </div>
+            <SubmitButton isPending={addMember.isPending} disabled={!selectedUserId}>
+              Add
+            </SubmitButton>
           </div>
         </form>
 
         {company.members.length === 0 ? (
-          <EmptyState title="No members" description="Add a member by user ID." />
+          <EmptyState title="No members" description="Search and add a member above." />
         ) : (
           <div className="space-y-2">
             {company.members.map((member) => (

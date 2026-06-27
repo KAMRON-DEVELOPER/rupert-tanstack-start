@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import CompanyDetails from './CompanyDetails'
 import CompanyForm from './CompanyForm'
 import CompanyMembers from './CompanyMembers'
+import CompanyVacancies from './CompanyVacancies'
 
 type CompanyPageProps = {
   companyId: string
@@ -47,6 +48,7 @@ const CompanyPage = ({ companyId }: CompanyPageProps) => {
 
       <CompanyDetails company={company} />
       <CompanyMembers company={company} />
+      <CompanyVacancies companyId={companyId} />
       <CompanyForm company={company} open={editOpen} onOpenChange={setEditOpen} />
     </div>
   )

@@ -27,7 +27,7 @@ export const skillResponseSchema = baseSchema.extend({
 
 export const skillLinkResponseSchema = baseSchema.extend({
   skill: skillResponseSchema,
-  proficiency: z.enum(ProficiencyLevelList).nullish(),
+  proficiency: z.enum(ProficiencyLevelList),
   lastUsedAt: isoDate.nullish()
 })
 

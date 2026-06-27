@@ -37,7 +37,7 @@ export const resumeUpdateRequestSchema = nullableLocationRequestSchema.extend({
 
 // --- Responses ---
 export const resumeResponseSchema = baseLocationResponseSchema.extend({
-  user_id: uuid,
+  userId: uuid,
   title: z.string(),
   summary: z.string().nullish(),
   specialization: z.enum(SpecializationList),

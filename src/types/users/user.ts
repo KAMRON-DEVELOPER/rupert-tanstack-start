@@ -11,9 +11,6 @@ import {
   UserRoleList,
   UserStatusList
 } from '@/types/shared/literals'
-import { workExperienceResponseSchema } from './work-experience'
-import { resumeResponseSchema } from './resume'
-import { skillLinkResponseSchema } from '@/types/shared/skill'
 
 // --- Requests ---
 export const userUpdateRequestSchema = nullableLocationRequestSchema.extend({
@@ -65,10 +62,6 @@ export const userDetailResponseSchema =
     status: z.enum(UserStatusList),
     followPolicy: z.enum(FollowPolicyList),
     jobSearchStatus: z.enum(JobSearchStatusList),
-
-    resumes: z.array(resumeResponseSchema),
-    skills: z.array(skillLinkResponseSchema),
-    workExperiences: z.array(workExperienceResponseSchema),
 
     followersCount: z.number().int(),
     followingsCount: z.number().int()

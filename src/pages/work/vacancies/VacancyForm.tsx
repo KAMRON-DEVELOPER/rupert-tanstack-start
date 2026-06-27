@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useCreateVacancyMutation, useUpdateVacancyMutation } from '@/api/vacancies/vacancies'
+import { useGetCountriesQueryOptions, useGetCitiesQueryOptions } from '@/api/locations/locations'
 import { getErrorMessage } from '@/types/shared/helper'
 import {
   EmploymentTypeList,
@@ -37,6 +38,7 @@ import {
   type WorkFormat
 } from '@/types/shared/literals'
 import type { VacancyCreateRequest, VacancyDetailResponse } from '@/types/vacancies/vacancy'
+import { useQuery } from '@tanstack/react-query'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { useState, type FormEvent } from 'react'
@@ -44,6 +46,7 @@ import { toast } from 'sonner'
 
 interface VacancyFormProps {
   vacancy?: VacancyDetailResponse
+  companyId?: string
   open: boolean
   onOpenChange: (open: boolean) => void
 }
@@ -61,12 +64,17 @@ const toOptionalNumber = (value: string) => {
   return Number(value)
 }
 
-const VacancyForm = ({ vacancy, open, onOpenChange }: VacancyFormProps) => {
+const VacancyForm = ({
+  vacancy,
+  companyId: companyIdProp,
+  open,
+  onOpenChange
+}: VacancyFormProps) => {
   const { api } = useRouteContext({ from: '__root__' })
   const createVacancy = useCreateVacancyMutation(api)
   const updateVacancy = useUpdateVacancyMutation(api)
   const [error, setError] = useState<string | null>(null)
-  const [companyId, setCompanyId] = useState(vacancy?.company.id ?? '')
+  const [companyId, setCompanyId] = useState(vacancy?.company.id ?? companyIdProp ?? '')
   const [title, setTitle] = useState(vacancy?.title ?? '')
   const [description, setDescription] = useState(vacancy?.description ?? '')
   const [countryId, setCountryId] = useState(vacancy?.country.id ?? '')
@@ -98,7 +106,18 @@ const VacancyForm = ({ vacancy, open, onOpenChange }: VacancyFormProps) => {
   )
   const [status, setStatus] = useState<VacancyStatus>(vacancy?.status ?? 'open')
 
+  const { data: countriesData } = useQuery(useGetCountriesQueryOptions())
+  const { data: citiesData } = useQuery(useGetCitiesQueryOptions({ countryId }))
+
+  const countries = countriesData?.data ?? []
+  const cities = citiesData?.data ?? []
+
   const isPending = createVacancy.isPending || updateVacancy.isPending
+
+  const handleCountryChange = (value: string) => {
+    setCountryId(value)
+    setCityId('')
+  }
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -146,14 +165,14 @@ const VacancyForm = ({ vacancy, open, onOpenChange }: VacancyFormProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-150">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-150">
         <DialogHeader>
           <DialogTitle>{vacancy ? 'Edit Vacancy' : 'Create Vacancy'}</DialogTitle>
         </DialogHeader>
         <form onSubmit={submit} className="space-y-4">
           <FormError message={error} />
           <div className="grid gap-3 sm:grid-cols-2">
-            {!vacancy && (
+            {!vacancy && !companyIdProp && (
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="vacancy-company">Company ID</Label>
                 <Input
@@ -179,26 +198,39 @@ const VacancyForm = ({ vacancy, open, onOpenChange }: VacancyFormProps) => {
                 id="vacancy-description"
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
-                rows={5}
+                rows={4}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="vacancy-country">Country ID</Label>
-              <Input
-                id="vacancy-country"
-                value={countryId}
-                onChange={(event) => setCountryId(event.target.value)}
-                required
-              />
+              <Label>Country</Label>
+              <Select value={countryId} onValueChange={handleCountryChange}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select country" />
+                </SelectTrigger>
+                <SelectContent>
+                  {countries.map((country) => (
+                    <SelectItem key={country.id} value={country.id}>
+                      {country.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="vacancy-city">City ID</Label>
-              <Input
-                id="vacancy-city"
-                value={cityId}
-                onChange={(event) => setCityId(event.target.value)}
-              />
+              <Label>City</Label>
+              <Select value={cityId} onValueChange={setCityId} disabled={!countryId}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder={countryId ? 'Select city' : 'Select a country first'} />
+                </SelectTrigger>
+                <SelectContent>
+                  {cities.map((city) => (
+                    <SelectItem key={city.id} value={city.id}>
+                      {city.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <SelectField
               label="Submission"

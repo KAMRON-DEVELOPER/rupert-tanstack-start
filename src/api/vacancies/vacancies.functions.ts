@@ -1,4 +1,5 @@
 import { createServerApi } from '@/api/api.server'
+import { uuid } from '@/types/shared/primitives'
 import {
   applicationDetailResponseSchema,
   applicationListParamsSchema,
@@ -55,11 +56,11 @@ export const getVacancyFn = createServerFn()
   })
 
 export const getApplicationsFn = createServerFn()
-  .inputValidator(applicationListParamsSchema)
-  .handler(async ({ data: params }) => {
+  .inputValidator(applicationListParamsSchema.extend({ vacancyId: uuid }))
+  .handler(async ({ data: { vacancyId, ...params } }) => {
     const api = createServerApi()
 
-    const data = await api('vacancies/applications', { params })
+    const data = await api(`vacancies/${vacancyId}/applications`, { params })
 
     const result = applicationListResponseSchema.safeParse(data)
 

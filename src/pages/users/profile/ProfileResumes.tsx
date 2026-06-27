@@ -29,14 +29,33 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { Specialization, SpecializationList } from '@/types/shared/literals'
+import {
+  EmploymentType,
+  EmploymentTypeList,
+  SalaryCurrency,
+  SalaryCurrencyList,
+  Specialization,
+  SpecializationList,
+  WorkFormat,
+  WorkFormatList
+} from '@/types/shared/literals'
 import { locationLabel } from '@/lib/location-label'
 import { FileText, Pencil, Plus, Trash2 } from 'lucide-react'
 import { ResumeCreateRequest } from '@/types/users/resume'
 
-type ResumeFormState = Partial<Omit<ResumeCreateRequest, 'countryId' | 'cityId'>> & {
+type NullableCurrency = SalaryCurrency | 'none'
+
+type ResumeFormState = {
+  title: string
+  summary?: string
+  specialization: Specialization
   countryId: string
   cityId: string
+  salaryExpectationMin: string
+  salaryExpectationMax: string
+  salaryCurrency: NullableCurrency
+  workFormat: WorkFormat
+  employmentType: EmploymentType
 }
 
 const ProfileResumes = () => {
@@ -46,7 +65,12 @@ const ProfileResumes = () => {
     title: '',
     specialization: 'fullstack',
     countryId: '',
-    cityId: ''
+    cityId: '',
+    salaryExpectationMin: '',
+    salaryExpectationMax: '',
+    salaryCurrency: 'none',
+    workFormat: 'remote',
+    employmentType: 'full_time'
   })
   const createResumeMutation = useCreateResumeMutation()
   const updateResumeMutation = useUpdateResumeMutation()
@@ -76,7 +100,16 @@ const ProfileResumes = () => {
       title: newResume.title,
       specialization: newResume.specialization,
       countryId: newResume.countryId,
-      cityId: newResume.cityId
+      cityId: newResume.cityId || undefined,
+      salaryExpectationMin: newResume.salaryExpectationMin
+        ? Number(newResume.salaryExpectationMin)
+        : undefined,
+      salaryExpectationMax: newResume.salaryExpectationMax
+        ? Number(newResume.salaryExpectationMax)
+        : undefined,
+      salaryCurrency: newResume.salaryCurrency === 'none' ? undefined : newResume.salaryCurrency,
+      workFormat: newResume.workFormat,
+      employmentType: newResume.employmentType
     }
 
     try {
@@ -109,7 +142,17 @@ const ProfileResumes = () => {
           summary: newResume.summary ?? undefined,
           specialization: newResume.specialization,
           countryId: newResume.countryId,
-          cityId: newResume.cityId || undefined
+          cityId: newResume.cityId || undefined,
+          salaryExpectationMin: newResume.salaryExpectationMin
+            ? Number(newResume.salaryExpectationMin)
+            : undefined,
+          salaryExpectationMax: newResume.salaryExpectationMax
+            ? Number(newResume.salaryExpectationMax)
+            : undefined,
+          salaryCurrency:
+            newResume.salaryCurrency === 'none' ? undefined : newResume.salaryCurrency,
+          workFormat: newResume.workFormat,
+          employmentType: newResume.employmentType
         }
       })
       toast.success('Resume updated')
@@ -125,7 +168,12 @@ const ProfileResumes = () => {
       title: '',
       specialization: 'fullstack',
       countryId: '',
-      cityId: ''
+      cityId: '',
+      salaryExpectationMin: '',
+      salaryExpectationMax: '',
+      salaryCurrency: 'none',
+      workFormat: 'remote',
+      employmentType: 'full_time'
     })
   }
 
@@ -136,7 +184,12 @@ const ProfileResumes = () => {
       summary: resume.summary ?? '',
       specialization: resume.specialization,
       countryId: resume.country.id,
-      cityId: resume.city?.id ?? ''
+      cityId: resume.city?.id ?? '',
+      salaryExpectationMin: resume.salaryExpectationMin?.toString() ?? '',
+      salaryExpectationMax: resume.salaryExpectationMax?.toString() ?? '',
+      salaryCurrency: resume.salaryCurrency ?? 'none',
+      workFormat: resume.workFormat ?? 'remote',
+      employmentType: resume.employmentType ?? 'full_time'
     })
     setIsAddOpen(true)
   }
@@ -210,7 +263,7 @@ const ProfileResumes = () => {
       </CardContent>
 
       <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-        <DialogContent className="sm:max-w-106.25">
+        <DialogContent className="sm:max-w-125">
           <DialogHeader>
             <DialogTitle>{editingResume ? 'Edit Resume' : 'Add Resume'}</DialogTitle>
             <DialogDescription>
@@ -253,6 +306,87 @@ const ProfileResumes = () => {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Work Format</Label>
+                <Select
+                  value={newResume.workFormat}
+                  onValueChange={(value) => updateField('workFormat', value as WorkFormat)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {WorkFormatList.map((item) => (
+                      <SelectItem key={item} value={item}>
+                        {item.replace(/_/g, ' ')}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Employment Type</Label>
+                <Select
+                  value={newResume.employmentType}
+                  onValueChange={(value) => updateField('employmentType', value as EmploymentType)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {EmploymentTypeList.map((item) => (
+                      <SelectItem key={item} value={item}>
+                        {item.replace(/_/g, ' ')}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label>Salary Min</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  value={newResume.salaryExpectationMin}
+                  onChange={(e) => updateField('salaryExpectationMin', e.target.value)}
+                  placeholder="e.g. 5000"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Salary Max</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  value={newResume.salaryExpectationMax}
+                  onChange={(e) => updateField('salaryExpectationMax', e.target.value)}
+                  placeholder="e.g. 10000"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Currency</Label>
+                <Select
+                  value={newResume.salaryCurrency}
+                  onValueChange={(value) =>
+                    updateField('salaryCurrency', value as NullableCurrency)
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">None</SelectItem>
+                    {SalaryCurrencyList.map((item) => (
+                      <SelectItem key={item} value={item}>
+                        {item}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">

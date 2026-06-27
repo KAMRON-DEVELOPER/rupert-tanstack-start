@@ -1,6 +1,7 @@
 import type { MessageResponse } from '@/types/shared/types'
 import {
   ResumeCreateRequest,
+  resumeCreateRequestSchema,
   resumeResponseSchema,
   resumeUpdateRequestSchema
 } from '@/types/users/resume'
@@ -8,6 +9,7 @@ import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
 import { createServerApi } from '../api.server'
 import { paginatedResponseSchema } from '@/types/shared/pagination'
+import { uuid } from '@/types/shared/primitives'
 
 export const getResumesFn = createServerFn().handler(async () => {
   const api = createServerApi()
@@ -27,7 +29,7 @@ export const getResumesFn = createServerFn().handler(async () => {
 })
 
 export const createResumeFn = createServerFn({ method: 'POST' })
-  .inputValidator((data: ResumeCreateRequest) => data)
+  .inputValidator(resumeCreateRequestSchema)
   .handler(async ({ data }) => {
     const api = createServerApi()
 
@@ -49,7 +51,7 @@ export const createResumeFn = createServerFn({ method: 'POST' })
   })
 
 export const getResumeFn = createServerFn()
-  .inputValidator((data: { resumeId: string }) => data)
+  .inputValidator(z.object({ resumeId: uuid }))
   .handler(async ({ data: { resumeId } }) => {
     const api = createServerApi()
 
@@ -71,7 +73,7 @@ export const getResumeFn = createServerFn()
   })
 
 export const updateResumeFn = createServerFn({ method: 'POST' })
-  .inputValidator(resumeUpdateRequestSchema.extend({ resumeId: z.uuid() }))
+  .inputValidator(resumeUpdateRequestSchema.extend({ resumeId: uuid }))
   .handler(async ({ data: { resumeId, ...data } }) => {
     const api = createServerApi()
 
@@ -96,7 +98,7 @@ export const updateResumeFn = createServerFn({ method: 'POST' })
   })
 
 export const deleteResumeFn = createServerFn({ method: 'POST' })
-  .inputValidator((data: { resumeId: string }) => data)
+  .inputValidator(z.object({ resumeId: uuid }))
   .handler(async ({ data: { resumeId } }) => {
     const api = createServerApi()
 
