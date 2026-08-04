@@ -23,5 +23,6 @@ dist-ssr
 *.sw?
 .env
 docs
+tanstack
 shadcn
 src/types/generated
