@@ -1,5 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import { createServerApi } from '@/api/api.server'
+import { toApiParams } from '@/lib/to-api-params'
 import {
   companyDetailResponseSchema,
   companyListParamsSchema,
@@ -12,7 +13,9 @@ export const getCompaniesFn = createServerFn()
   .handler(async ({ data: params }) => {
     const api = createServerApi()
 
-    const data = await api('companies/', { params })
+    const data = await api('companies/', {
+      params: toApiParams(params as Record<string, unknown>)
+    })
 
     const result = paginatedResponseSchema(
       companySummaryResponseSchema

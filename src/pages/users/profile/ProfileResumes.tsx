@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useSuspenseQuery, useQuery } from '@tanstack/react-query'
+import { useRouteContext } from '@tanstack/react-router'
 import { toast } from 'sonner'
 
 import { useGetCountriesQueryOptions, useGetCitiesQueryOptions } from '@/api/locations/locations'
@@ -9,6 +10,7 @@ import {
   useGetResumesQueryOptions,
   useUpdateResumeMutation
 } from '@/api/users/resume'
+import { useGetProfileQueryOptions } from '@/api/users/users'
 import { SingleCombobox } from '@/components/combobox'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -72,6 +74,10 @@ const ProfileResumes = () => {
     workFormat: 'remote',
     employmentType: 'full_time'
   })
+  const { isAuthenticated } = useRouteContext({ from: '__root__' })
+  const { data: profile } = useSuspenseQuery(useGetProfileQueryOptions())
+  const isOwner = isAuthenticated && profile.permission.isOwner
+
   const createResumeMutation = useCreateResumeMutation()
   const updateResumeMutation = useUpdateResumeMutation()
   const deleteResumeMutation = useDeleteResumeMutation()
@@ -212,10 +218,12 @@ const ProfileResumes = () => {
     <Card className="border-none shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-xl">Resumes</CardTitle>
-        <Button variant="ghost" size="sm" onClick={openCreate}>
-          <Plus className="mr-1 size-4" />
-          Add Resume
-        </Button>
+        {isOwner && (
+          <Button variant="ghost" size="sm" onClick={openCreate}>
+            <Plus className="mr-1 size-4" />
+            Add Resume
+          </Button>
+        )}
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -238,198 +246,204 @@ const ProfileResumes = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-1">
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={() => openEdit(resume)}
-                    className="text-muted-foreground"
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={() => handleDeleteResume(resume.id)}
-                    className="text-muted-foreground hover:text-destructive"
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
+                {isOwner && (
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => openEdit(resume)}
+                      className="text-muted-foreground"
+                    >
+                      <Pencil className="size-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => handleDeleteResume(resume.id)}
+                      className="text-muted-foreground hover:text-destructive"
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
+                )}
               </div>
             ))
           )}
         </div>
       </CardContent>
 
-      <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-        <DialogContent className="sm:max-w-125">
-          <DialogHeader>
-            <DialogTitle>{editingResume ? 'Edit Resume' : 'Add Resume'}</DialogTitle>
-            <DialogDescription>
-              Create a new resume profile. You can add more details later.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="title">Resume Title</Label>
-              <Input
-                id="title"
-                value={newResume.title}
-                onChange={(e) => updateField('title', e.target.value)}
-                placeholder="e.g. Senior Frontend Developer"
-              />
+      {isOwner && (
+        <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+          <DialogContent className="sm:max-w-125">
+            <DialogHeader>
+              <DialogTitle>{editingResume ? 'Edit Resume' : 'Add Resume'}</DialogTitle>
+              <DialogDescription>
+                Create a new resume profile. You can add more details later.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="title">Resume Title</Label>
+                <Input
+                  id="title"
+                  value={newResume.title}
+                  onChange={(e) => updateField('title', e.target.value)}
+                  placeholder="e.g. Senior Frontend Developer"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="summary">Summary</Label>
+                <Input
+                  id="summary"
+                  value={newResume.summary ?? ''}
+                  onChange={(e) => updateField('summary', e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="specialization">Specialization</Label>
+                <Select
+                  value={newResume.specialization}
+                  onValueChange={(value) => updateField('specialization', value as Specialization)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select specialization" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SpecializationList.map((spec) => (
+                      <SelectItem key={spec} value={spec}>
+                        {spec.replace(/_/g, ' ').charAt(0).toUpperCase() +
+                          spec.replace(/_/g, ' ').slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Work Format</Label>
+                  <Select
+                    value={newResume.workFormat}
+                    onValueChange={(value) => updateField('workFormat', value as WorkFormat)}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {WorkFormatList.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item.replace(/_/g, ' ')}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Employment Type</Label>
+                  <Select
+                    value={newResume.employmentType}
+                    onValueChange={(value) =>
+                      updateField('employmentType', value as EmploymentType)
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {EmploymentTypeList.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item.replace(/_/g, ' ')}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label>Salary Min</Label>
+                  <Input
+                    type="number"
+                    min="0"
+                    value={newResume.salaryExpectationMin}
+                    onChange={(e) => updateField('salaryExpectationMin', e.target.value)}
+                    placeholder="e.g. 5000"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Salary Max</Label>
+                  <Input
+                    type="number"
+                    min="0"
+                    value={newResume.salaryExpectationMax}
+                    onChange={(e) => updateField('salaryExpectationMax', e.target.value)}
+                    placeholder="e.g. 10000"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Currency</Label>
+                  <Select
+                    value={newResume.salaryCurrency}
+                    onValueChange={(value) =>
+                      updateField('salaryCurrency', value as NullableCurrency)
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">None</SelectItem>
+                      {SalaryCurrencyList.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="resume-country">Country</Label>
+                  <SingleCombobox
+                    id="resume-country"
+                    options={countryOptions}
+                    value={newResume.countryId}
+                    placeholder="Select country"
+                    emptyLabel="No countries found"
+                    onChange={(val) => updateField('countryId', val ?? '')}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="resume-city">City</Label>
+                  <SingleCombobox
+                    id="resume-city"
+                    options={cityOptions}
+                    value={newResume.cityId}
+                    placeholder={newResume.countryId ? 'Select city' : 'Select a country first'}
+                    emptyLabel="No cities found"
+                    disabled={!newResume.countryId}
+                    onChange={(val) => updateField('cityId', val ?? '')}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="summary">Summary</Label>
-              <Input
-                id="summary"
-                value={newResume.summary ?? ''}
-                onChange={(e) => updateField('summary', e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="specialization">Specialization</Label>
-              <Select
-                value={newResume.specialization}
-                onValueChange={(value) => updateField('specialization', value as Specialization)}
+            <DialogFooter>
+              <Button
+                onClick={editingResume ? handleUpdateResume : handleAddResume}
+                disabled={createResumeMutation.isPending || updateResumeMutation.isPending}
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select specialization" />
-                </SelectTrigger>
-                <SelectContent>
-                  {SpecializationList.map((spec) => (
-                    <SelectItem key={spec} value={spec}>
-                      {spec.replace(/_/g, ' ').charAt(0).toUpperCase() +
-                        spec.replace(/_/g, ' ').slice(1)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Work Format</Label>
-                <Select
-                  value={newResume.workFormat}
-                  onValueChange={(value) => updateField('workFormat', value as WorkFormat)}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {WorkFormatList.map((item) => (
-                      <SelectItem key={item} value={item}>
-                        {item.replace(/_/g, ' ')}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Employment Type</Label>
-                <Select
-                  value={newResume.employmentType}
-                  onValueChange={(value) => updateField('employmentType', value as EmploymentType)}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {EmploymentTypeList.map((item) => (
-                      <SelectItem key={item} value={item}>
-                        {item.replace(/_/g, ' ')}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label>Salary Min</Label>
-                <Input
-                  type="number"
-                  min="0"
-                  value={newResume.salaryExpectationMin}
-                  onChange={(e) => updateField('salaryExpectationMin', e.target.value)}
-                  placeholder="e.g. 5000"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Salary Max</Label>
-                <Input
-                  type="number"
-                  min="0"
-                  value={newResume.salaryExpectationMax}
-                  onChange={(e) => updateField('salaryExpectationMax', e.target.value)}
-                  placeholder="e.g. 10000"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Currency</Label>
-                <Select
-                  value={newResume.salaryCurrency}
-                  onValueChange={(value) =>
-                    updateField('salaryCurrency', value as NullableCurrency)
-                  }
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">None</SelectItem>
-                    {SalaryCurrencyList.map((item) => (
-                      <SelectItem key={item} value={item}>
-                        {item}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="resume-country">Country</Label>
-                <SingleCombobox
-                  id="resume-country"
-                  options={countryOptions}
-                  value={newResume.countryId}
-                  placeholder="Select country"
-                  emptyLabel="No countries found"
-                  onChange={(val) => updateField('countryId', val ?? '')}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="resume-city">City</Label>
-                <SingleCombobox
-                  id="resume-city"
-                  options={cityOptions}
-                  value={newResume.cityId}
-                  placeholder={newResume.countryId ? 'Select city' : 'Select a country first'}
-                  emptyLabel="No cities found"
-                  disabled={!newResume.countryId}
-                  onChange={(val) => updateField('cityId', val ?? '')}
-                />
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              onClick={editingResume ? handleUpdateResume : handleAddResume}
-              disabled={createResumeMutation.isPending || updateResumeMutation.isPending}
-            >
-              {editingResume
-                ? updateResumeMutation.isPending
-                  ? 'Saving...'
-                  : 'Save Resume'
-                : createResumeMutation.isPending
-                  ? 'Adding...'
-                  : 'Add Resume'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+                {editingResume
+                  ? updateResumeMutation.isPending
+                    ? 'Saving...'
+                    : 'Save Resume'
+                  : createResumeMutation.isPending
+                    ? 'Adding...'
+                    : 'Add Resume'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </Card>
   )
 }

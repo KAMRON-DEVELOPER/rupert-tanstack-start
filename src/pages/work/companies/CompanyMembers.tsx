@@ -28,9 +28,11 @@ import { Search, Trash2, X } from 'lucide-react'
 import { useState, useDeferredValue, type FormEvent } from 'react'
 import { toast } from 'sonner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
 
 const CompanyMembers = ({ company }: { company: CompanyDetailResponse }) => {
-  const { api } = useRouteContext({ from: '__root__' })
+  const { api, isAuthenticated } = useRouteContext({ from: '__root__' })
+  const isOwner = isAuthenticated && company.permission.isOwner
   const addMember = useAddCompanyMemberMutation(api)
   const updateMember = useUpdateCompanyMemberMutation(api)
   const deleteMember = useDeleteCompanyMemberMutation(api)
@@ -111,77 +113,86 @@ const CompanyMembers = ({ company }: { company: CompanyDetailResponse }) => {
         <CardTitle>Members</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <form onSubmit={submitMember} className="space-y-3 rounded-lg border p-3">
-          <FormError message={error} />
-          <div className="space-y-2">
-            <Label>User</Label>
-            {selectedUserId ? (
-              <div className="flex items-center gap-2 rounded-md border p-2">
-                <span className="flex-1 text-sm">{selectedUserName ?? selectedUserId}</span>
-                <Button type="button" variant="ghost" size="icon-xs" onClick={clearSelection}>
-                  <X className="size-3" />
-                </Button>
-              </div>
-            ) : (
-              <div className="relative">
-                <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
-                <Input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search users by name..."
-                  className="pl-9"
-                />
+        {isOwner && (
+          <form onSubmit={submitMember} className="space-y-3 rounded-lg border p-3">
+            <FormError message={error} />
+            <div className="space-y-2">
+              <Label>User</Label>
+              {selectedUserId ? (
+                <div className="flex items-center gap-2 rounded-md border p-2">
+                  <span className="flex-1 text-sm">{selectedUserName ?? selectedUserId}</span>
+                  <Button type="button" variant="ghost" size="icon-xs" onClick={clearSelection}>
+                    <X className="size-3" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="relative">
+                  <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+                  <Input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search users by name..."
+                    className="pl-9"
+                  />
+                </div>
+              )}
+            </div>
+
+            {!selectedUserId && isSearching && users.length > 0 && (
+              <div className="space-y-1 rounded-md border">
+                {users.map((user) => {
+                  const initials =
+                    (user.firstName?.charAt(0) ?? '') + (user.lastName?.charAt(0) ?? '')
+                  return (
+                    <button
+                      key={user.id}
+                      type="button"
+                      onClick={() => selectUser(user.id, user.name)}
+                      className="hover:bg-accent flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors"
+                    >
+                      <Avatar className="size-7">
+                        <AvatarImage src={user.avatarUrl ?? undefined} />
+                        <AvatarFallback className="text-xs">
+                          {initials.toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span>{user.name}</span>
+                    </button>
+                  )
+                })}
               </div>
             )}
-          </div>
 
-          {!selectedUserId && isSearching && users.length > 0 && (
-            <div className="space-y-1 rounded-md border">
-              {users.map((user) => {
-                const initials =
-                  (user.firstName?.charAt(0) ?? '') + (user.lastName?.charAt(0) ?? '')
-                return (
-                  <button
-                    key={user.id}
-                    type="button"
-                    onClick={() => selectUser(user.id, user.name)}
-                    className="hover:bg-accent flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors"
-                  >
-                    <Avatar className="size-7">
-                      <AvatarImage src={user.avatarUrl ?? undefined} />
-                      <AvatarFallback className="text-xs">{initials.toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    <span>{user.name}</span>
-                  </button>
-                )
-              })}
+            <div className="flex items-end gap-2">
+              <div className="w-36">
+                <Label>Role</Label>
+                <Select value={role} onValueChange={(value) => setRole(value as CompanyMemberRole)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CompanyMemberRoleList.map((item) => (
+                      <SelectItem key={item} value={item}>
+                        {item}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <SubmitButton isPending={addMember.isPending} disabled={!selectedUserId}>
+                Add
+              </SubmitButton>
             </div>
-          )}
-
-          <div className="flex items-end gap-2">
-            <div className="w-36">
-              <Label>Role</Label>
-              <Select value={role} onValueChange={(value) => setRole(value as CompanyMemberRole)}>
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {CompanyMemberRoleList.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {item}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <SubmitButton isPending={addMember.isPending} disabled={!selectedUserId}>
-              Add
-            </SubmitButton>
-          </div>
-        </form>
+          </form>
+        )}
 
         {company.members.length === 0 ? (
-          <EmptyState title="No members" description="Search and add a member above." />
+          <EmptyState
+            title="No members"
+            description={
+              isOwner ? 'Search and add a member above.' : 'This company has no members yet.'
+            }
+          />
         ) : (
           <div className="space-y-2">
             {company.members.map((member) => (
@@ -195,32 +206,38 @@ const CompanyMembers = ({ company }: { company: CompanyDetailResponse }) => {
                   </p>
                   <p className="text-muted-foreground text-sm">{member.user.headline}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Select
-                    value={member.role}
-                    onValueChange={(value) => changeRole(member.id, value as CompanyMemberRole)}
-                  >
-                    <SelectTrigger className="w-36">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {CompanyMemberRoleList.map((item) => (
-                        <SelectItem key={item} value={item}>
-                          {item}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={() => removeMember(member.id)}
-                    disabled={deleteMember.isPending}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
+                {isOwner ? (
+                  <div className="flex items-center gap-2">
+                    <Select
+                      value={member.role}
+                      onValueChange={(value) => changeRole(member.id, value as CompanyMemberRole)}
+                    >
+                      <SelectTrigger className="w-36">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CompanyMemberRoleList.map((item) => (
+                          <SelectItem key={item} value={item}>
+                            {item}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => removeMember(member.id)}
+                      disabled={deleteMember.isPending}
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <Badge variant="secondary" className="w-fit capitalize">
+                    {member.role}
+                  </Badge>
+                )}
               </div>
             ))}
           </div>

@@ -193,7 +193,7 @@ const MessageComposer = ({
               placeholder={disabled ? 'Connecting...' : 'Message'}
               rows={1}
               disabled={disabled}
-              className="placeholder:text-muted-foreground max-h-40 min-h-9 w-full min-w-0 resize-none overflow-x-hidden overflow-y-auto bg-transparent px-1 py-2 text-sm leading-5 break-words whitespace-pre-wrap outline-none disabled:cursor-not-allowed disabled:opacity-60"
+              className="placeholder:text-muted-foreground max-h-40 min-h-9 w-full min-w-0 resize-none overflow-x-hidden overflow-y-auto bg-transparent px-1 py-2 text-sm leading-5 wrap-break-word whitespace-pre-wrap outline-none disabled:cursor-not-allowed disabled:opacity-60"
             />
           </div>
 

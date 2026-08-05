@@ -11,7 +11,7 @@ const CompanyCard = ({ c }: { c: CompanySummaryResponse }) => {
     <Card>
       <CardHeader className="flex flex-row items-center gap-4 space-y-0">
         <Avatar className="h-12 w-12 border">
-          <AvatarImage src={`https://avatar.vercel.sh/${c.name}.png`} alt={c.name} />
+          <AvatarImage src={`${c.logoUrl}`} alt={c.name} />
           <AvatarFallback>
             <Building2 className="h-6 w-6" />
           </AvatarFallback>

@@ -85,22 +85,35 @@ export const vacancyUpdateRequestSchema = nullableLocationRequestSchema.extend({
   skills: z.array(vacancySkillLinkRequestSchema).nullish()
 })
 
+const numberOrNullish = z.coerce.number().nullish()
+const specializationArraySchema = z.preprocess(
+  (value) => {
+    if (value == null || value === '') return value
+    return Array.isArray(value) ? value : [value]
+  },
+  z.array(z.enum(SpecializationList)).nullish()
+)
+const uuidArraySchema = z.preprocess((value) => {
+  if (value == null || value === '') return value
+  return Array.isArray(value) ? value : [value]
+}, z.array(z.uuid()).nullish())
+
 export const vacancyListParamsSchema = paginationQuerySchema.extend({
   companyId: uuid.nullish(),
   title: z.string().nullish(),
   submissionType: z.enum(SubmissionTypeList).nullish(),
-  specialization: z.array(z.enum(SpecializationList)).nullish(),
-  salaryMin: z.number().nullish(),
-  salaryMax: z.number().nullish(),
+  specialization: specializationArraySchema,
+  salaryMin: numberOrNullish,
+  salaryMax: numberOrNullish,
   salaryCurrency: z.enum(SalaryCurrencyList).nullish(),
-  yearsOfExperienceMin: z.number().nullish(),
+  yearsOfExperienceMin: numberOrNullish,
   workFormat: z.enum(WorkFormatList).nullish(),
   employmentType: z.enum(EmploymentTypeList).nullish(),
   status: z.enum(VacancyStatusList).nullish(),
   countryId: z.uuid().nullish(),
   cityId: z.uuid().nullish(),
-  skillIds: z.array(z.uuid()).nullish(),
-  postedWithinDays: z.number().int().positive().nullish()
+  skillIds: uuidArraySchema,
+  postedWithinDays: z.coerce.number().int().positive().nullish()
 })
 
 // --- Vacancy Responses ---
@@ -125,7 +138,8 @@ export const vacancyDetailResponseSchema = vacancySummaryResponseSchema.extend({
   externalApplyUrl: z.url().nullish(),
   workHoursPerWeek: z.number().int().nullish(),
   paymentFrequency: z.enum(PaymentFrequencyList).nullish(),
-  skillLinks: z.array(vacancySkillLinkResponseSchema)
+  skillLinks: z.array(vacancySkillLinkResponseSchema),
+  permission: z.object({ isOwner: z.boolean() })
 })
 
 export const vacancyListResponseSchema = paginatedResponseSchema(

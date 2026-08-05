@@ -1,4 +1,5 @@
 import { createServerApi } from '@/api/api.server'
+import { toApiParams } from '@/lib/to-api-params'
 import { uuid } from '@/types/shared/primitives'
 import {
   applicationDetailResponseSchema,
@@ -15,8 +16,16 @@ export const getVacanciesFn = createServerFn()
   .inputValidator(vacancyListParamsSchema)
   .handler(async ({ data: params }) => {
     const api = createServerApi()
+    const clean = toApiParams(params as Record<string, unknown>)
+    const body: Record<string, unknown> = {}
+    if ((clean as any).specialization)
+      body.specialization = (clean as any).specialization
+    if ((clean as any).skillIds) body.skillIds = (clean as any).skillIds
 
-    const data = await api('vacancies/', { params })
+    const data = await api('vacancies/', {
+      params: clean,
+      ...(Object.keys(body).length ? { data: body } : {})
+    })
 
     const result = vacancyListResponseSchema.safeParse(data)
 
@@ -60,7 +69,9 @@ export const getApplicationsFn = createServerFn()
   .handler(async ({ data: { vacancyId, ...params } }) => {
     const api = createServerApi()
 
-    const data = await api(`vacancies/${vacancyId}/applications`, { params })
+    const data = await api(`vacancies/${vacancyId}/applications`, {
+      params: toApiParams(params as Record<string, unknown>)
+    })
 
     const result = applicationListResponseSchema.safeParse(data)
 

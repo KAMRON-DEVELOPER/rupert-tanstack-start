@@ -12,10 +12,13 @@ import {
 } from './resume.function'
 import { ResumeCreateRequest, ResumeUpdateRequest } from '@/types/users/resume'
 
-export const useGetResumesQueryOptions = () =>
+export const useGetResumesQueryOptions = (data?: {
+  offset?: number
+  limit?: number
+}) =>
   queryOptions({
-    queryKey: ['resumes'],
-    queryFn: () => getResumesFn(),
+    queryKey: ['resumes', data],
+    queryFn: () => getResumesFn({ data: data as any }),
     staleTime: 30_000
   })
 

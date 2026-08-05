@@ -346,9 +346,7 @@ const MessageBubble = ({
         )}
 
         {hasText ? (
-          <p className="min-w-0 [overflow-wrap:anywhere] break-words whitespace-pre-wrap">
-            {message.message}
-          </p>
+          <p className="min-w-0 wrap-anywhere whitespace-pre-wrap">{message.message}</p>
         ) : (
           sortedAttachments.length === 0 && (
             <p className="text-muted-foreground italic">Message unavailable</p>

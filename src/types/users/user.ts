@@ -64,7 +64,8 @@ export const userDetailResponseSchema =
     jobSearchStatus: z.enum(JobSearchStatusList),
 
     followersCount: z.number().int(),
-    followingsCount: z.number().int()
+    followingsCount: z.number().int(),
+    permission: z.object({ isOwner: z.boolean() })
   })
 
 // --- Types ---

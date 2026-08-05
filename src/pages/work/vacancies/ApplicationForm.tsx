@@ -11,22 +11,28 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useCreateApplicationMutation } from '@/api/vacancies/vacancies'
+import { useGetResumesQueryOptions } from '@/api/users/resume'
 import { getErrorMessage } from '@/types/shared/helper'
 import type { VacancyDetailResponse } from '@/types/vacancies/vacancy'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useRouteContext } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import { useState, type SubmitEvent } from 'react'
 import { toast } from 'sonner'
-import { useGetResumesQueryOptions } from '@/api/users/resume'
 
 const ApplicationForm = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
-  const { api } = useRouteContext({ from: '__root__' })
-  const { data: resumes } = useSuspenseQuery(useGetResumesQueryOptions())
+  const { api, isAuthenticated } = useRouteContext({ from: '__root__' })
+  const { data: resumesData, isPending: resumesPending } = useQuery({
+    ...useGetResumesQueryOptions(),
+    enabled: isAuthenticated
+  })
   const createApplication = useCreateApplicationMutation(api)
   const [resumeId, setResumeId] = useState('none')
   const [coverLetter, setCoverLetter] = useState('')
   const [error, setError] = useState<string | null>(null)
+
+  if (!isAuthenticated) return null
+  if (isAuthenticated && vacancy.permission.isOwner) return null
 
   const submit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -48,6 +54,19 @@ const ApplicationForm = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
     }
   }
 
+  if (resumesPending) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Apply</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground text-sm">Loading resumes...</p>
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -67,7 +86,7 @@ const ApplicationForm = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">No resume</SelectItem>
-                  {resumes.data.map((resume) => (
+                  {resumesData?.data?.map((resume) => (
                     <SelectItem key={resume.id} value={resume.id}>
                       {resume.title}
                     </SelectItem>
@@ -84,7 +103,9 @@ const ApplicationForm = ({ vacancy }: { vacancy: VacancyDetailResponse }) => {
                 rows={4}
               />
             </div>
-            <SubmitButton isPending={createApplication.isPending}>Submit application</SubmitButton>
+            <SubmitButton isPending={createApplication.isPending || resumesPending}>
+              Submit application
+            </SubmitButton>
           </form>
         )}
       </CardContent>

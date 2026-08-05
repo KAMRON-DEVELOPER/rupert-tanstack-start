@@ -16,10 +16,10 @@ export const Route = createFileRoute('/(public)/profile/applications/')({
 })
 
 function ProfileApplicationsPage() {
-  const deps = Route.useLoaderDeps()
+  const search = Route.useSearch()
   const {
     data: { data: applications, total }
-  } = useSuspenseQuery(useGetApplicationsQueryOptions(deps))
+  } = useSuspenseQuery(useGetApplicationsQueryOptions(search))
 
   return (
     <div className="space-y-3">

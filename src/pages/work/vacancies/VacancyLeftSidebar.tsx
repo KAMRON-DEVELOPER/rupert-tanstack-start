@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { Banknote, Briefcase, FilterX, Search, Trash2 } from 'lucide-react'
+import { Banknote, Briefcase, Trash2 } from 'lucide-react'
 import z from 'zod'
 
 import { useGetCitiesQueryOptions, useGetCountriesQueryOptions } from '@/api/locations/locations'
@@ -239,7 +239,7 @@ const VacancyLeftSidebar = () => {
 
   const updateFilter = (newFilter: Partial<VacancyListParams>) => {
     navigate({
-      search: (prev) => sanitizeVacancySearch({ ...prev, ...newFilter })
+      search: (prev) => sanitizeVacancySearch({ ...prev, offset: 0, ...newFilter })
     })
   }
 
@@ -299,23 +299,32 @@ const VacancyLeftSidebar = () => {
     })
   }
 
+  const activeFilterCount = Object.entries(search).filter(
+    ([key, value]) =>
+      key !== 'offset' &&
+      key !== 'limit' &&
+      value != null &&
+      value !== '' &&
+      (!Array.isArray(value) || value.length > 0)
+  ).length
+
   return (
-    <div className="flex flex-col gap-6 rounded-lg border border-dashed p-4">
-      <div className="flex items-center justify-between">
-        <h2 className="flex items-center gap-2 text-lg font-semibold">
-          <Search className="text-primary size-5" />
-          Filters
-        </h2>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={clearFilters}
-          className="text-muted-foreground hover:text-destructive"
-        >
-          <FilterX data-icon="inline-start" />
-          Reset
-        </Button>
-      </div>
+    <div className="bg-card flex flex-col gap-6 self-start rounded-xl border p-4 md:sticky md:top-16">
+      {activeFilterCount > 0 && (
+        <div className="flex items-center justify-between">
+          <span className="text-muted-foreground text-xs">
+            {activeFilterCount} {activeFilterCount === 1 ? 'filter' : 'filters'} active
+          </span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearFilters}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            Clear
+          </Button>
+        </div>
+      )}
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
@@ -360,12 +369,11 @@ const VacancyLeftSidebar = () => {
             onChange={(values) => updateFilter({ skillIds: values.length ? values : undefined })}
           />
         </div>
-
         <div className="flex flex-col gap-2">
           <Label id="work-format-label">Work Format</Label>
           <ToggleGroup
             type="single"
-            value={search.workFormat ?? 'hybrid'}
+            value={search.workFormat ?? ''}
             onValueChange={(value) => updateFilter({ workFormat: value || undefined })}
             aria-labelledby="work-format-label"
             variant="outline"
@@ -399,6 +407,38 @@ const VacancyLeftSidebar = () => {
           </ToggleGroup>
         </div>
 
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between gap-3">
+            <Label htmlFor="experience">Minimum Experience</Label>
+            <span className="text-muted-foreground text-sm">
+              {experienceSliderValue[0] ?? 0}+ years
+            </span>
+          </div>
+          <Slider
+            id="experience"
+            min={0}
+            max={20}
+            step={1}
+            value={experienceSliderValue}
+            onValueChange={setExperienceSliderValue}
+            onValueCommit={(values) =>
+              updateFilter({ yearsOfExperienceMin: values[0] ? values[0] : undefined })
+            }
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="posted-within">Posted</Label>
+          <SingleCombobox
+            id="posted-within"
+            options={POSTED_WITHIN_OPTIONS}
+            value={search.postedWithinDays ? String(search.postedWithinDays) : null}
+            placeholder="Any time"
+            onChange={(value) =>
+              updateFilter({ postedWithinDays: value ? Number(value) : undefined })
+            }
+          />
+        </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="country">Country</Label>
           <SingleCombobox
@@ -425,27 +465,6 @@ const VacancyLeftSidebar = () => {
             onChange={(cityId) => updateFilter({ cityId: cityId ?? undefined })}
           />
         </div>
-
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between gap-3">
-            <Label htmlFor="experience">Minimum Experience</Label>
-            <span className="text-muted-foreground text-sm">
-              {experienceSliderValue[0] ?? 0}+ years
-            </span>
-          </div>
-          <Slider
-            id="experience"
-            min={0}
-            max={20}
-            step={1}
-            value={experienceSliderValue}
-            onValueChange={setExperienceSliderValue}
-            onValueCommit={(values) =>
-              updateFilter({ yearsOfExperienceMin: values[0] ? values[0] : undefined })
-            }
-          />
-        </div>
-
         <div className="flex flex-col gap-2">
           <Label htmlFor="salary-currency">Salary Currency</Label>
           <SingleCombobox
@@ -489,24 +508,14 @@ const VacancyLeftSidebar = () => {
             onValueCommit={handleSalaryRangeChange}
           />
         </div>
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="posted-within">Posted</Label>
-          <SingleCombobox
-            id="posted-within"
-            options={POSTED_WITHIN_OPTIONS}
-            value={search.postedWithinDays ? String(search.postedWithinDays) : null}
-            placeholder="Any time"
-            onChange={(value) =>
-              updateFilter({ postedWithinDays: value ? Number(value) : undefined })
-            }
-          />
-        </div>
       </div>
 
       <Separator />
 
       <div className="flex flex-col gap-3">
+        <h3 className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+          Saved searches
+        </h3>
         <Button variant="outline" size="sm" onClick={saveCurrentSearch}>
           Save current search
         </Button>

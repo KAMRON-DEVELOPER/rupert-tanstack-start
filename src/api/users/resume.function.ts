@@ -1,6 +1,5 @@
 import type { MessageResponse } from '@/types/shared/types'
 import {
-  ResumeCreateRequest,
   resumeCreateRequestSchema,
   resumeResponseSchema,
   resumeUpdateRequestSchema
@@ -8,25 +7,38 @@ import {
 import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
 import { createServerApi } from '../api.server'
-import { paginatedResponseSchema } from '@/types/shared/pagination'
+import {
+  paginatedResponseSchema,
+  paginationQuerySchema
+} from '@/types/shared/pagination'
 import { uuid } from '@/types/shared/primitives'
+import { toApiParams } from '@/lib/to-api-params'
 
-export const getResumesFn = createServerFn().handler(async () => {
-  const api = createServerApi()
+export const getResumesFn = createServerFn()
+  .inputValidator(paginationQuerySchema.optional())
+  .handler(async ({ data: params }) => {
+    const api = createServerApi()
 
-  const data = await api('users/resumes')
+    const data = await api('users/resumes', {
+      params: params
+        ? toApiParams(params as Record<string, unknown>)
+        : undefined
+    })
 
-  const result = paginatedResponseSchema(resumeResponseSchema).safeParse(data)
+    const result = paginatedResponseSchema(resumeResponseSchema).safeParse(data)
 
-  if (!result.success) {
-    console.error('[resumeResponseSchema] parse failed:', result.error.message)
-    throw new Error(
-      '[resumeResponseSchema] Unexpected response shape from backend'
-    )
-  }
+    if (!result.success) {
+      console.error(
+        '[resumeResponseSchema] parse failed:',
+        result.error.message
+      )
+      throw new Error(
+        '[resumeResponseSchema] Unexpected response shape from backend'
+      )
+    }
 
-  return result.data
-})
+    return result.data
+  })
 
 export const createResumeFn = createServerFn({ method: 'POST' })
   .inputValidator(resumeCreateRequestSchema)

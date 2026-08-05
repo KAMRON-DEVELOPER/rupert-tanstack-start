@@ -6,14 +6,17 @@ import { MapPin, Pencil } from 'lucide-react'
 import ProfileEditDialog from './ProfileEditDialog'
 import { useState } from 'react'
 import { UserDetailResponse } from '@/types/users/user'
+import { useRouteContext } from '@tanstack/react-router'
 
 interface ProfileHeaderProps {
   user: UserDetailResponse
 }
 
 const ProfileHeader = ({ user }: ProfileHeaderProps) => {
+  const { isAuthenticated } = useRouteContext({ from: '__root__' })
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const location = locationLabel(user.country, user.city)
+  const isOwner = isAuthenticated && user.permission.isOwner
 
   return (
     <Card className="overflow-hidden border-none shadow-sm">
@@ -31,10 +34,12 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
               {user.lastName?.[0]}
             </AvatarFallback>
           </Avatar>
-          <Button variant="outline" size="sm" onClick={() => setIsEditDialogOpen(true)}>
-            <Pencil className="mr-2 size-4" />
-            Edit Profile
-          </Button>
+          {isOwner && (
+            <Button variant="outline" size="sm" onClick={() => setIsEditDialogOpen(true)}>
+              <Pencil className="mr-2 size-4" />
+              Edit Profile
+            </Button>
+          )}
         </div>
 
         <div className="space-y-1">
@@ -60,7 +65,9 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
           </div>
         </div>
       </div>
-      <ProfileEditDialog user={user} open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} />
+      {isOwner && (
+        <ProfileEditDialog user={user} open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} />
+      )}
     </Card>
   )
 }

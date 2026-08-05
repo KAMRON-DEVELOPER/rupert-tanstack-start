@@ -5,10 +5,10 @@ import { getRouteApi } from '@tanstack/react-router'
 import ApplicationCard from './ApplicationCard'
 
 const ApplicationsPage = () => {
-  const deps = getRouteApi('/(apps)/(work)/work/applications/').useLoaderDeps()
+  const search = getRouteApi('/(apps)/(work)/work/applications/').useSearch()
   const {
     data: { data: applications, total }
-  } = useSuspenseQuery(useGetApplicationsQueryOptions(deps))
+  } = useSuspenseQuery(useGetApplicationsQueryOptions(search))
 
   return (
     <div className="col-span-3 space-y-3">

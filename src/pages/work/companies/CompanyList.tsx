@@ -5,10 +5,10 @@ import CompanyCard from './CompanyCard'
 import EmptyState from '@/components/forms/EmptyState'
 
 const CompanyList = () => {
-  const deps = getRouteApi('/(apps)/(work)/work/companies/').useLoaderDeps()
+  const search = getRouteApi('/(apps)/(work)/work/companies/').useSearch()
   const {
     data: { data: companies, total }
-  } = useSuspenseQuery(useGetCompaniesQueryOptions(deps))
+  } = useSuspenseQuery(useGetCompaniesQueryOptions(search))
 
   return (
     <div className="col-span-2 space-y-2 rounded-lg border border-dashed p-4">

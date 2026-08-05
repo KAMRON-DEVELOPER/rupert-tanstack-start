@@ -16,8 +16,9 @@ type CompanyPageProps = {
 
 const CompanyPage = ({ companyId }: CompanyPageProps) => {
   const navigate = useNavigate()
-  const { api } = useRouteContext({ from: '__root__' })
+  const { api, isAuthenticated } = useRouteContext({ from: '__root__' })
   const { data: company } = useSuspenseQuery(useGetCompanyQueryOptions({ id: companyId }))
+  const isOwner = isAuthenticated && company.permission.isOwner
   const deleteCompany = useDeleteCompanyMutation(api)
   const [editOpen, setEditOpen] = useState(false)
 
@@ -35,20 +36,22 @@ const CompanyPage = ({ companyId }: CompanyPageProps) => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end gap-2">
-        <Button variant="outline" onClick={() => setEditOpen(true)}>
-          <Pencil className="size-4" />
-          Edit
-        </Button>
-        <Button variant="destructive" onClick={handleDelete} disabled={deleteCompany.isPending}>
-          <Trash2 className="size-4" />
-          Delete
-        </Button>
-      </div>
+      {isOwner && (
+        <div className="flex justify-end gap-2">
+          <Button variant="outline" onClick={() => setEditOpen(true)}>
+            <Pencil className="size-4" />
+            Edit
+          </Button>
+          <Button variant="destructive" onClick={handleDelete} disabled={deleteCompany.isPending}>
+            <Trash2 className="size-4" />
+            Delete
+          </Button>
+        </div>
+      )}
 
       <CompanyDetails company={company} />
-      <CompanyMembers company={company} />
-      <CompanyVacancies companyId={companyId} />
+      {isOwner && <CompanyMembers company={company} />}
+      <CompanyVacancies companyId={companyId} isOwner={isOwner} />
       <CompanyForm company={company} open={editOpen} onOpenChange={setEditOpen} />
     </div>
   )

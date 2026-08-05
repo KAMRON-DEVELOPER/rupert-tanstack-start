@@ -78,7 +78,8 @@ export const companyDetailResponseSchema = companySummaryResponseSchema.extend({
   contactEmail: z.string().nullish(),
   contactPhone: z.string().nullish(),
   memberCount: z.number().int().nullish(),
-  members: z.array(z.lazy(() => companyMemberResponseSchema)).default([])
+  members: z.array(z.lazy(() => companyMemberResponseSchema)).default([]),
+  permission: z.object({ isOwner: z.boolean() })
 })
 
 // --- Company Member Requests ---

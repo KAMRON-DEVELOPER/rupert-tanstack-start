@@ -18,15 +18,16 @@ const formatLabel = (value: string) => value.replace(/_/g, ' ')
 
 type CompanyVacanciesProps = {
   companyId: string
+  isOwner?: boolean
 }
 
-const CompanyVacancies = ({ companyId }: CompanyVacanciesProps) => {
+const CompanyVacancies = ({ companyId, isOwner = false }: CompanyVacanciesProps) => {
   const { api } = useRouteContext({ from: '__root__' })
   const deleteVacancy = useDeleteVacancyMutation(api)
   const { data: vacanciesData } = useSuspenseQuery(
     useGetVacanciesQueryOptions({ offset: 0, limit: 50, companyId })
   )
-  const vacancies = vacanciesData.data
+  const vacancies = vacanciesData.data.filter((v) => v.company.id === companyId)
 
   const [createOpen, setCreateOpen] = useState(false)
   const [editingVacancyId, setEditingVacancyId] = useState<string | null>(null)
@@ -51,10 +52,12 @@ const CompanyVacancies = ({ companyId }: CompanyVacanciesProps) => {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Vacancies</CardTitle>
-        <Button variant="outline" size="sm" onClick={() => setCreateOpen(true)}>
-          <Plus className="mr-1 size-4" />
-          Create Vacancy
-        </Button>
+        {isOwner && (
+          <Button variant="outline" size="sm" onClick={() => setCreateOpen(true)}>
+            <Plus className="mr-1 size-4" />
+            Create Vacancy
+          </Button>
+        )}
       </CardHeader>
       <CardContent>
         {vacancies.length === 0 ? (
@@ -85,24 +88,26 @@ const CompanyVacancies = ({ companyId }: CompanyVacanciesProps) => {
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-1">
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={() => setEditingVacancyId(vacancy.id)}
-                    className="text-muted-foreground"
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={() => handleDelete(vacancy.id)}
-                    className="text-muted-foreground hover:text-destructive"
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
+                {isOwner && (
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => setEditingVacancyId(vacancy.id)}
+                      className="text-muted-foreground"
+                    >
+                      <Pencil className="size-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => handleDelete(vacancy.id)}
+                      className="text-muted-foreground hover:text-destructive"
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
+                )}
               </div>
             ))}
           </div>
